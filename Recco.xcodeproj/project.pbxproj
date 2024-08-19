@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1B2C7119DB00808375 /* Toast.swift */; };
+		CAA43A1E2C711A0800808375 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1D2C711A0800808375 /* ToastView.swift */; };
+		CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1F2C711A2F00808375 /* ToastModifier.swift */; };
+		CAA43A222C712F8200808375 /* VerificationCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A212C712F8200808375 /* VerificationCodeView.swift */; };
+		CAA43A242C71725800808375 /* AuthNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A232C71725800808375 /* AuthNavigation.swift */; };
+		CAA43A262C717C8A00808375 /* EnterNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A252C717C8A00808375 /* EnterNameView.swift */; };
+		CAA43A282C7182C900808375 /* EnterUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A272C7182C900808375 /* EnterUsernameView.swift */; };
+		CAA43A2A2C71855800808375 /* ChooseProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A292C71855800808375 /* ChooseProfilePictureView.swift */; };
+		CAA43A2D2C71891100808375 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A2C2C71891100808375 /* User.swift */; };
+		CAA43A2F2C718C4500808375 /* SupabaseUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A2E2C718C4500808375 /* SupabaseUserManager.swift */; };
+		CAA43A342C71ABAE00808375 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CAA43A332C71ABAE00808375 /* Kingfisher */; };
+		CAA43A362C71ABBF00808375 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A352C71ABBF00808375 /* ImageLoader.swift */; };
+		CAA43A382C71ABC700808375 /* ImagePrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A372C71ABC700808375 /* ImagePrefetcher.swift */; };
+		CAA43A3A2C71ABD400808375 /* Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A392C71ABD400808375 /* Kingfisher.swift */; };
+		CAA43A3C2C71ACBB00808375 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A3B2C71ACBB00808375 /* Constants.swift */; };
+		CAA43A3E2C71AEEE00808375 /* SignUpOrLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A3D2C71AEEE00808375 /* SignUpOrLoginView.swift */; };
+		CAA43A402C71B1E500808375 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A3F2C71B1E500808375 /* Text.swift */; };
+		CAA43A432C71B40B00808375 /* SF-Pro-Rounded-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CAA43A422C71B32700808375 /* SF-Pro-Rounded-Semibold.otf */; };
+		CAA43A442C71B43C00808375 /* SF-Pro-Rounded-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CAA43A412C71B2A100808375 /* SF-Pro-Rounded-Bold.otf */; };
+		CAA43A472C72854B00808375 /* UserDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A462C72854B00808375 /* UserDataViewModel.swift */; };
 		CAB605092C5F068C007698B9 /* ReccoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605082C5F068C007698B9 /* ReccoApp.swift */; };
 		CAB6050B2C5F068C007698B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6050A2C5F068C007698B9 /* ContentView.swift */; };
 		CAB6050D2C5F068D007698B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAB6050C2C5F068D007698B9 /* Assets.xcassets */; };
@@ -14,6 +34,20 @@
 		CAB6051A2C5F068D007698B9 /* ReccoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605192C5F068D007698B9 /* ReccoTests.swift */; };
 		CAB605242C5F068D007698B9 /* ReccoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605232C5F068D007698B9 /* ReccoUITests.swift */; };
 		CAB605262C5F068D007698B9 /* ReccoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605252C5F068D007698B9 /* ReccoUITestsLaunchTests.swift */; };
+		CAB605472C5F0D1D007698B9 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605462C5F0D1D007698B9 /* FeedView.swift */; };
+		CAB605492C5F0D2B007698B9 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605482C5F0D2B007698B9 /* ProfileView.swift */; };
+		CAB6054C2C6B1160007698B9 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = CAB6054B2C6B1160007698B9 /* Auth */; };
+		CAB6054E2C6B1160007698B9 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = CAB6054D2C6B1160007698B9 /* Functions */; };
+		CAB605502C6B1160007698B9 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = CAB6054F2C6B1160007698B9 /* PostgREST */; };
+		CAB605522C6B1160007698B9 /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = CAB605512C6B1160007698B9 /* Realtime */; };
+		CAB605542C6B1160007698B9 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = CAB605532C6B1160007698B9 /* Storage */; };
+		CAB605562C6B1160007698B9 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = CAB605552C6B1160007698B9 /* Supabase */; };
+		CAB605582C6B139A007698B9 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605572C6B139A007698B9 /* Supabase.swift */; };
+		CAB6055B2C6B153E007698B9 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055A2C6B153E007698B9 /* SplashScreenView.swift */; };
+		CAB6055D2C6B1BA9007698B9 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055C2C6B1BA9007698B9 /* SignUpView.swift */; };
+		CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055F2C6B1EF4007698B9 /* SupabaseAuthViewModel.swift */; };
+		CAB605632C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CAB605622C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf */; };
+		CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605672C6B23B6007698B9 /* FontManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +68,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CAA43A1B2C7119DB00808375 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		CAA43A1D2C711A0800808375 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		CAA43A1F2C711A2F00808375 /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
+		CAA43A212C712F8200808375 /* VerificationCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeView.swift; sourceTree = "<group>"; };
+		CAA43A232C71725800808375 /* AuthNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigation.swift; sourceTree = "<group>"; };
+		CAA43A252C717C8A00808375 /* EnterNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameView.swift; sourceTree = "<group>"; };
+		CAA43A272C7182C900808375 /* EnterUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameView.swift; sourceTree = "<group>"; };
+		CAA43A292C71855800808375 /* ChooseProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseProfilePictureView.swift; sourceTree = "<group>"; };
+		CAA43A2C2C71891100808375 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CAA43A2E2C718C4500808375 /* SupabaseUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseUserManager.swift; sourceTree = "<group>"; };
+		CAA43A352C71ABBF00808375 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		CAA43A372C71ABC700808375 /* ImagePrefetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePrefetcher.swift; sourceTree = "<group>"; };
+		CAA43A392C71ABD400808375 /* Kingfisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kingfisher.swift; sourceTree = "<group>"; };
+		CAA43A3B2C71ACBB00808375 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		CAA43A3D2C71AEEE00808375 /* SignUpOrLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpOrLoginView.swift; sourceTree = "<group>"; };
+		CAA43A3F2C71B1E500808375 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
+		CAA43A412C71B2A100808375 /* SF-Pro-Rounded-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Bold.otf"; sourceTree = "<group>"; };
+		CAA43A422C71B32700808375 /* SF-Pro-Rounded-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Semibold.otf"; sourceTree = "<group>"; };
+		CAA43A462C72854B00808375 /* UserDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataViewModel.swift; sourceTree = "<group>"; };
 		CAB605052C5F068C007698B9 /* Recco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recco.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAB605082C5F068C007698B9 /* ReccoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccoApp.swift; sourceTree = "<group>"; };
 		CAB6050A2C5F068C007698B9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +97,15 @@
 		CAB6051F2C5F068D007698B9 /* ReccoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReccoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAB605232C5F068D007698B9 /* ReccoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccoUITests.swift; sourceTree = "<group>"; };
 		CAB605252C5F068D007698B9 /* ReccoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CAB605462C5F0D1D007698B9 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		CAB605482C5F0D2B007698B9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		CAB605572C6B139A007698B9 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
+		CAB6055A2C6B153E007698B9 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		CAB6055C2C6B1BA9007698B9 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		CAB6055F2C6B1EF4007698B9 /* SupabaseAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseAuthViewModel.swift; sourceTree = "<group>"; };
+		CAB605622C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Regular.otf"; sourceTree = "<group>"; };
+		CAB605672C6B23B6007698B9 /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
+		CAB605692C6B255E007698B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +113,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAB605502C6B1160007698B9 /* PostgREST in Frameworks */,
+				CAB6054E2C6B1160007698B9 /* Functions in Frameworks */,
+				CAA43A342C71ABAE00808375 /* Kingfisher in Frameworks */,
+				CAB605562C6B1160007698B9 /* Supabase in Frameworks */,
+				CAB6054C2C6B1160007698B9 /* Auth in Frameworks */,
+				CAB605542C6B1160007698B9 /* Storage in Frameworks */,
+				CAB605522C6B1160007698B9 /* Realtime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +140,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CAA43A1A2C7119CA00808375 /* Toasts */ = {
+			isa = PBXGroup;
+			children = (
+				CAA43A1B2C7119DB00808375 /* Toast.swift */,
+				CAA43A1D2C711A0800808375 /* ToastView.swift */,
+				CAA43A1F2C711A2F00808375 /* ToastModifier.swift */,
+			);
+			path = Toasts;
+			sourceTree = "<group>";
+		};
+		CAA43A2B2C71890700808375 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CAA43A2C2C71891100808375 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CAA43A312C71AB6800808375 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				CAA43A352C71ABBF00808375 /* ImageLoader.swift */,
+				CAA43A372C71ABC700808375 /* ImagePrefetcher.swift */,
+				CAA43A392C71ABD400808375 /* Kingfisher.swift */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		CAA43A452C72854300808375 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				CAA43A462C72854B00808375 /* UserDataViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		CAB604FC2C5F068C007698B9 = {
 			isa = PBXGroup;
 			children = (
@@ -94,10 +199,19 @@
 		CAB605072C5F068C007698B9 /* Recco */ = {
 			isa = PBXGroup;
 			children = (
+				CAA43A452C72854300808375 /* ViewModels */,
+				CAA43A312C71AB6800808375 /* Images */,
+				CAA43A2B2C71890700808375 /* Models */,
+				CAA43A1A2C7119CA00808375 /* Toasts */,
+				CAB605612C6B21B9007698B9 /* Fonts */,
+				CAB605692C6B255E007698B9 /* Info.plist */,
+				CAB6055E2C6B1EE1007698B9 /* Supabase */,
 				CAB605082C5F068C007698B9 /* ReccoApp.swift */,
-				CAB6050A2C5F068C007698B9 /* ContentView.swift */,
+				CAB605452C5F0D07007698B9 /* Views */,
 				CAB6050C2C5F068D007698B9 /* Assets.xcassets */,
 				CAB6050E2C5F068D007698B9 /* Preview Content */,
+				CAA43A3B2C71ACBB00808375 /* Constants.swift */,
+				CAA43A3F2C71B1E500808375 /* Text.swift */,
 			);
 			path = Recco;
 			sourceTree = "<group>";
@@ -127,6 +241,53 @@
 			path = ReccoUITests;
 			sourceTree = "<group>";
 		};
+		CAB605452C5F0D07007698B9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CAB605592C6B14E0007698B9 /* Auth */,
+				CAB6050A2C5F068C007698B9 /* ContentView.swift */,
+				CAB605462C5F0D1D007698B9 /* FeedView.swift */,
+				CAB605482C5F0D2B007698B9 /* ProfileView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CAB605592C6B14E0007698B9 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				CAB6055A2C6B153E007698B9 /* SplashScreenView.swift */,
+				CAB6055C2C6B1BA9007698B9 /* SignUpView.swift */,
+				CAA43A212C712F8200808375 /* VerificationCodeView.swift */,
+				CAA43A232C71725800808375 /* AuthNavigation.swift */,
+				CAA43A252C717C8A00808375 /* EnterNameView.swift */,
+				CAA43A272C7182C900808375 /* EnterUsernameView.swift */,
+				CAA43A292C71855800808375 /* ChooseProfilePictureView.swift */,
+				CAA43A3D2C71AEEE00808375 /* SignUpOrLoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		CAB6055E2C6B1EE1007698B9 /* Supabase */ = {
+			isa = PBXGroup;
+			children = (
+				CAB605572C6B139A007698B9 /* Supabase.swift */,
+				CAB6055F2C6B1EF4007698B9 /* SupabaseAuthViewModel.swift */,
+				CAA43A2E2C718C4500808375 /* SupabaseUserManager.swift */,
+			);
+			path = Supabase;
+			sourceTree = "<group>";
+		};
+		CAB605612C6B21B9007698B9 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CAA43A422C71B32700808375 /* SF-Pro-Rounded-Semibold.otf */,
+				CAA43A412C71B2A100808375 /* SF-Pro-Rounded-Bold.otf */,
+				CAB605622C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf */,
+				CAB605672C6B23B6007698B9 /* FontManager.swift */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +304,15 @@
 			dependencies = (
 			);
 			name = Recco;
+			packageProductDependencies = (
+				CAB6054B2C6B1160007698B9 /* Auth */,
+				CAB6054D2C6B1160007698B9 /* Functions */,
+				CAB6054F2C6B1160007698B9 /* PostgREST */,
+				CAB605512C6B1160007698B9 /* Realtime */,
+				CAB605532C6B1160007698B9 /* Storage */,
+				CAB605552C6B1160007698B9 /* Supabase */,
+				CAA43A332C71ABAE00808375 /* Kingfisher */,
+			);
 			productName = Recco;
 			productReference = CAB605052C5F068C007698B9 /* Recco.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +385,10 @@
 				Base,
 			);
 			mainGroup = CAB604FC2C5F068C007698B9;
+			packageReferences = (
+				CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				CAA43A322C71ABAE00808375 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = CAB605062C5F068C007698B9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -233,6 +407,9 @@
 			files = (
 				CAB605102C5F068D007698B9 /* Preview Assets.xcassets in Resources */,
 				CAB6050D2C5F068D007698B9 /* Assets.xcassets in Resources */,
+				CAB605632C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf in Resources */,
+				CAA43A432C71B40B00808375 /* SF-Pro-Rounded-Semibold.otf in Resources */,
+				CAA43A442C71B43C00808375 /* SF-Pro-Rounded-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +434,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAA43A2A2C71855800808375 /* ChooseProfilePictureView.swift in Sources */,
+				CAA43A2F2C718C4500808375 /* SupabaseUserManager.swift in Sources */,
+				CAA43A362C71ABBF00808375 /* ImageLoader.swift in Sources */,
+				CAB6055D2C6B1BA9007698B9 /* SignUpView.swift in Sources */,
+				CAB6055B2C6B153E007698B9 /* SplashScreenView.swift in Sources */,
+				CAB605582C6B139A007698B9 /* Supabase.swift in Sources */,
+				CAA43A402C71B1E500808375 /* Text.swift in Sources */,
+				CAA43A3C2C71ACBB00808375 /* Constants.swift in Sources */,
+				CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */,
+				CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */,
+				CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */,
+				CAB605492C5F0D2B007698B9 /* ProfileView.swift in Sources */,
+				CAA43A262C717C8A00808375 /* EnterNameView.swift in Sources */,
+				CAA43A1E2C711A0800808375 /* ToastView.swift in Sources */,
 				CAB6050B2C5F068C007698B9 /* ContentView.swift in Sources */,
+				CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */,
+				CAA43A282C7182C900808375 /* EnterUsernameView.swift in Sources */,
+				CAA43A222C712F8200808375 /* VerificationCodeView.swift in Sources */,
+				CAA43A2D2C71891100808375 /* User.swift in Sources */,
+				CAA43A3A2C71ABD400808375 /* Kingfisher.swift in Sources */,
+				CAA43A242C71725800808375 /* AuthNavigation.swift in Sources */,
+				CAB605472C5F0D1D007698B9 /* FeedView.swift in Sources */,
+				CAA43A3E2C71AEEE00808375 /* SignUpOrLoginView.swift in Sources */,
+				CAA43A382C71ABC700808375 /* ImagePrefetcher.swift in Sources */,
+				CAA43A472C72854B00808375 /* UserDataViewModel.swift in Sources */,
 				CAB605092C5F068C007698B9 /* ReccoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,7 +548,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -404,7 +605,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -419,17 +620,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Recco/Preview Content\"";
-				DEVELOPMENT_TEAM = BK7MB9J3TD;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Recco/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -437,6 +641,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReccoApp.Recco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -448,17 +653,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Recco/Preview Content\"";
-				DEVELOPMENT_TEAM = BK7MB9J3TD;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Recco/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,6 +674,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReccoApp.Recco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -588,6 +797,63 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CAA43A322C71ABAE00808375 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
+		CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CAA43A332C71ABAE00808375 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAA43A322C71ABAE00808375 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		CAB6054B2C6B1160007698B9 /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		CAB6054D2C6B1160007698B9 /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		CAB6054F2C6B1160007698B9 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		CAB605512C6B1160007698B9 /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		CAB605532C6B1160007698B9 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		CAB605552C6B1160007698B9 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAB6054A2C6B1160007698B9 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CAB604FD2C5F068C007698B9 /* Project object */;
 }

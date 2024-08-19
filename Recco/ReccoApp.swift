@@ -6,12 +6,26 @@
 //
 
 import SwiftUI
+import Supabase
 
 @main
 struct ReccoApp: App {
+    
+    @StateObject var userDataViewModel = UserDataViewModel()
+    @StateObject var authViewModel = SupabaseAuthViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if(userDataViewModel.isUserAuthenticated){
+                ContentView()
+                .environmentObject(authViewModel)
+                .environmentObject(userDataViewModel)
+
+            } else {
+                SplashScreenView()
+                    .environmentObject(authViewModel)
+                    .environmentObject(userDataViewModel)
+            }
         }
     }
 }
