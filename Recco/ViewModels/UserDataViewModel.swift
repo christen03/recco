@@ -41,8 +41,7 @@ extension UserDefaults {
     }
 }
 
-
-
+// TODO: Refactor to not include currentUser
 class UserDataViewModel: BaseSupabase {
     
     @Published var isUserAuthenticated: Bool = false
@@ -60,6 +59,10 @@ class UserDataViewModel: BaseSupabase {
             }
             refreshUserData(userId: sessionData.user.id)
         }
+    }
+    
+    init(user: User){
+        self.currentUser=user
     }
     
     func login(){
@@ -83,7 +86,6 @@ class UserDataViewModel: BaseSupabase {
     // Query is returning before loading cached user and currentUser is getting set to query and then cachedUser
     func loadCachedUser(){
         currentUser = UserDefaults.standard.getUser(forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
-        print(currentUser?.profilePictureUrl)
     }
     
     func refreshUserData(userId: UUID) {

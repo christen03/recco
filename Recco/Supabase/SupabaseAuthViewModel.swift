@@ -169,7 +169,9 @@ class SupabaseAuthViewModel: BaseSupabase {
         do {
             try await Task.detached(priority: .userInitiated) {
                 let newImageUrl = try await self.supabaseUserManager.uploadProfilePictureToSupabase(imageData: imageData)
-                self.profilePictureUrl=newImageUrl
+                await MainActor.run{
+                    self.profilePictureUrl=newImageUrl
+                }
             }.value
             return true
         } catch {

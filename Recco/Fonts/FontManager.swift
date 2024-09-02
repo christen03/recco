@@ -9,4 +9,5 @@
 struct Fonts {
     static let sfProRounded: String = "SFProRounded-Regular"
     static let sfProRoundedSemibold: String = "SFProRounded-Semibold"
+    static let sfProRoundedLight: String = "SFProRounded-Light"
 }
