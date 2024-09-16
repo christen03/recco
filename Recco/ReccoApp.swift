@@ -17,18 +17,18 @@ struct ReccoApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            if(userDataViewModel.isUserAuthenticated){
-//                ContentView()
-//                .environmentObject(authViewModel)
-//                .environmentObject(userDataViewModel)
-//
-//            } else {
-//                SplashScreenView()
-//                    .environmentObject(authViewModel)
-//                    .environmentObject(userDataViewModel)
-//            }
-            EditListView()
-                .environmentObject(mockListVM)
+            if(userDataViewModel.isUserAuthenticated){
+                ContentView()
+                .environmentObject(authViewModel)
+                .environmentObject(userDataViewModel)
+
+            } else {
+                SplashScreenView()
+                    .environmentObject(authViewModel)
+                    .environmentObject(userDataViewModel)
+            }
+//            EditListView()
+//                .environmentObject(mockListVM)
         }
     }
 }

@@ -19,6 +19,9 @@
 		CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */; };
 		CA7DFAF22C84F1FE00B2239A /* ListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAF12C84F1FE00B2239A /* ListItemView.swift */; };
 		CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */; };
+		CA87139F2C97E525004BFE07 /* ListKeyboardButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */; };
+		CA876DE22C8D506000440DFF /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA876DE12C8D505B00440DFF /* CustomTextField.swift */; };
+		CA876DE42C96A22200440DFF /* CustomTextFieldMultiline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA876DE32C96A21E00440DFF /* CustomTextFieldMultiline.swift */; };
 		CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1B2C7119DB00808375 /* Toast.swift */; };
 		CAA43A1E2C711A0800808375 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1D2C711A0800808375 /* ToastView.swift */; };
 		CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1F2C711A2F00808375 /* ToastModifier.swift */; };
@@ -92,6 +95,9 @@
 		CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterHorizontally.swift; sourceTree = "<group>"; };
 		CA7DFAF12C84F1FE00B2239A /* ListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemView.swift; sourceTree = "<group>"; };
 		CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElegantEmojiPickerView.swift; sourceTree = "<group>"; };
+		CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListKeyboardButtons.swift; sourceTree = "<group>"; };
+		CA876DE12C8D505B00440DFF /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		CA876DE32C96A21E00440DFF /* CustomTextFieldMultiline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldMultiline.swift; sourceTree = "<group>"; };
 		CAA43A1B2C7119DB00808375 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		CAA43A1D2C711A0800808375 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		CAA43A1F2C711A2F00808375 /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
@@ -166,6 +172,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA28BEA52C8D474600EBF3B3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CA2F5ED92C7D8DED006EA304 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,9 +216,19 @@
 		CA7DFAF32C84F76400B2239A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */,
 				CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		CA876DE02C8D505600440DFF /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				CA876DE32C96A21E00440DFF /* CustomTextFieldMultiline.swift */,
+				CA876DE12C8D505B00440DFF /* CustomTextField.swift */,
+			);
+			path = UIKit;
 			sourceTree = "<group>";
 		};
 		CAA43A1A2C7119CA00808375 /* Toasts */ = {
@@ -253,6 +276,7 @@
 				CAB605072C5F068C007698B9 /* Recco */,
 				CAB605182C5F068D007698B9 /* ReccoTests */,
 				CAB605222C5F068D007698B9 /* ReccoUITests */,
+				CA28BEA52C8D474600EBF3B3 /* Frameworks */,
 				CAB605062C5F068C007698B9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -270,6 +294,7 @@
 		CAB605072C5F068C007698B9 /* Recco */ = {
 			isa = PBXGroup;
 			children = (
+				CA876DE02C8D505600440DFF /* UIKit */,
 				CA2F5EE02C7ECCED006EA304 /* Singleton */,
 				CA2F5ED92C7D8DED006EA304 /* Navigation */,
 				CAA43A452C72854300808375 /* ViewModels */,
@@ -520,6 +545,7 @@
 				CAA43A2F2C718C4500808375 /* SupabaseUserManager.swift in Sources */,
 				CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */,
 				CA2F5ECD2C7C235B006EA304 /* ListViewModel.swift in Sources */,
+				CA876DE42C96A22200440DFF /* CustomTextFieldMultiline.swift in Sources */,
 				CAA43A362C71ABBF00808375 /* ImageLoader.swift in Sources */,
 				CA2F5EDB2C7D8E00006EA304 /* HomeNavigation.swift in Sources */,
 				CAB6055D2C6B1BA9007698B9 /* SignUpView.swift in Sources */,
@@ -539,12 +565,14 @@
 				CAB6050B2C5F068C007698B9 /* ContentView.swift in Sources */,
 				CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */,
 				CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */,
+				CA876DE22C8D506000440DFF /* CustomTextField.swift in Sources */,
 				CAA43A282C7182C900808375 /* EnterUsernameView.swift in Sources */,
 				CAA43A222C712F8200808375 /* VerificationCodeView.swift in Sources */,
 				CA2F5EDD2C7D8E79006EA304 /* EditListView.swift in Sources */,
 				CA2F5ECF2C7C30C6006EA304 /* Colors.swift in Sources */,
 				CA7DFAF22C84F1FE00B2239A /* ListItemView.swift in Sources */,
 				CAA43A2D2C71891100808375 /* User.swift in Sources */,
+				CA87139F2C97E525004BFE07 /* ListKeyboardButtons.swift in Sources */,
 				CAA43A3A2C71ABD400808375 /* Kingfisher.swift in Sources */,
 				CAA43A242C71725800808375 /* AuthNavigation.swift in Sources */,
 				CAB605472C5F0D1D007698B9 /* FeedView.swift in Sources */,

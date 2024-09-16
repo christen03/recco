@@ -9,33 +9,33 @@ import SwiftUI
 
 struct ListItemView: View {
     @Binding var item: Item
-    @FocusState.Binding var focusedField: EditListView.FocusField?
+    @Binding var currentIndex: ListFocusIndex
+    let sectionIndex: Int?
     let index: Int
     let onNameSubmit: () -> Void
     let onDescriptionSubmit: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: -10){
             HStack {
-                HStack{
+                HStack(spacing: 0){
                     Text("•")
                         .font(.system(size: 16))
                         .foregroundColor(Colors.ListItemGray)
-                    TextField("Add a recommendation",
-                              text: $item.name
-                    )
-                    .foregroundColor(Colors.ListItemGray)
-                    .font(.custom(Fonts.sfProRounded, size: 16))
-                    .fontWeight(.bold)
-                    .fixedSize()
-                    .focused($focusedField, equals: .name(index))
-                    .onSubmit {
+                   CustomTextFieldMultiline(
+                    text: $item.name,
+                    placeholder: "Add a recommendation",
+                    foregroundColor: Colors.ListItemGray,
+                    fontString: Fonts.sfProRoundedBold,
+                    selfIndex: index,
+                    selfSectionIndex: sectionIndex,
+                    isDescription: false,
+                    currentIndex: $currentIndex,
+                    onCommit: {
                         onNameSubmit()
-                    }
-                }
-                .onTapGesture {
-                    self.focusedField = .name(index)
-                }
+                    })
+                   .fontWeight(.bold)
+            }
                 if item.isStarred {
                     Text("⭐️")
                         .padding(.all, 2)
@@ -56,26 +56,28 @@ struct ListItemView: View {
                 }
                 Spacer()
             }
-            if let description = item.description {
-                TextField("Add a description",
-                          text: Binding(
-                            get: { description },
-                            set: { item.description = $0 }
-                          ),
-                          axis: .vertical)
-                .padding(.leading, 20)
-                .foregroundColor(Colors.ListItemGray)
-                .font(.custom(Fonts.sfProRoundedLight, size: 14))
-                .focused($focusedField, equals: .description(index))
-                .onSubmit {
-                    onDescriptionSubmit()
+            if item.description != nil {
+                HStack{
+                    CustomTextFieldMultiline(
+                        text: Binding(
+                            get: { item.description ?? "" },
+                            set: { item.description = $0.isEmpty ? nil : $0 }
+                        ),
+                        placeholder: "Add a description",
+                        foregroundColor: Colors.ListItemGray,
+                        fontString: Fonts.sfProRoundedLight,
+                        selfIndex: index,
+                        selfSectionIndex: sectionIndex,
+                        isDescription: true,
+                        currentIndex: $currentIndex,
+                        onCommit: {
+                            onDescriptionSubmit()
+                        }
+                    )
                 }
             }
         }
         .listRowSeparator(.hidden)
-        .onTapGesture {
-            self.focusedField = .description(index)
-        }
     }
     
     @ViewBuilder
@@ -113,4 +115,9 @@ struct ListItemView: View {
             }
         }
     }
+}
+
+#Preview {
+    EditListView()
+        .environmentObject(mockListVM)
 }

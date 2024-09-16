@@ -113,7 +113,7 @@ struct PresentationSheetView: View {
             Button(action: {
                 listViewModel.isShowingEmojiPicker = true
             }, label: {
-                // I used a package for this, but its a little outdated so it's only up to iOS 16 emojis 
+                // I used a package for this, but its a little outdated so it's only up to iOS 16 emojis
                 if let emoji = self.listViewModel.list.emoji{
                     Text(emoji)
                         .font(.system(size: 50))
@@ -127,13 +127,13 @@ struct PresentationSheetView: View {
                           prompt: Text("List name")
                     .foregroundColor(Colors.DarkGray)
                     .font(Font.custom(Fonts.sfProRounded, size: 25))
-                
+                          
                 )
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .frame(width: 208)
-                    .foregroundStyle(Colors.DarkGray)
-                    .font(Font.custom(Fonts.sfProRounded, size: 25 ))
-                    .multilineTextAlignment(.center)
+                .textFieldStyle(PlainTextFieldStyle())
+                .frame(width: 208)
+                .foregroundStyle(Colors.DarkGray)
+                .font(Font.custom(Fonts.sfProRounded, size: 25 ))
+                .multilineTextAlignment(.center)
             }
             HStack{
                 FontedText("Visibility", size: 16)
@@ -145,7 +145,11 @@ struct PresentationSheetView: View {
                     Button(action: {
                         self.listViewModel.list.visibility = visibility
                     }) {
-                        FontedText(visibility.rawValue, size: 16)
+                        HStack{
+                            FontedText(visibility.emoji, size: 16)
+                            FontedText(visibility.rawValue, size: 16)
+
+                        }
                             .lineLimit(1)
                             .fixedSize()
                             .padding(.vertical, 3)
@@ -181,6 +185,9 @@ struct PresentationSheetView: View {
             }
             Spacer()
             
+        }
+        .onAppear{
+            listViewModel.validateListFields()
         }
         .sheet(isPresented: $listViewModel.isShowingEmojiPicker, content: {
             ElegantEmojiPickerView(selectedEmoji: $listViewModel.list.emoji)

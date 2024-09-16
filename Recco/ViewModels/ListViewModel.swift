@@ -1,5 +1,5 @@
 //
-//  ListViewModel.swift
+//  self.swift
 //  Recco
 //
 //  Created by Christen Xie on 8/25/24.
@@ -9,9 +9,17 @@ import Foundation
 
 enum ListVisibility: String, CaseIterable {
     // Named global becuase 'public' is a reserved keyword
-    case global = "🌐 Public"
-    case friends = "👥 All Friends"
-    case restricted = "🔒 Restricted"
+    case global = "Public"
+    case friends = "All Friends"
+    case restricted = "Restricted"
+    
+    var emoji: String{
+        switch self {
+        case .global: return "🌐"
+        case .friends: return "👥"
+        case .restricted: return "🔒"
+        }
+    }
     
     
     var description: String {
@@ -60,60 +68,88 @@ class ListViewModel: ObservableObject {
     }
     
     var allItems: [ListItem] {
-           var items = [ListItem]()
-           
-           // Add unsectioned items first
-           items.append(contentsOf: list.unsectionedItems.map { ListItem.item($0) })
-           
-           // Add sections
-           items.append(contentsOf: list.sections.map { ListItem.section($0) })
-           
-           return items
-       }
+        var items = [ListItem]()
+        
+        // Add unsectioned items first
+        items.append(contentsOf: list.unsectionedItems.map { ListItem.item($0) })
+        
+        // Add sections
+        items.append(contentsOf: list.sections.map { ListItem.section($0) })
+        
+        return items
+    }
     
     func deleteItem(at offsets:IndexSet){
         self.list.unsectionedItems.remove(atOffsets: offsets)
     }
     
-//    func move(from source: IndexSet, to destination: Int) {
-//        self.list.unsectionedItems.move(fromOffsets: source, toOffset: destination)
-//       }
-//    
-    func toggleFavoriteForIndex(at index: Int){
-        self.list.unsectionedItems[index].isStarred.toggle()
-        print("Setting starred range for index \(index)")
+    func move(from source: IndexSet, to destination: Int) {
+        self.list.unsectionedItems.move(fromOffsets: source, toOffset: destination)
+    }
+    //
+    func toggleFavoriteForIndex(atSection: Int?, atIndex: Int){
+        print("Setting toggle for index \(atSection) at index \(atIndex)")
+        if let sectionIndex = atSection{
+            self.list.sections[sectionIndex].items[atIndex].isStarred.toggle()
+        } else {
+            self.list.unsectionedItems[atIndex].isStarred.toggle()
+        }
     }
     
-    func setPriceRange(forIndex index: Int, to priceRange: PriceRange){
-        print("Setting price range for index \(index)")
-        self.list.unsectionedItems[index].price = priceRange
+    func setPriceRange(atSection: Int?, atIndex: Int, to priceRange: PriceRange){
+        if let sectionIndex = atSection{
+            self.list.sections[sectionIndex].items[atIndex].price = priceRange
+        } else{
+            self.list.unsectionedItems[atIndex].price = priceRange
+        }
     }
     
-    private func validateListFields(){
+    func validateListFields(){
         self.canCreateList = (list.emoji != nil && !list.name.isEmpty)
     }
     
     
-    func move(from source: IndexSet, to destination: Int) {
-           var items = allItems
-           items.move(fromOffsets: source, toOffset: destination)
-           
-           // Rebuild the unsectionedItems and sections arrays based on the new order
-           var newUnsectionedItems = [Item]()
-           var newSections = [Section]()
-           
-           for listItem in items {
-               switch listItem {
-               case .item(let item):
-                   newUnsectionedItems.append(item)
-               case .section(let section):
-                   newSections.append(section)
-               default:
-                   break
-               }
-           }
-           
-           list.unsectionedItems = newUnsectionedItems
-           list.sections = newSections
-       }
+    
+    func handleSectionSubmit(atSection: Int) -> EditListView.FocusField{
+        self.list.sections[atSection].items.insert(Item(name: ""), at: 0)
+        return .name(section: atSection, index: 0)
+    }
+    
+    func handleNameSubmit(atSection: Int?, atIndex: Int) -> ListFocusIndex {
+        if let sectionIndex = atSection{
+            if(self.list.sections[sectionIndex].items[atIndex].description == nil){
+                self.list.sections[sectionIndex].items[atIndex].description = ""
+            }
+            return (section: sectionIndex, index: atIndex, isDescription: true)
+        }else {
+            if (self.list.unsectionedItems[atIndex].description == nil){
+                self.list.unsectionedItems[atIndex].description = ""
+            }
+            return (section: nil, index: atIndex, isDescription: true)
+        }
+    }
+    
+    func handleDescriptionSubmit(atSection: Int?, atIndex: Int) -> ListFocusIndex {
+        let newIndex = atIndex+1
+        if let sectionIndex = atSection {
+            self.list.sections[sectionIndex].items.insert(Item(name: ""), at: newIndex)
+            return (section: atSection, index: newIndex, isDescription: false)
+        } else {
+            self.list.unsectionedItems.insert(Item(name: ""), at: newIndex)
+            return (section: atSection, index: newIndex, isDescription: false)
+        }
+    }
+    
+    func setPreviousDescriptionToNilIfEmpty(atSection: Int?, atIndex: Int) {
+        if let sectionIndex = atSection {
+            if(self.list.sections[sectionIndex].items[atIndex].description!.isEmpty){
+                self.list.sections[sectionIndex].items[atIndex].description = nil
+            }
+        } else {
+            if(self.list.unsectionedItems[atIndex].description!.isEmpty){
+                self.list.unsectionedItems[atIndex].description = nil
+            }
+        }
+    }
+    
 }

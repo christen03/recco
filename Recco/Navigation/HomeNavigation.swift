@@ -13,4 +13,9 @@ class HomeNavigation: ObservableObject{
     func navigateToEditList(){
         navigationPath.append(1)
     }
+    
+    func back(){
+        navigationPath.removeLast()
+    }
 }
+

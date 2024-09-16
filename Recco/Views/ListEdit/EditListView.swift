@@ -8,18 +8,20 @@
 import SwiftUI
 
 
+typealias ListFocusIndex = (section: Int?, index: Int, isDescription: Bool)?
+
 
 struct EditListView: View {
-    enum FocusField: Hashable {
-        case name(Int)
-        case description(Int)
+    enum FocusField: Hashable, Equatable{
+        case name(section: Int?, index: Int)
+        case description(section: Int?, index: Int)
+        case section(section: Int)
     }
     
     @EnvironmentObject var listViewModel: ListViewModel
+    @EnvironmentObject var homeNavigation: HomeNavigation
     
-    
-    @State private var isShowingPriceOptions: Bool = false
-    @State private var currentIndex: Int?
+    @State private var currentIndex: ListFocusIndex = nil
     @State private var editingEmojiSectionID: UUID?
     
     var selectedEmojiBinding: Binding<String?> {
@@ -39,23 +41,33 @@ struct EditListView: View {
         )
     }
     
-    @FocusState private var focusedField: FocusField? {
-        willSet {
-            switch newValue {
-            case .name(let int):
-                self.currentIndex = int
-            case .description(let int):
-                self.currentIndex = int
-            case nil:
-                self.currentIndex = nil
-            }
-        }
-    }
+    @FocusState var focusedField: FocusField?
+    //    {
+    //        willSet {
+    //            print("Setting focus field \(newValue)")
+    //            switch newValue {
+    //            case .name(let sectionIndex, let index):
+    //                print("setting focusedField to name with section \(String(describing: sectionIndex)) and index \(index)")
+    //                self.currentIndex = (section: sectionIndex, index: index) // section can be nil
+    //            case .description(let sectionIndex, let index):
+    //                print("setting focusedField to description with section \(String(describing: sectionIndex)) and index \(index)")
+    //                self.currentIndex = (section: sectionIndex, index: index) // section can be nil
+    //            case .section(let sectionIndex):
+    //                print("setting focusedField to section \(sectionIndex)")
+    //                self.currentIndex=nil // Set index to nil
+    //            default:
+    //                print("defaulting")
+    //                self.currentIndex = nil
+    //                break
+    //            }
+    //        }
+    //    }
     
     var body: some View{
         SwiftUI.List {
             SwiftUI.Section {
                 VStack {
+                    Text("Current index: \(String(describing: currentIndex))")
                     Text(listViewModel.list.emoji!)
                         .font(.system(size: 50))
                         .onTapGesture {
@@ -66,162 +78,121 @@ struct EditListView: View {
                     TitleText(listViewModel.list.name)
                         .foregroundColor(Colors.DarkGray)
                         .padding(.bottom, 2)
-                    FontedText(listViewModel.list.visibility.rawValue, size: 13)
-                        .foregroundColor(Colors.MediumGray)
-                        .fontWeight(.light)
-                        .onTapGesture{
-                            listViewModel.isShowingVisibiltySheet = true
-                        }
+                    HStack{
+                        FontedText(listViewModel.list.visibility.emoji, size: 13)
+                        FontedText(listViewModel.list.visibility.rawValue, size: 13)
+                            .foregroundColor(Colors.MediumGray)
+                    }
+                    .fontWeight(.light)
+                    .onTapGesture{
+                        listViewModel.isShowingVisibiltySheet = true
+                    }
                 }
                 .centerHorizontally()
                 .listRowSeparator(.hidden)
             }
             if !listViewModel.list.unsectionedItems.isEmpty{
-                SwiftUI.Section(header: TitleText("Unsectioned Items")
-                    .foregroundStyle(Color.black)){
-                        ForEach($listViewModel.list.unsectionedItems.enumerated().map { $0 }, id: \.1.id) { index, itemBinding in
+                SwiftUI.Section
+                {
+                    ForEach($listViewModel.list.unsectionedItems, id: \.id) { itemBinding in
+                        let itemIndex = listViewModel.list.unsectionedItems.firstIndex(where: { $0.id == itemBinding.id }) ?? 0
+                        ListItemView(
+                            item: itemBinding,
+                            currentIndex: $currentIndex,
+                            sectionIndex: nil,
+                            index: itemIndex,
+                            onNameSubmit: {
+                                handleNameSubmit(sectionIndex: nil, itemIndex: itemIndex)
+                            },
+                            onDescriptionSubmit: {
+                                handleDescriptionSubmit(sectionIndex: nil, itemIndex: itemIndex)
+                            }
+                        )
+                    }
+                    .onMove(perform: listViewModel.move)
+                    .onDelete(perform: listViewModel.deleteItem)
+                    .listRowInsets(.init(top: -4, leading: 16, bottom: -4, trailing: 16))
+                }
+            }
+            
+            ForEach(Array($listViewModel.list.sections.enumerated()), id: \.1.id) { sectionIndex, sectionBinding in
+                SwiftUI.Section(
+                    header: HStack {
+                        Button(action: {
+                            self.editingEmojiSectionID = sectionBinding.id
+                            listViewModel.isShowingEmojiPicker = true
+                        }, label: {
+                            if let emoji = sectionBinding.emoji.wrappedValue {
+                                Text(emoji)
+                                    .font(.system(size: 25))
+                            } else {
+                                AddIcon(size: 25)
+                            }
+                        })
+                        TextField("Section title", text: sectionBinding.name)
+                            .font(Font.custom(Fonts.sfProRoundedSemibold, size: 25))
+                            .foregroundColor(.black)
+                            .onSubmit {
+                                handleSectionSubmit(atSection: sectionIndex)
+                            }
+                    },
+                    content: {
+                        ForEach(Array(sectionBinding.items.enumerated()), id: \.1.id) { itemIndex, sectionItemBinding in
                             ListItemView(
-                                item: itemBinding,
-                                focusedField: $focusedField,
-                                index: index,
+                                item: sectionItemBinding,
+                                currentIndex: $currentIndex,
+                                sectionIndex: sectionIndex,
+                                index: itemIndex,
                                 onNameSubmit: {
-                                    self.handleNameSubmit(at: index)
+                                    handleNameSubmit(sectionIndex: sectionIndex, itemIndex: itemIndex)
                                 },
                                 onDescriptionSubmit: {
-                                    self.handleDescriptionSubmit(at: index)
+                                    handleDescriptionSubmit(sectionIndex: sectionIndex, itemIndex: itemIndex)
                                 }
                             )
                         }
-//                        .onMove { source, destination in
-//                               listViewModel.moveItem(from: IndexPath(row: source.first!, section: 0), to: IndexPath(row: destination, section: 0))
-//                           }
+                        .onMove(perform: listViewModel.move)
                         .onDelete(perform: listViewModel.deleteItem)
-                        .listRowInsets(.init(top: 3, leading: 16, bottom: 3, trailing: 16))
+                        .listRowInsets(.init(top: -4, leading: 16, bottom: -4, trailing: 16))
                     }
+                )
             }
-            
-            
-            ForEach($listViewModel.list.sections, id: \.id){ sectionBinding in
-                SwiftUI.Section(header:
-                                    HStack {
-                    Button(action: {
-                        self.editingEmojiSectionID = sectionBinding.id
-                        listViewModel.isShowingEmojiPicker = true
-                    }, label: {
-                        if sectionBinding.emoji.wrappedValue != nil{
-                            Text(sectionBinding.emoji.wrappedValue!)
-                                .font(.system(size: 25))
-                        } else {
-                            AddIcon(size: 25)
-                        }
-                    })
-                    TextField("Section title",
-                              text: sectionBinding.name
-                    )
-                    .font(Font.custom(Fonts.sfProRoundedSemibold, size: 25))
-                    .foregroundStyle(Color.black)
-                })
-                {ForEach(sectionBinding.items.enumerated().map { $0 }, id: \.1.id ) { index, sectionItemBinding in
-                    ListItemView(
-                        item: sectionItemBinding,
-                        focusedField: $focusedField,
-                        index: index,
-                        onNameSubmit: {
-                            self.handleNameSubmit(at: index)
-                        },
-                        onDescriptionSubmit: {
-                            self.handleDescriptionSubmit(at: index)
-                        }
-                    )
-                }
-//                .onMove { source, destination in
-//                    listViewModel.moveItem(from: IndexPath(row: source.first!, section: listViewModel.list.sections.firstIndex(where: { $0.id == sectionBinding.id })! + 1),
-//                                           to: IndexPath(row: destination, section: listViewModel.list.sections.firstIndex(where: { $0.id == sectionBinding.id })! + 1))
-//                }
-                .onDelete(perform: listViewModel.deleteItem)
-                .listRowInsets(.init(top: 3, leading: 16, bottom: 3, trailing: 16))
-                }
-                
-            }
-            
         }
-        
-        
-        
-        .listStyle(PlainListStyle())
+        .padding(.bottom)
+        .listStyle(InsetListStyle())
         .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                if(self.isShowingPriceOptions){
-                    HStack(spacing: 1){
-                        KeyboardButton(action: {self.isShowingPriceOptions=false}) {
-                            Image(systemName: "xmark")
-                        }
-                        KeyboardButton(action: {
-                            if let index = self.currentIndex{
-                                listViewModel.setPriceRange(forIndex: index, to: PriceRange.free)
-                            }
-                        }) {
-                            TitleText("Free")
-                        }
-                        KeyboardButton(action: {
-                            if let index = self.currentIndex{
-                                listViewModel.setPriceRange(forIndex: index, to: PriceRange.one)
-                            }
-                        }) {
-                            Image(systemName: "dollarsign")
-                        }
-                        KeyboardButton(action: {
-                            if let index = self.currentIndex{
-                                listViewModel.setPriceRange(forIndex: index, to: PriceRange.two)
-                            }
-                        }) {
-                            HStack(spacing: -2){
-                                Image(systemName: "dollarsign")
-                                Image(systemName: "dollarsign")
-                            }
-                        }
-                        KeyboardButton(action: {
-                            if let index = self.currentIndex {
-                                listViewModel.setPriceRange(forIndex: index, to: PriceRange.three)
-                            }
-                        }) {
-                            HStack(spacing: -2){
-                                Image(systemName: "dollarsign")
-                                Image(systemName: "dollarsign")
-                                Image(systemName: "dollarsign")
-                            }
-                        }
-                        Spacer()
-                    }
-                    // FIXME: animations
-                    .animation(.easeInOut, value: isShowingPriceOptions)
-                    .transition(.move(edge:.leading))
-                } else {
-                    HStack(spacing: 1){
-                        KeyboardButton(action: { /* Create new section */ }) {
-                            Image(systemName: "list.bullet.indent")
-                        }
-                        
-                        KeyboardButton(action: { self.isShowingPriceOptions = true }) {
-                            Image(systemName: "dollarsign")
-                        }
-                        
-                        KeyboardButton(action: {
-                            if let index = self.currentIndex {
-                                listViewModel.toggleFavoriteForIndex(at: index)
-                            }
-                        }) {
-                            Text("⭐️")
-                                .font(.title2)
-                        }
-                        Spacer()
-                    }
-                    .animation(.easeInOut, value: isShowingPriceOptions)
-                    .transition(.move(edge: .leading))
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    homeNavigation.back()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(Color.black)
                 }
             }
+            
+            ToolbarItem (placement: .topBarTrailing){
+                HStack{
+                    Button(action: {
+                        listViewModel.isShowingVisibiltySheet.toggle()
+                    }) {
+                        Image(systemName: "ellipsis")
+                            .foregroundStyle(Color.black)
+                    }
+                    if(self.currentIndex != nil){
+                        Button(action: {
+                            self.currentIndex = nil
+                        }) {
+                            FontedText("Done")
+                                .foregroundStyle(Color.black)
+                        }
+                    }
+                }
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                ListKeyboardButtons(currentIndex: self.currentIndex)
+            }
         }
-        .padding()
+        .navigationBarBackButtonHidden()
         .onAppear{
             if (listViewModel.list.unsectionedItems.isEmpty){
                 listViewModel.list.unsectionedItems.append(Item(name: ""))
@@ -235,66 +206,77 @@ struct EditListView: View {
         })
     }
     
-    
-    private func handleNameSubmit(at index: Int) {
-        if !listViewModel.list.unsectionedItems[index].name.isEmpty {
-            if (listViewModel.list.unsectionedItems[index].description == nil){
-                listViewModel.list.unsectionedItems[index].description = ""
-            }
-            focusedField = .description(index)
-        } else {
-            handleDescriptionSubmit(at: index)
+    func handleNameSubmit(sectionIndex: Int?, itemIndex: Int) {
+        let newIndex = self.listViewModel.handleNameSubmit(atSection: sectionIndex, atIndex: itemIndex)
+        DispatchQueue.main.async{
+            self.currentIndex = newIndex
         }
     }
     
-    private func handleDescriptionSubmit(at index: Int) {
-        if(listViewModel.list.unsectionedItems[index].description!.isEmpty){
-            listViewModel.list.unsectionedItems[index].description = nil
+    func handleDescriptionSubmit(sectionIndex: Int?, itemIndex: Int) {
+        let newIndex =  self.listViewModel.handleDescriptionSubmit(atSection: sectionIndex, atIndex: itemIndex)
+        DispatchQueue.main.async{
+            self.currentIndex = newIndex
+            self.listViewModel.setPreviousDescriptionToNilIfEmpty(atSection: sectionIndex, atIndex: itemIndex)
         }
-        let newIndex = index + 1
-        listViewModel.list.unsectionedItems.insert(Item(name: ""), at: newIndex)
-        focusedField = .name(newIndex)
     }
     
+    func handleSectionSubmit(atSection: Int){
+        print("Handled section submit")
+    }
     
 }
 
 
-struct KeyboardButton<Content: View>: View {
-    let action: () -> Void
-    let content: Content
-    
-    init(action: @escaping () -> Void, @ViewBuilder content: () -> Content) {
-        self.action = action
-        self.content = content()
-    }
-    
-    var body: some View {
-        Button(action: action) {
-            content
-                .frame(height: 30)
-                .padding(.horizontal, 5)
-                .background(Colors.BorderGray)
-                .cornerRadius(10)
-                .foregroundStyle(Color.black)
-        }
-    }
-}
+
 
 struct VisibilitySelectView: View {
-    let listViewModel: ListViewModel
+    @StateObject var listViewModel: ListViewModel
     
     var body: some View{
         VStack{
-            ForEach(ListVisibility.allCases, id: \.self){ visibility in
-                Button(action:{
-                    self.listViewModel.list.visibility = visibility
-                }, label: {
-                    FontedText(visibility.rawValue)
+            ZStack{
+                HStack {
+                    Spacer()
+                    Button(action: { self.listViewModel.isShowingVisibiltySheet = false }) {
+                        FontedText("Done")
+                            .foregroundStyle(Color.black)
+                    }
                 }
-                )
+                FontedText("Visibility")
             }
+            
+            VStack (alignment: .leading){
+                ForEach(ListVisibility.allCases, id: \.self){ visibility in
+                    Button(action:{
+                        self.listViewModel.list.visibility = visibility
+                    }, label: {
+                        HStack(alignment: .center){
+                            Text(visibility.emoji)
+                                .font(.system(size: 50))
+                                .frame(width: 50, height: 50, alignment: .center)
+                            VStack(alignment: .leading){
+                                FontedText(visibility.rawValue)
+                                    .font(.title2)
+                                    .multilineTextAlignment(.leading)
+                                FontedText(visibility.description, size: 14)
+                                    .font(.caption)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            .foregroundStyle(Color.black)
+                        }
+                        .padding(.vertical)
+                        .background(self.listViewModel.list.visibility == visibility ? Colors.LightGray : Color.clear)
+                        .cornerRadius(10)
+                    }
+                    )
+                }
+                TitleText("Friends coming soon! 🎉")
+            }
+            Spacer()
         }
+        .padding()
+        .presentationDetents([.medium])
     }
 }
 

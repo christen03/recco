@@ -13,7 +13,8 @@ struct ElegantEmojiPickerView: UIViewControllerRepresentable {
     @Binding var selectedEmoji: String?
     
     func makeUIViewController(context: Context) -> ElegantEmojiPicker {
-        let picker = ElegantEmojiPicker(delegate: context.coordinator)
+        let config = ElegantConfiguration(showReset: false)
+        let picker = ElegantEmojiPicker(delegate: context.coordinator, configuration: config)
         return picker
     }
     
