@@ -88,7 +88,6 @@ class ListViewModel: ObservableObject {
     }
     //
     func toggleFavoriteForIndex(atSection: Int?, atIndex: Int){
-        print("Setting toggle for index \(atSection) at index \(atIndex)")
         if let sectionIndex = atSection{
             self.list.sections[sectionIndex].items[atIndex].isStarred.toggle()
         } else {
@@ -108,37 +107,48 @@ class ListViewModel: ObservableObject {
         self.canCreateList = (list.emoji != nil && !list.name.isEmpty)
     }
     
-    
-    
-    func handleSectionSubmit(atSection: Int) -> EditListView.FocusField{
-        self.list.sections[atSection].items.insert(Item(name: ""), at: 0)
-        return .name(section: atSection, index: 0)
-    }
-    
-    func handleNameSubmit(atSection: Int?, atIndex: Int) -> ListFocusIndex {
-        if let sectionIndex = atSection{
-            if(self.list.sections[sectionIndex].items[atIndex].description == nil){
-                self.list.sections[sectionIndex].items[atIndex].description = ""
+    // TODO: heavy refactoring LOL
+    func handleNewLine(atSection: Int?, atIndex: Int, listItemType: ListItemType) -> ListFocusIndex {
+        if(listItemType == .sectionTitle){
+            if let sectionIndex = atSection{
+                self.list.sections[sectionIndex].items.insert(Item(name: ""), at: 0)
+                return (section: sectionIndex, index: 0, isDescription: false, isSectionTitle: true)
+            } else {
+                self.list.unsectionedItems.insert(Item(name: ""), at: 0)
+                return (section: nil, index: 0, isDescription: false, isSectionTitle: true)
             }
-            return (section: sectionIndex, index: atIndex, isDescription: true)
-        }else {
-            if (self.list.unsectionedItems[atIndex].description == nil){
-                self.list.unsectionedItems[atIndex].description = ""
+        } else if (listItemType == .itemDescription) {
+            let newIndex = atIndex + 1
+            if let sectionIndex = atSection {
+                if(newIndex >= self.list.sections[sectionIndex].items.count){
+                    self.list.sections[sectionIndex].items.append(Item(name:""))
+                } else{
+                    self.list.sections[sectionIndex].items.insert(Item(name: ""), at: newIndex)
+                }
+                return (section: atSection, index: newIndex, isDescription: false, isSectionTitle: false)
+            } else {
+                if(newIndex >= self.list.unsectionedItems.count){
+                    self.list.unsectionedItems.append(Item(name: ""))
+                } else {
+                    self.list.unsectionedItems.insert(Item(name: ""), at: newIndex)
+                }
+                return (section: atSection, index: newIndex, isDescription: false, isSectionTitle: false)
             }
-            return (section: nil, index: atIndex, isDescription: true)
-        }
-    }
-    
-    func handleDescriptionSubmit(atSection: Int?, atIndex: Int) -> ListFocusIndex {
-        let newIndex = atIndex+1
-        if let sectionIndex = atSection {
-            self.list.sections[sectionIndex].items.insert(Item(name: ""), at: newIndex)
-            return (section: atSection, index: newIndex, isDescription: false)
         } else {
-            self.list.unsectionedItems.insert(Item(name: ""), at: newIndex)
-            return (section: atSection, index: newIndex, isDescription: false)
+            if let sectionIndex = atSection{
+                if(self.list.sections[sectionIndex].items[atIndex].description == nil){
+                    self.list.sections[sectionIndex].items[atIndex].description = ""
+                }
+                return (section: sectionIndex, index: atIndex, isDescription: true, isSectionTitle: false)
+            }else {
+                if (self.list.unsectionedItems[atIndex].description == nil){
+                    self.list.unsectionedItems[atIndex].description = ""
+                }
+                return (section: nil, index: atIndex, isDescription: true, isSectionTitle: false)
+            }
         }
     }
+    
     
     func setPreviousDescriptionToNilIfEmpty(atSection: Int?, atIndex: Int) {
         if let sectionIndex = atSection {
@@ -150,6 +160,78 @@ class ListViewModel: ObservableObject {
                 self.list.unsectionedItems[atIndex].description = nil
             }
         }
+    }
+    
+    func handleBackspaceEmptyString(atSection: Int?, atIndex: Int, listItemType: ListItemType) -> ListFocusIndex {
+        if(listItemType == .sectionTitle){
+            guard let sectionIndex = atSection else { return nil}
+            let itemsToMove = self.list.sections[sectionIndex].items
+            self.list.sections.remove(at: sectionIndex)
+            if sectionIndex == 0 {
+                list.unsectionedItems.append(contentsOf: itemsToMove)
+            } else {
+                self.list.sections[sectionIndex - 1].items.append(contentsOf: itemsToMove)
+            }
+            return nil
+        } else if (listItemType == .itemDescription){
+            return (section: atSection, index: atIndex, isDescription: false, isSectionTitle: false);
+        } else {
+            if let sectionIndex = atSection {
+                self.list.sections[sectionIndex].items.remove(at: atIndex)
+                if(atIndex == 0){
+                    return (section: atSection, index: -1, isDescription: false, isSectionTitle: true)
+                } else {
+                    return (section: atSection, index: atIndex - 1, isDescription: true, isSectionTitle: false)
+                }
+            } else {
+                self.list.unsectionedItems.remove(at: atIndex)
+                return (section: nil, index: atIndex-1, isDescription: true, isSectionTitle: false)
+            }
+        }
+    }
+    
+    func addNewSection(atSectionIndex: Int, atItemIndex: Int) -> ListFocusIndex {
+        // Create a new section with no initial items
+        var newSection = Section(name: "", items: [])
+
+        if atSectionIndex == list.sections.count - 1 {
+            // If adding a new section at the end
+            if !list.sections.isEmpty && atItemIndex < list.sections.last!.items.count {
+                newSection.items = Array(list.sections.last!.items[(atItemIndex+1)...])
+                list.sections[atSectionIndex].items.removeSubrange((atItemIndex+1)...)
+            }
+            list.sections.append(newSection)
+            return (section: list.sections.count - 1, index: -1, isDescription: false, isSectionTitle: true)
+            
+           // Handle unsectionedItems case
+        } else if (atSectionIndex == -1) {
+            list.sections.insert(newSection, at: 0)
+
+            // Move items from the current section's items starting from atItemIndex to the new section
+            if atItemIndex < list.unsectionedItems.count - 1 {
+                let itemsToMove = Array(list.unsectionedItems[(atItemIndex+1)...])
+                print(itemsToMove)
+                list.sections[0].items.append(contentsOf: itemsToMove)
+                list.unsectionedItems.removeSubrange((atItemIndex+1)...)
+            }
+            return (section: 0, index: -1, isDescription: false, isSectionTitle: true)
+        } else {
+            list.sections.insert(newSection, at: atSectionIndex+1)
+            if atItemIndex < list.unsectionedItems.count - 1 {
+                let itemsToMove = Array(list.sections[atSectionIndex].items[(atItemIndex+1)...])
+                list.sections[atSectionIndex+1].items.append(contentsOf: itemsToMove)
+                list.sections[atSectionIndex].items.removeSubrange((atItemIndex+1)...)
+            }
+            return (section: atSectionIndex+1, index: -1, isDescription: false, isSectionTitle: true)
+        }
+    }
+    
+    func printOutDebug(){
+        for (index, item) in self.list.unsectionedItems.enumerated() {
+            let itemDescription = item.description ?? "No description"
+            print("Index: \(index), Name: \(item.name), Description: \(itemDescription)")
+        }
+        print("------------------------------")
     }
     
 }

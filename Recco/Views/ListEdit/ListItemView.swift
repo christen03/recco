@@ -10,10 +10,11 @@ import SwiftUI
 struct ListItemView: View {
     @Binding var item: Item
     @Binding var currentIndex: ListFocusIndex
+    @EnvironmentObject var listViewModel: ListViewModel
     let sectionIndex: Int?
     let index: Int
-    let onNameSubmit: () -> Void
-    let onDescriptionSubmit: () -> Void
+    let onCommit: ((ListItemType) -> Void)
+    let onBackspaceEmptyString: ((ListItemType) -> Void)
 
     var body: some View {
         VStack(alignment: .leading, spacing: -10){
@@ -30,12 +31,16 @@ struct ListItemView: View {
                     selfIndex: index,
                     selfSectionIndex: sectionIndex,
                     isDescription: false,
+                    isSectionTitle: false,
                     currentIndex: $currentIndex,
                     onCommit: {
-                        onNameSubmit()
+                        onCommit(ListItemType.itemName)
+                    },
+                    onBackspaceEmptyString: {
+                        onBackspaceEmptyString(ListItemType.itemName)
                     })
                    .fontWeight(.bold)
-            }
+                }
                 if item.isStarred {
                     Text("⭐️")
                         .padding(.all, 2)
@@ -69,14 +74,19 @@ struct ListItemView: View {
                         selfIndex: index,
                         selfSectionIndex: sectionIndex,
                         isDescription: true,
+                        isSectionTitle: false,
                         currentIndex: $currentIndex,
                         onCommit: {
-                            onDescriptionSubmit()
+                            onCommit(ListItemType.itemDescription)
+                        },
+                        onBackspaceEmptyString: {
+                            onBackspaceEmptyString(ListItemType.itemDescription)
                         }
                     )
                 }
             }
         }
+        .environmentObject(listViewModel)
         .listRowSeparator(.hidden)
     }
     

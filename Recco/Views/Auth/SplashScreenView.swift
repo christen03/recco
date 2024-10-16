@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-enum SignUpOptions: Hashable{
+enum AuthOptions: Hashable{
+    case phone
+    case email
+}
+
+enum SignInOptions: Hashable{
     case phone
     case email
 }
@@ -28,6 +33,7 @@ struct SplashScreenView: View {
                 Spacer()
                 
                 Button(action: {
+                    supabaseSignUp.setIsSigningUp(true)
                     authNavigation.navigateToSignUpOrLoginPage(
                         option: SignUpOrLoginOptions.signup
                     )
@@ -43,6 +49,7 @@ struct SplashScreenView: View {
                 .padding(.horizontal, 40)
                 
                 Button(action: {
+                    supabaseSignUp.setIsSigningUp(false)
                     authNavigation.navigateToSignUpOrLoginPage(
                         option: SignUpOrLoginOptions.login
                     )
@@ -62,8 +69,11 @@ struct SplashScreenView: View {
             .navigationDestination(for: SignUpOrLoginOptions.self){
                 option in SignUpOrLoginView(signUpOrLogin: option)
             }
-            .navigationDestination(for: SignUpOptions.self) {
+            .navigationDestination(for: AuthOptions.self) {
                 option in SignUpView(signUpOption: option)
+            }
+            .navigationDestination(for: SignInOptions.self){
+                option in SignInView(signInOption: option)
             }
             .navigationDestination(for: Int.self) { _ in
                 VerificationCodeView()

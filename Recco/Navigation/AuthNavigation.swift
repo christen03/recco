@@ -14,7 +14,7 @@ class AuthNavigation: ObservableObject{
         self.navigationPath.append(option)
     }
     
-    func navigateToSignUpPage(option: SignUpOptions){
+    func navigateToSignUpPage(option: AuthOptions){
         self.navigationPath.append(option)
     }
     

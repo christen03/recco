@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SignUpView: View {
-    
-    let signUpOption: SignUpOptions
+   
+    let signUpOption: AuthOptions
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
     @EnvironmentObject var authNavigation: AuthNavigation
     
@@ -36,7 +36,7 @@ struct SignUpView: View {
             VStack {
                 Spacer()
                 
-                TitleText("What’s your email?")
+                TitleText(supabaseSignUp.isSigningUp ? "What's your email?" : "Welcome Back!")
                     .padding(.bottom, 20)
                 
                 TextField("name@mail.com", text: $supabaseSignUp.email)
@@ -81,7 +81,7 @@ struct PhoneSignUpView: View {
         VStack {
             Spacer()
             
-            TitleText("What's your phone number?")
+            TitleText(supabaseSignUp.isSigningUp ? "What's your phone number?" : "Welcome Back!")
                 .padding(.bottom, 20)
             
             TextField("Enter phone number", text: $supabaseSignUp.phone)
@@ -114,8 +114,4 @@ struct PhoneSignUpView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    SignUpView(signUpOption: .phone)
 }

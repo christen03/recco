@@ -15,12 +15,19 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     let selfIndex: Int
     let selfSectionIndex: Int?
     let isDescription: Bool
+    let isSectionTitle: Bool
     @Binding var currentIndex: ListFocusIndex
     @Binding var calculatedHeight: CGFloat
     var onDone: (() -> Void)?
+    var onBackspaceEmptyString: (() -> Void)
+    
+    @EnvironmentObject var listViewModel: ListViewModel
     
     func makeUIView(context: UIViewRepresentableContext<UITextViewWrapper>) -> UITextView {
         let textField = UITextView()
+        let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(_:)))
+        textField.addGestureRecognizer(tapGesture)
+              
         textField.delegate = context.coordinator
         
         textField.isEditable = true
@@ -31,11 +38,10 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         textField.backgroundColor = UIColor.clear
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         textField.font = font
-        
-        let toolbarHostingController = createToolbarHostingController()
-        toolbarHostingController.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
-        textField.inputAccessoryView = toolbarHostingController.view
-        
+        if(!self.isSectionTitle){
+            addSwiftUIButtonToToolbar(textView: textField, currentIndex: currentIndex)
+        }
+
         return textField
     }
     
@@ -44,10 +50,11 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
                    uiView.text = self.text
                }
         if(!uiView.isFirstResponder && self.shouldBeFirstResponder()){
-            let toolbarHostingController = createToolbarHostingController()
-            uiView.inputAccessoryView = toolbarHostingController.view
             uiView.reloadInputViews()
             DispatchQueue.main.async{
+                if(!self.isSectionTitle){
+                    addSwiftUIButtonToToolbar(textView: uiView, currentIndex: currentIndex)
+                }
                 uiView.becomeFirstResponder()
             }
         } else if(self.currentIndex == nil){
@@ -58,15 +65,43 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     
     private func createToolbarHostingController() -> UIHostingController<ListKeyboardButtons> {
            return UIHostingController(
-               rootView: ListKeyboardButtons(currentIndex: self.currentIndex)
+            rootView: ListKeyboardButtons(currentIndex: self.$currentIndex)
            )
+           
        }
+    
+    func addSwiftUIButtonToToolbar(textView: UITextView, currentIndex: ListFocusIndex) {
+        let toolbar = UIToolbar()
+
+        // Create a UIHostingController for your SwiftUI view
+        let buttonsView = ListKeyboardButtons(currentIndex: $currentIndex).environmentObject(listViewModel)
+        let hostingController = UIHostingController(rootView: buttonsView)
+
+        // Add the hosting controller’s view to the UIToolbar
+        toolbar.addSubview(hostingController.view)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        // Set constraints for the SwiftUI view in the UIToolbar
+        NSLayoutConstraint.activate([
+            hostingController.view.leadingAnchor.constraint(equalTo: toolbar.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: toolbar.trailingAnchor),
+            hostingController.view.topAnchor.constraint(equalTo: toolbar.topAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: toolbar.bottomAnchor)
+        ])
+
+        toolbar.sizeToFit()
+        textView.inputAccessoryView = toolbar
+    }
     
     private func shouldBeFirstResponder()->Bool{
         if let listIndex = currentIndex{
             return (selfSectionIndex == listIndex.section && selfIndex == listIndex.index && isDescription == listIndex.isDescription)
         }
         return false
+    }
+    
+    func handleTapGesture(){
+        self.currentIndex = (section: selfSectionIndex, index: selfIndex, isDescription: isDescription, isSectionTitle: false)
     }
     
     fileprivate static func recalculateHeight(view: UIView, result: Binding<CGFloat>) {
@@ -78,23 +113,42 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         }
     }
     
+   
     func makeCoordinator() -> Coordinator {
-        return Coordinator(text: $text, height: $calculatedHeight, onDone: onDone)
+        return Coordinator(
+            text: $text,
+            height: $calculatedHeight,
+            onDone: onDone,
+            onTap: handleTapGesture,
+            onBackspaceEmptyString: onBackspaceEmptyString
+        )
     }
     
     final class Coordinator: NSObject, UITextViewDelegate {
         var text: Binding<String>
         var calculatedHeight: Binding<CGFloat>
         var onDone: (() -> Void)?
+        var onTap: () -> Void
+        var onBackspaceEmptyString: (() -> Void)
+
         
         init(text: Binding<String>,
              height: Binding<CGFloat>,
-             onDone: (() -> Void)? = nil
+             onDone: (() -> Void)? = nil,
+             onTap: @escaping () -> Void,
+             onBackspaceEmptyString: @escaping (() -> Void)
         ) {
             self.text = text
             self.calculatedHeight = height
             self.onDone = onDone
+            self.onTap = onTap
+            self.onBackspaceEmptyString = onBackspaceEmptyString
         }
+        
+        // Step 2: Implement the tap gesture handler method
+        @objc func handleTap(_ gesture: UITapGestureRecognizer) {
+                    onTap()
+                }
         
         func textViewDidChange(_ uiView: UITextView) {
             text.wrappedValue = uiView.text
@@ -103,13 +157,17 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if let onDone = self.onDone, text == "\n" {
-                    onDone()
+                onDone()
+                return false
+            }
+            
+            if text == "" && textView.text.isEmpty {
+                onBackspaceEmptyString()
                 return false
             }
             return true
         }
     }
-    
 }
 
 struct CustomTextFieldMultiline: View {
@@ -121,8 +179,13 @@ struct CustomTextFieldMultiline: View {
     let selfIndex: Int
     let selfSectionIndex: Int?
     let isDescription: Bool
+    let isSectionTitle: Bool
+    let textFontSize: CGFloat
     @Binding var currentIndex: ListFocusIndex
-    private var onCommit: (() -> Void)?
+    private var onCommit: (() -> Void)
+    private var onBackspaceEmptyString: (() -> Void)
+    
+    @EnvironmentObject var listViewModel: ListViewModel
     
     private var internalText: Binding<String> {
         Binding<String>(get: { self.text } ) {
@@ -141,38 +204,52 @@ struct CustomTextFieldMultiline: View {
           selfIndex: Int,
           selfSectionIndex: Int?,
           isDescription: Bool,
+          isSectionTitle: Bool,
           currentIndex: Binding<ListFocusIndex>,
-          onCommit: (() -> Void)? = nil
+          onCommit: @escaping (() -> Void),
+          onBackspaceEmptyString: @escaping (() -> Void)
     ) {
         self.placeholder = placeholder
         self.onCommit = onCommit
+        self.onBackspaceEmptyString = onBackspaceEmptyString
         self._text = text
         self.foregroundColor=foregroundColor
         self.fontString = fontString
         self.selfIndex = selfIndex
         self.selfSectionIndex = selfSectionIndex
         self.isDescription = isDescription
+        self.isSectionTitle = isSectionTitle
         self._currentIndex=currentIndex
+        if(isSectionTitle){
+            self.textFontSize = 24
+        } else if (self.isDescription) {
+            self.textFontSize = 14
+        } else {
+            self.textFontSize = 18
+        }
         self._showingPlaceholder = State<Bool>(initialValue: self.text.isEmpty)
+        
     }
     
     var body: some View {
+        HStack(spacing: 0){
         UITextViewWrapper(text: self.internalText,
                           foregroundColor: UIColor(foregroundColor),
                           font: UIFont(name: fontString,
-                                       size: isDescription ? 14 : 18
+                                       size: self.textFontSize
                                       )!,
                           selfIndex: selfIndex,
                           selfSectionIndex: selfSectionIndex,
                           isDescription: isDescription,
+                          isSectionTitle: isSectionTitle,
                           currentIndex: $currentIndex,
                           calculatedHeight: $dynamicHeight,
-                          onDone: onCommit
+                          onDone: onCommit,
+                          onBackspaceEmptyString: onBackspaceEmptyString
         )
+        .environmentObject(listViewModel)
         .frame(minHeight: dynamicHeight, maxHeight: dynamicHeight)
         .background(placeholderView, alignment: .leading)
-        .onTapGesture{
-            self.currentIndex = (section: selfSectionIndex, index: selfIndex, isDescription: isDescription)
         }
     }
     
@@ -180,7 +257,7 @@ struct CustomTextFieldMultiline: View {
         Group {
             if showingPlaceholder {
                 Text(placeholder).foregroundColor(.gray)
-                    .font(.custom(fontString, size: isDescription ? 14 : 18))
+                    .font(.custom(fontString, size: isDescription ? 14 : isSectionTitle ? 22 : 18))
                     .fontWeight( isDescription ? .regular : .bold)
                     .padding(.leading, 5)
             }

@@ -11,11 +11,11 @@ import Kingfisher
 struct ContentView: View {
     
     @StateObject var homeNavigation = HomeNavigation()
-    #if DEBUG
-    @StateObject var listViewModel = mockListVM
-    #else
+//    #if DEBUG
+//    @StateObject var listViewModel = mockListVM
+//    #else
     @StateObject var listViewModel = ListViewModel()
-    #endif
+//    #endif
     @StateObject var homePageViewModel = HomePageViewModel()
     @State private var selectedTab = 0
     @State private var profileTab: Image?
@@ -215,6 +215,7 @@ struct AddIcon: View {
 
 
 struct CreateButton: View {
+    @EnvironmentObject var homePageViewModel: HomePageViewModel
     let action: () -> Void
     @Binding var showMenu: Bool
     
@@ -245,47 +246,53 @@ struct CreateButton: View {
 }
 
 struct CreateButtonOptions: View {
-    
+    @EnvironmentObject var homePageViewModel: HomePageViewModel
+
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) { 
             Button(action: {
-                print("Create new list tapped")
+                homePageViewModel.isShowingListCreateSheet.toggle()
             }) {
-                HStack{
+                HStack {
                     Image(systemName: "plus")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
+                        .padding(8)
                         .background(Color.black)
                         .clipShape(Circle())
                         .shadow(radius: 4)
-                    FontedText("Create new List")
+                    
+                    Text("Create new list")
+                        .font(.headline)
+                        .foregroundColor(.black)
                 }
-                .background(Color.red)
+                .padding()
             }
-            .padding()
-            .background(Color.white)
-            .foregroundColor(Color.black)
+
             Button(action: {
                 print("Ask for recs tapped")
             }) {
-                HStack{
+                HStack {
                     Image(systemName: "plus")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.white)
+                        .padding(8) // Add padding to give it a consistent size
                         .background(Color.black)
                         .clipShape(Circle())
                         .shadow(radius: 4)
-                    FontedText("Ask for recs")
+                    
+                    Text("Ask for recs")
+                        .font(.headline)
+                        .foregroundColor(.black)
                 }
+                .padding()
             }
-            .padding()
-            .background(Color.white)
-            .foregroundColor(Color.black)
         }
-        .edgesIgnoringSafeArea(.all)
+        .background(Colors.LightGray)
+        .frame(width: 200)
+        .cornerRadius(15)
     }
 }
-
 
 #Preview {
     ContentView()

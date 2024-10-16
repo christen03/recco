@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct ProfileView: View{
+    @EnvironmentObject var userDataViewModel: UserDataViewModel
     
     var body: some View{
-        Text("Profile")
-    }
+        VStack{
+            Text("Profile")
+            Button(action: {
+                userDataViewModel.signOut()
+            }, label: {
+                Text("Sign out")
+            })
+        }
+        }
 }
 

@@ -8,8 +8,12 @@
 import SwiftUI
 
 
-typealias ListFocusIndex = (section: Int?, index: Int, isDescription: Bool)?
-
+typealias ListFocusIndex = (section: Int?, index: Int, isDescription: Bool, isSectionTitle: Bool)?
+enum ListItemType {
+   case sectionTitle
+    case itemName
+    case itemDescription
+}
 
 struct EditListView: View {
     enum FocusField: Hashable, Equatable{
@@ -41,33 +45,16 @@ struct EditListView: View {
         )
     }
     
-    @FocusState var focusedField: FocusField?
-    //    {
-    //        willSet {
-    //            print("Setting focus field \(newValue)")
-    //            switch newValue {
-    //            case .name(let sectionIndex, let index):
-    //                print("setting focusedField to name with section \(String(describing: sectionIndex)) and index \(index)")
-    //                self.currentIndex = (section: sectionIndex, index: index) // section can be nil
-    //            case .description(let sectionIndex, let index):
-    //                print("setting focusedField to description with section \(String(describing: sectionIndex)) and index \(index)")
-    //                self.currentIndex = (section: sectionIndex, index: index) // section can be nil
-    //            case .section(let sectionIndex):
-    //                print("setting focusedField to section \(sectionIndex)")
-    //                self.currentIndex=nil // Set index to nil
-    //            default:
-    //                print("defaulting")
-    //                self.currentIndex = nil
-    //                break
-    //            }
-    //        }
-    //    }
     
     var body: some View{
         SwiftUI.List {
             SwiftUI.Section {
                 VStack {
-                    Text("Current index: \(String(describing: currentIndex))")
+//                    Button(action: {
+//                        listViewModel.printOutDebug()
+//                    }, label: {
+//                        Text("Current index: \(String(describing: currentIndex))")
+//                    })
                     Text(listViewModel.list.emoji!)
                         .font(.system(size: 50))
                         .onTapGesture {
@@ -101,11 +88,11 @@ struct EditListView: View {
                             currentIndex: $currentIndex,
                             sectionIndex: nil,
                             index: itemIndex,
-                            onNameSubmit: {
-                                handleNameSubmit(sectionIndex: nil, itemIndex: itemIndex)
+                            onCommit: { listItemType in
+                                handleNewLine(sectionIndex: nil, itemIndex: itemIndex, listItemType: listItemType)
                             },
-                            onDescriptionSubmit: {
-                                handleDescriptionSubmit(sectionIndex: nil, itemIndex: itemIndex)
+                            onBackspaceEmptyString: { listItemType in
+                                handleBackspaceEmptyString(sectionIndex: nil, itemIndex: itemIndex, listItemType: listItemType)
                             }
                         )
                     }
@@ -129,12 +116,23 @@ struct EditListView: View {
                                 AddIcon(size: 25)
                             }
                         })
-                        TextField("Section title", text: sectionBinding.name)
-                            .font(Font.custom(Fonts.sfProRoundedSemibold, size: 25))
-                            .foregroundColor(.black)
-                            .onSubmit {
-                                handleSectionSubmit(atSection: sectionIndex)
+                        CustomTextFieldMultiline(
+                            text: sectionBinding.name,
+                            placeholder: "Section Title",
+                            foregroundColor: Color.black,
+                            fontString: Fonts.sfProRoundedBold,
+                            selfIndex: -1,
+                            selfSectionIndex: sectionIndex,
+                            isDescription: false,
+                            isSectionTitle: true,
+                            currentIndex: $currentIndex,
+                            onCommit: {
+                                handleNewLine(sectionIndex: sectionIndex, itemIndex: -1, listItemType: .sectionTitle)
+                            },
+                            onBackspaceEmptyString: {
+                                handleBackspaceEmptyString(sectionIndex: sectionIndex, itemIndex: -1, listItemType: .sectionTitle)
                             }
+                        )
                     },
                     content: {
                         ForEach(Array(sectionBinding.items.enumerated()), id: \.1.id) { itemIndex, sectionItemBinding in
@@ -143,11 +141,11 @@ struct EditListView: View {
                                 currentIndex: $currentIndex,
                                 sectionIndex: sectionIndex,
                                 index: itemIndex,
-                                onNameSubmit: {
-                                    handleNameSubmit(sectionIndex: sectionIndex, itemIndex: itemIndex)
+                                onCommit: { listItemType in
+                                    handleNewLine(sectionIndex: sectionIndex, itemIndex: itemIndex, listItemType: listItemType)
                                 },
-                                onDescriptionSubmit: {
-                                    handleDescriptionSubmit(sectionIndex: sectionIndex, itemIndex: itemIndex)
+                                onBackspaceEmptyString: { listItemType in
+                                    handleBackspaceEmptyString(sectionIndex: sectionIndex, itemIndex: itemIndex, listItemType: listItemType)
                                 }
                             )
                         }
@@ -157,7 +155,8 @@ struct EditListView: View {
                     }
                 )
             }
-        }
+            }
+        .environmentObject(listViewModel)
         .padding(.bottom)
         .listStyle(InsetListStyle())
         .toolbar {
@@ -188,9 +187,7 @@ struct EditListView: View {
                     }
                 }
             }
-            ToolbarItemGroup(placement: .keyboard) {
-                ListKeyboardButtons(currentIndex: self.currentIndex)
-            }
+          
         }
         .navigationBarBackButtonHidden()
         .onAppear{
@@ -206,24 +203,22 @@ struct EditListView: View {
         })
     }
     
-    func handleNameSubmit(sectionIndex: Int?, itemIndex: Int) {
-        let newIndex = self.listViewModel.handleNameSubmit(atSection: sectionIndex, atIndex: itemIndex)
+    func handleNewLine(sectionIndex: Int?, itemIndex: Int, listItemType: ListItemType){
+        let newIndex = self.listViewModel.handleNewLine(atSection: sectionIndex, atIndex: itemIndex, listItemType: listItemType);
         DispatchQueue.main.async{
+            self.currentIndex = newIndex
+            if(listItemType == .itemDescription ){
+                self.listViewModel.setPreviousDescriptionToNilIfEmpty(atSection: sectionIndex, atIndex: itemIndex)
+            }
+        }
+    }
+    func handleBackspaceEmptyString(sectionIndex: Int?, itemIndex: Int, listItemType: ListItemType){
+        let newIndex = self.listViewModel.handleBackspaceEmptyString(atSection: sectionIndex, atIndex: itemIndex, listItemType: listItemType)
+        DispatchQueue.main.async {
             self.currentIndex = newIndex
         }
     }
     
-    func handleDescriptionSubmit(sectionIndex: Int?, itemIndex: Int) {
-        let newIndex =  self.listViewModel.handleDescriptionSubmit(atSection: sectionIndex, atIndex: itemIndex)
-        DispatchQueue.main.async{
-            self.currentIndex = newIndex
-            self.listViewModel.setPreviousDescriptionToNilIfEmpty(atSection: sectionIndex, atIndex: itemIndex)
-        }
-    }
-    
-    func handleSectionSubmit(atSection: Int){
-        print("Handled section submit")
-    }
     
 }
 

@@ -11,8 +11,8 @@ struct Item: Hashable, Identifiable {
     let id = UUID()
     var name: String
     var description: String?
-    var price: PriceRange? = .one
-    var isStarred: Bool = true
+    var price: PriceRange? = nil
+    var isStarred: Bool = false
     var tags: [String]?
     var sources: [String]?
     

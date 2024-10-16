@@ -10,6 +10,7 @@ import SwiftUI
 struct VerificationCodeView: View {
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
     @EnvironmentObject var authNavigation: AuthNavigation
+    @EnvironmentObject var userDataViewModel: UserDataViewModel
     @State var isCodeValid: Bool = false
     
     var body: some View {
@@ -34,7 +35,11 @@ struct VerificationCodeView: View {
                 Task{
                     let success = await supabaseSignUp.verifyCodeButtonTapped()
                     if(success){
-                        authNavigation.navigateToNamePage()
+                        if(supabaseSignUp.isSigningUp){
+                            authNavigation.navigateToNamePage()
+                        } else {
+                            userDataViewModel.login()
+                        }
                     }
                 }
             }, label: {

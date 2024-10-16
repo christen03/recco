@@ -11,11 +11,11 @@ struct ListKeyboardButtons: View {
     
     @State var isShowingPriceOptions: Bool = false
     @EnvironmentObject var listViewModel: ListViewModel
-    var currentIndex: ListFocusIndex
+    @Binding var currentIndex: ListFocusIndex
     
     var body: some View{
             if(self.isShowingPriceOptions){
-                HStack(spacing: 1){
+                HStack(spacing: 10){
                     KeyboardButton(action: {self.isShowingPriceOptions=false}) {
                         Image(systemName: "xmark")
                     }
@@ -28,7 +28,7 @@ struct ListKeyboardButtons: View {
                         }
                     }) {
                         Text("Free")
-                            .font(.custom(Fonts.sfProRoundedBold, size: 22))
+                            .font(.custom(Fonts.sfProRoundedBold, size: 18))
                     }
                     KeyboardButton(action: {
                         if let index = self.currentIndex{
@@ -71,12 +71,17 @@ struct ListKeyboardButtons: View {
                     }
                     Spacer()
                 }
+                .padding(.leading)
                 // FIXME: animations
                 .animation(.easeInOut, value: isShowingPriceOptions)
                 .transition(.move(edge:.leading))
             } else {
-                HStack(spacing: 1){
-                    KeyboardButton(action: { /* Create new section */ }) {
+                HStack(spacing: 10){
+                    KeyboardButton(action: {
+                        // -1 represents unsectioned items section
+                        let atSectionIndex = self.currentIndex?.section ?? -1
+                        self.currentIndex = listViewModel.addNewSection(atSectionIndex: atSectionIndex, atItemIndex: self.currentIndex!.index)
+                    }) {
                         Image(systemName: "list.bullet.indent")
                     }
                     
@@ -85,7 +90,6 @@ struct ListKeyboardButtons: View {
                     }
                     
                     KeyboardButton(action: {
-                        print("Pressed button for \(self.currentIndex)")
                         if let index = self.currentIndex {
                             listViewModel.toggleFavoriteForIndex(
                                 atSection: index.section,
@@ -98,6 +102,7 @@ struct ListKeyboardButtons: View {
                     }
                     Spacer()
                 }
+                .padding(.leading)
                 .animation(.easeInOut, value: isShowingPriceOptions)
                 .transition(.move(edge: .leading))
             }

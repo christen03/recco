@@ -15,7 +15,8 @@ class SupabaseAuthViewModel: BaseSupabase {
     
     let supabaseUserManager = SupabaseUserManager()
     
-    @Published var authMethod: SignUpOptions? = nil
+    @Published var isSigningUp: Bool = false
+    @Published var authMethod: AuthOptions? = nil
     // Authorization fields
     @Published var email: String = "" {
         didSet{
@@ -74,8 +75,11 @@ class SupabaseAuthViewModel: BaseSupabase {
     @Published var areNamesValid: Bool = false
     @Published var isUsernameValid: Bool = false
     
+    func setIsSigningUp(_ isSigningUp: Bool){
+        self.isSigningUp = isSigningUp
+    }
     
-    func setAuthOption(option: SignUpOptions){
+    func setAuthOption(option: AuthOptions){
         self.authMethod = option
     }
     
@@ -87,11 +91,13 @@ class SupabaseAuthViewModel: BaseSupabase {
             try await Task.detached(priority: .userInitiated) {
                 if(self.authMethod == .email){
                     try await self.supabase.auth.signInWithOTP(
-                        email: self.email
+                        email: self.email,
+                        shouldCreateUser: self.isSigningUp
                     )
                 } else {
                     try await self.supabase.auth.signInWithOTP(
-                        phone: self.phone
+                        phone: self.phone,
+                        shouldCreateUser: self.isSigningUp
                     )
                 }
             }.value
