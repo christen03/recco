@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */; };
 		CA2F5ECD2C7C235B006EA304 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */; };
 		CA2F5ECF2C7C30C6006EA304 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5ECE2C7C30C6006EA304 /* Colors.swift */; };
 		CA2F5ED82C7C3CC8006EA304 /* ElegantEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = CA2F5ED72C7C3CC8006EA304 /* ElegantEmojiPicker */; };
@@ -85,6 +86,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccoBackgroundText.swift; sourceTree = "<group>"; };
 		CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		CA2F5ECE2C7C30C6006EA304 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigation.swift; sourceTree = "<group>"; };
@@ -218,6 +220,8 @@
 		CA7DFAF32C84F76400B2239A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */,
+				CAA43A3F2C71B1E500808375 /* Text.swift */,
 				CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */,
 				CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */,
 			);
@@ -311,7 +315,6 @@
 				CAB6050C2C5F068D007698B9 /* Assets.xcassets */,
 				CAB6050E2C5F068D007698B9 /* Preview Content */,
 				CAA43A3B2C71ACBB00808375 /* Constants.swift */,
-				CAA43A3F2C71B1E500808375 /* Text.swift */,
 				CA2F5ECE2C7C30C6006EA304 /* Colors.swift */,
 				CA2F5EE42C7ED112006EA304 /* MockData.swift */,
 			);
@@ -558,6 +561,7 @@
 				CAA43A3C2C71ACBB00808375 /* Constants.swift in Sources */,
 				CA66729F2CA87EB5004EE4B7 /* SignInView.swift in Sources */,
 				CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */,
+				C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */,
 				CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */,
 				CA2F5EE32C7ECCFD006EA304 /* CurrentUser.swift in Sources */,
 				CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */,
