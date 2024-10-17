@@ -52,4 +52,18 @@ class SupabaseUserManager: BaseSupabase{
             .execute()
         return filePath
     }
+    
+    func checkUserExists(email: String, phone: String) async throws -> Bool{
+           
+        var query = supabase.from("users").select("*")
+        if !email.isEmpty {
+            query = query.eq("email", value: email)
+        } else if !phone.isEmpty {
+            query = query.eq("phone_number", value: phone)
+        }
+        
+        let response: [User] = try await query.execute().value
+        print(response, "resp")
+        return !response.isEmpty
+    }
 }

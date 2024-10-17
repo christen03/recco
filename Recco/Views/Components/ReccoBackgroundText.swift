@@ -18,3 +18,4 @@ struct ReccoBackgroundText: View {
         .ignoresSafeArea()
     }
 }
+

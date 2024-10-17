@@ -89,6 +89,14 @@ class SupabaseAuthViewModel: BaseSupabase {
         defer { isLoading = false }
         do {
             try await Task.detached(priority: .userInitiated) {
+                if(self.isSigningUp){
+                    if(try await self.supabaseUserManager.checkUserExists(email: self.email, phone: self.phone))
+                    {
+                        print("User exists")
+                        throw AuthError.userAlreadyExists(message: "User already exists!")
+                    }
+                }
+                print("Going down")
                 if(self.authMethod == .email){
                     try await self.supabase.auth.signInWithOTP(
                         email: self.email,
@@ -102,6 +110,9 @@ class SupabaseAuthViewModel: BaseSupabase {
                 }
             }.value
             return true
+        } catch let error as AuthError{
+            toast = Toast(style: .error, message: error.localizedDescription)
+            return false
         } catch {
             toast = Toast(style: .error, message: error.localizedDescription)
             return false

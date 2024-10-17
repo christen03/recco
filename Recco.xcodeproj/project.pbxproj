@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */; };
+		C26D201B2CC1BE6B00B919A8 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D201A2CC1BE6900B919A8 /* AuthError.swift */; };
 		CA2F5ECD2C7C235B006EA304 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */; };
 		CA2F5ECF2C7C30C6006EA304 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5ECE2C7C30C6006EA304 /* Colors.swift */; };
 		CA2F5ED82C7C3CC8006EA304 /* ElegantEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = CA2F5ED72C7C3CC8006EA304 /* ElegantEmojiPicker */; };
@@ -16,7 +17,6 @@
 		CA2F5EDF2C7ECB1F006EA304 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EDE2C7ECB1F006EA304 /* List.swift */; };
 		CA2F5EE32C7ECCFD006EA304 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EE22C7ECCFD006EA304 /* CurrentUser.swift */; };
 		CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EE42C7ED112006EA304 /* MockData.swift */; };
-		CA66729F2CA87EB5004EE4B7 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA66729E2CA87EB5004EE4B7 /* SignInView.swift */; };
 		CA7DFAEC2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */; };
 		CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */; };
 		CA7DFAF22C84F1FE00B2239A /* ListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAF12C84F1FE00B2239A /* ListItemView.swift */; };
@@ -62,7 +62,7 @@
 		CAB605562C6B1160007698B9 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = CAB605552C6B1160007698B9 /* Supabase */; };
 		CAB605582C6B139A007698B9 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605572C6B139A007698B9 /* Supabase.swift */; };
 		CAB6055B2C6B153E007698B9 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055A2C6B153E007698B9 /* SplashScreenView.swift */; };
-		CAB6055D2C6B1BA9007698B9 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055C2C6B1BA9007698B9 /* SignUpView.swift */; };
+		CAB6055D2C6B1BA9007698B9 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055C2C6B1BA9007698B9 /* AuthView.swift */; };
 		CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055F2C6B1EF4007698B9 /* SupabaseAuthViewModel.swift */; };
 		CAB605632C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CAB605622C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf */; };
 		CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605672C6B23B6007698B9 /* FontManager.swift */; };
@@ -87,6 +87,7 @@
 
 /* Begin PBXFileReference section */
 		C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccoBackgroundText.swift; sourceTree = "<group>"; };
+		C26D201A2CC1BE6900B919A8 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		CA2F5ECE2C7C30C6006EA304 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigation.swift; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 		CA2F5EDE2C7ECB1F006EA304 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		CA2F5EE22C7ECCFD006EA304 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CA2F5EE42C7ED112006EA304 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
-		CA66729E2CA87EB5004EE4B7 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
 		CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterHorizontally.swift; sourceTree = "<group>"; };
 		CA7DFAF12C84F1FE00B2239A /* ListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemView.swift; sourceTree = "<group>"; };
@@ -136,7 +136,7 @@
 		CAB605482C5F0D2B007698B9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CAB605572C6B139A007698B9 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		CAB6055A2C6B153E007698B9 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
-		CAB6055C2C6B1BA9007698B9 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		CAB6055C2C6B1BA9007698B9 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		CAB6055F2C6B1EF4007698B9 /* SupabaseAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseAuthViewModel.swift; sourceTree = "<group>"; };
 		CAB605622C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Regular.otf"; sourceTree = "<group>"; };
 		CAB605672C6B23B6007698B9 /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
@@ -176,6 +176,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C26D20192CC1BE6300B919A8 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				C26D201A2CC1BE6900B919A8 /* AuthError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
 		CA28BEA52C8D474600EBF3B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,6 +308,7 @@
 		CAB605072C5F068C007698B9 /* Recco */ = {
 			isa = PBXGroup;
 			children = (
+				C26D20192CC1BE6300B919A8 /* Errors */,
 				CA876DE02C8D505600440DFF /* UIKit */,
 				CA2F5EE02C7ECCED006EA304 /* Singleton */,
 				CA2F5ED92C7D8DED006EA304 /* Navigation */,
@@ -364,13 +373,12 @@
 			isa = PBXGroup;
 			children = (
 				CAB6055A2C6B153E007698B9 /* SplashScreenView.swift */,
-				CAB6055C2C6B1BA9007698B9 /* SignUpView.swift */,
+				CAB6055C2C6B1BA9007698B9 /* AuthView.swift */,
 				CAA43A212C712F8200808375 /* VerificationCodeView.swift */,
 				CAA43A252C717C8A00808375 /* EnterNameView.swift */,
 				CAA43A272C7182C900808375 /* EnterUsernameView.swift */,
 				CAA43A292C71855800808375 /* ChooseProfilePictureView.swift */,
 				CAA43A3D2C71AEEE00808375 /* SignUpOrLoginView.swift */,
-				CA66729E2CA87EB5004EE4B7 /* SignInView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -552,14 +560,14 @@
 				CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */,
 				CA2F5ECD2C7C235B006EA304 /* ListViewModel.swift in Sources */,
 				CA876DE42C96A22200440DFF /* CustomTextFieldMultiline.swift in Sources */,
+				C26D201B2CC1BE6B00B919A8 /* AuthError.swift in Sources */,
 				CAA43A362C71ABBF00808375 /* ImageLoader.swift in Sources */,
 				CA2F5EDB2C7D8E00006EA304 /* HomeNavigation.swift in Sources */,
-				CAB6055D2C6B1BA9007698B9 /* SignUpView.swift in Sources */,
+				CAB6055D2C6B1BA9007698B9 /* AuthView.swift in Sources */,
 				CAB6055B2C6B153E007698B9 /* SplashScreenView.swift in Sources */,
 				CAB605582C6B139A007698B9 /* Supabase.swift in Sources */,
 				CAA43A402C71B1E500808375 /* Text.swift in Sources */,
 				CAA43A3C2C71ACBB00808375 /* Constants.swift in Sources */,
-				CA66729F2CA87EB5004EE4B7 /* SignInView.swift in Sources */,
 				CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */,
 				C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */,
 				CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */,
@@ -756,6 +764,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Recco/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "recco!";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -789,6 +799,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Recco/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "recco!";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

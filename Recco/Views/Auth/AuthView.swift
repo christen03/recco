@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct SignUpView: View {
+struct AuthView: View {
    
-    let signUpOption: AuthOptions
+    let authOption: AuthOptions
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
     @EnvironmentObject var authNavigation: AuthNavigation
     
     var body: some View {
         VStack{
-            if(signUpOption == .email){
-                EmailSignUpView()
+            if(authOption == .email){
+                EmailAuthView()
             } else {
-                PhoneSignUpView()
+                PhoneAuthView()
             }
         }
         .toastView(toast: $supabaseSignUp.toast)
@@ -28,7 +28,7 @@ struct SignUpView: View {
         }
     }
     
-    struct EmailSignUpView: View {
+    struct EmailAuthView: View {
         @EnvironmentObject var authNavigation: AuthNavigation
         @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
         
@@ -73,7 +73,7 @@ struct SignUpView: View {
     }
 }
 
-struct PhoneSignUpView: View {
+struct PhoneAuthView: View {
     @EnvironmentObject var authNavigation: AuthNavigation
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
     

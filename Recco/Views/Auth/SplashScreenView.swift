@@ -12,11 +12,6 @@ enum AuthOptions: Hashable{
     case email
 }
 
-enum SignInOptions: Hashable{
-    case phone
-    case email
-}
-
 enum SignUpOrLoginOptions: Hashable {
     case login
     case signup
@@ -68,13 +63,10 @@ struct SplashScreenView: View {
                     
                 }
                 .navigationDestination(for: SignUpOrLoginOptions.self){
-                    option in SignUpOrLoginView(signUpOrLogin: option)
+                    option in SignUpOrLoginView()
                 }
                 .navigationDestination(for: AuthOptions.self) {
-                    option in SignUpView(signUpOption: option)
-                }
-                .navigationDestination(for: SignInOptions.self){
-                    option in SignInView(signInOption: option)
+                    option in AuthView(authOption: option)
                 }
                 .navigationDestination(for: Int.self) { _ in
                     VerificationCodeView()

@@ -20,7 +20,7 @@ struct ToastView: View {
         .foregroundColor(style.themeColor)
       Text(message)
         .font(Font.caption)
-        .foregroundColor(Color("toastForeground"))
+        .foregroundColor(Color.black)
       
       Spacer(minLength: 10)
       
@@ -33,13 +33,10 @@ struct ToastView: View {
     }
     .padding()
     .frame(minWidth: 0, maxWidth: width)
-    .background(Color("toastBackground"))
-    .cornerRadius(8)
-    .overlay(
-      RoundedRectangle(cornerRadius: 8)
-        .opacity(0.6)
-    )
+    .background(Color.white)
+    .cornerRadius(12)
     .padding(.horizontal, 16)
+    .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 10)
   }
 }
 

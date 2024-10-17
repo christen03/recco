@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SignUpOrLoginView: View {
     
-    let signUpOrLogin: SignUpOrLoginOptions
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
     @EnvironmentObject var authNavigation: AuthNavigation
     
@@ -20,7 +19,7 @@ struct SignUpOrLoginView: View {
                 Spacer()
                 Button(action: {
                     supabaseSignUp.setAuthOption(option: .phone)
-                    authNavigation.navigateToSignUpPage(option: .phone)
+                    authNavigation.navigateToAuthPage(option: .phone)
                 }) {
                     FontedText("Continue with Phone")
                         .foregroundColor(.white)
@@ -33,7 +32,7 @@ struct SignUpOrLoginView: View {
                 }
                 Button(action: {
                     supabaseSignUp.setAuthOption(option: .email)
-                    authNavigation.navigateToSignUpPage(option: .email)
+                    authNavigation.navigateToAuthPage(option: .email)
                     
                 }){
                     FontedText("Continue with Email")
@@ -51,5 +50,5 @@ struct SignUpOrLoginView: View {
 }
 
 #Preview {
-    SignUpOrLoginView(signUpOrLogin: .signup)
+    SignUpOrLoginView()
 }
