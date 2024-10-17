@@ -11,11 +11,11 @@ import Kingfisher
 struct ContentView: View {
     
     @StateObject var homeNavigation = HomeNavigation()
-//    #if DEBUG
-//    @StateObject var listViewModel = mockListVM
-//    #else
+    //    #if DEBUG
+    //    @StateObject var listViewModel = mockListVM
+    //    #else
     @StateObject var listViewModel = ListViewModel()
-//    #endif
+    //    #endif
     @StateObject var homePageViewModel = HomePageViewModel()
     @State private var selectedTab = 0
     @State private var profileTab: Image?
@@ -54,28 +54,38 @@ struct ContentView: View {
                     }
                     .position(x: geometry.size.width / 4 * 3, y: geometry.size.height - 30)
                     
-                    CreateButton(action: {
-                        withAnimation(.spring()){
-                            homePageViewModel.isShowingCreateButtonOptions.toggle()
-                        }
-                    }, showMenu: $homePageViewModel.isShowingCreateListSheet)
-                    .position(x: geometry.size.width / 2, y: geometry.size.height - 40)
+                    CreateButton()
+                        .position(x: geometry.size.width / 2, y: geometry.size.height - 40)
                 }
             }
             .navigationDestination(for: Int.self) { _ in EditListView()}
         }
-        .environmentObject(homePageViewModel)
-       .environmentObject(homeNavigation)
-       .environmentObject(listViewModel)
-        .sheet(isPresented: $homePageViewModel.isShowingListCreateSheet, onDismiss: {
-            print("Dismissed sheet")
-        }, content: {
+        .overlay(
+            ZStack(alignment: .bottom) {
+                if homePageViewModel.isShowingCreateButtonOptions {
+                    GeometryReader { geometry in
+                        Color.black.opacity(0.1)
+                            .ignoresSafeArea()
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .onTapGesture {
+                                withAnimation(.spring()) {
+                                    homePageViewModel.isShowingCreateButtonOptions = false
+                                }
+                            }
+                    }
+                    CreateButtonOptions()
+                        .offset(y: -70)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+        )
+        .sheet(isPresented: $homePageViewModel.isShowingListCreateSheet,  content: {
             PresentationSheetView()
-                .environmentObject(homeNavigation)
-                .environmentObject(homePageViewModel)
-                .environmentObject(listViewModel)
                 .presentationDetents([PresentationDetent.fraction(0.75)])
         })
+        .environmentObject(homePageViewModel)
+        .environmentObject(homeNavigation)
+        .environmentObject(listViewModel)
     }
 }
 
@@ -84,12 +94,12 @@ struct PresentationSheetView: View {
     @EnvironmentObject var homePageViewModel: HomePageViewModel
     @EnvironmentObject var homeNavigation: HomeNavigation
     @EnvironmentObject var listViewModel: ListViewModel
-
+    
     var body: some View{
         VStack{
             HStack{
                 Button(action: {
-                    print("Close button tapped")
+                    homePageViewModel.isShowingListCreateSheet.toggle()
                 }, label: {
                     Image(systemName: "xmark")
                         .foregroundColor(Color.black)
@@ -148,20 +158,20 @@ struct PresentationSheetView: View {
                         HStack{
                             FontedText(visibility.emoji, size: 16)
                             FontedText(visibility.rawValue, size: 16)
-
+                            
                         }
-                            .lineLimit(1)
-                            .fixedSize()
-                            .padding(.vertical, 3)
-                            .padding(.horizontal, 10)
-                            .background(self.listViewModel.list.visibility == visibility ? Color.black : nil)
-                            .foregroundColor(self.listViewModel.list.visibility == visibility ? Color.white : Color.black)
-                            .cornerRadius(15.0)
-                            .font(.system(size: 16))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Colors.BorderGray)
-                            )
+                        .lineLimit(1)
+                        .fixedSize()
+                        .padding(.vertical, 3)
+                        .padding(.horizontal, 10)
+                        .background(self.listViewModel.list.visibility == visibility ? Color.black : nil)
+                        .foregroundColor(self.listViewModel.list.visibility == visibility ? Color.white : Color.black)
+                        .cornerRadius(15.0)
+                        .font(.system(size: 16))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Colors.BorderGray)
+                        )
                     }
                 }
                 Spacer()
@@ -216,13 +226,11 @@ struct AddIcon: View {
 
 struct CreateButton: View {
     @EnvironmentObject var homePageViewModel: HomePageViewModel
-    let action: () -> Void
-    @Binding var showMenu: Bool
     
     var body: some View {
         Button(action: {
             withAnimation(.spring()) {
-                showMenu.toggle()
+                homePageViewModel.isShowingCreateButtonOptions.toggle()
             }
         }) {
             Image(systemName: "plus")
@@ -233,25 +241,17 @@ struct CreateButton: View {
                 .clipShape(Circle())
                 .shadow(radius: 4)
         }
-        .overlay(
-            Group {
-                if showMenu {
-                    CreateButtonOptions()
-                        .offset(y: -100)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-            }
-        )
     }
 }
 
 struct CreateButtonOptions: View {
     @EnvironmentObject var homePageViewModel: HomePageViewModel
-
+    
     var body: some View {
-        VStack(alignment: .leading) { 
+        VStack(alignment: .leading) {
             Button(action: {
                 homePageViewModel.isShowingListCreateSheet.toggle()
+                homePageViewModel.isShowingCreateButtonOptions.toggle()
             }) {
                 HStack {
                     Image(systemName: "plus")
@@ -268,7 +268,7 @@ struct CreateButtonOptions: View {
                 }
                 .padding()
             }
-
+            
             Button(action: {
                 print("Ask for recs tapped")
             }) {

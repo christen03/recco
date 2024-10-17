@@ -21,11 +21,13 @@ struct ReccoApp: App {
                 ContentView()
                 .environmentObject(authViewModel)
                 .environmentObject(userDataViewModel)
+                .preferredColorScheme(.light)
 
             } else {
                 SplashScreenView()
                     .environmentObject(authViewModel)
                     .environmentObject(userDataViewModel)
+                    .preferredColorScheme(.light)
             }
 //            EditListView()
 //                .environmentObject(mockListVM)

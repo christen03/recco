@@ -9,8 +9,6 @@ import Foundation
 
 class HomePageViewModel: ObservableObject {
     
-    @Published var isShowingCreateButtonOptions: Bool = true
-    @Published var isShowingCreateListSheet: Bool = false
+    @Published var isShowingCreateButtonOptions: Bool = false
     @Published var isShowingListCreateSheet: Bool = false
-    
 }
