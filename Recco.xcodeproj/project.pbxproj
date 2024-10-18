@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */; };
 		C26D201B2CC1BE6B00B919A8 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D201A2CC1BE6900B919A8 /* AuthError.swift */; };
+		C26D201E2CC1CEE000B919A8 /* CategoryTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D201D2CC1CED900B919A8 /* CategoryTagView.swift */; };
+		C26D20202CC1D08000B919A8 /* CategoryTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D201F2CC1D07A00B919A8 /* CategoryTag.swift */; };
+		C26D20222CC1D61D00B919A8 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D20212CC1D61C00B919A8 /* LocalUser.swift */; };
 		CA2F5ECD2C7C235B006EA304 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */; };
 		CA2F5ECF2C7C30C6006EA304 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5ECE2C7C30C6006EA304 /* Colors.swift */; };
 		CA2F5ED82C7C3CC8006EA304 /* ElegantEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = CA2F5ED72C7C3CC8006EA304 /* ElegantEmojiPicker */; };
@@ -88,6 +91,9 @@
 /* Begin PBXFileReference section */
 		C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccoBackgroundText.swift; sourceTree = "<group>"; };
 		C26D201A2CC1BE6900B919A8 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
+		C26D201D2CC1CED900B919A8 /* CategoryTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTagView.swift; sourceTree = "<group>"; };
+		C26D201F2CC1D07A00B919A8 /* CategoryTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTag.swift; sourceTree = "<group>"; };
+		C26D20212CC1D61C00B919A8 /* LocalUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalUser.swift; sourceTree = "<group>"; };
 		CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		CA2F5ECE2C7C30C6006EA304 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigation.swift; sourceTree = "<group>"; };
@@ -184,6 +190,14 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
+		C26D201C2CC1CED500B919A8 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				C26D201D2CC1CED900B919A8 /* CategoryTagView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		CA28BEA52C8D474600EBF3B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +242,7 @@
 		CA7DFAF32C84F76400B2239A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C26D201C2CC1CED500B919A8 /* Profile */,
 				C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */,
 				CAA43A3F2C71B1E500808375 /* Text.swift */,
 				CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */,
@@ -258,6 +273,8 @@
 		CAA43A2B2C71890700808375 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C26D20212CC1D61C00B919A8 /* LocalUser.swift */,
+				C26D201F2CC1D07A00B919A8 /* CategoryTag.swift */,
 				CAA43A2C2C71891100808375 /* User.swift */,
 				CA2F5EDE2C7ECB1F006EA304 /* List.swift */,
 			);
@@ -555,6 +572,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAA43A2A2C71855800808375 /* ChooseProfilePictureView.swift in Sources */,
+				C26D20222CC1D61D00B919A8 /* LocalUser.swift in Sources */,
 				CA2F5EDF2C7ECB1F006EA304 /* List.swift in Sources */,
 				CAA43A2F2C718C4500808375 /* SupabaseUserManager.swift in Sources */,
 				CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */,
@@ -578,6 +596,7 @@
 				CAA43A262C717C8A00808375 /* EnterNameView.swift in Sources */,
 				CAA43A1E2C711A0800808375 /* ToastView.swift in Sources */,
 				CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */,
+				C26D20202CC1D08000B919A8 /* CategoryTag.swift in Sources */,
 				CAB6050B2C5F068C007698B9 /* ContentView.swift in Sources */,
 				CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */,
 				CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */,
@@ -589,6 +608,7 @@
 				CA7DFAF22C84F1FE00B2239A /* ListItemView.swift in Sources */,
 				CAA43A2D2C71891100808375 /* User.swift in Sources */,
 				CA87139F2C97E525004BFE07 /* ListKeyboardButtons.swift in Sources */,
+				C26D201E2CC1CEE000B919A8 /* CategoryTagView.swift in Sources */,
 				CAA43A3A2C71ABD400808375 /* Kingfisher.swift in Sources */,
 				CAA43A242C71725800808375 /* AuthNavigation.swift in Sources */,
 				CAB605472C5F0D1D007698B9 /* FeedView.swift in Sources */,
