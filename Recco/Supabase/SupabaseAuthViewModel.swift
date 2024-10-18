@@ -141,6 +141,7 @@ class SupabaseAuthViewModel: BaseSupabase {
                 }
                 self.userId = authResp.user.id
             }.value
+            
             return true
         } catch {
             toast = Toast(style: .error, message: error.localizedDescription)
@@ -164,6 +165,7 @@ class SupabaseAuthViewModel: BaseSupabase {
                     phoneNumber: self.phone
                 )
                 UserDefaults.standard.saveUser(newUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
+                CurrentUser.instance.updateUser(user: newUser)
                 try await self.supabaseUserManager.createUserInSupabase(userData: newUser)
             }.value
             return true

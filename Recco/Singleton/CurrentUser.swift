@@ -5,21 +5,29 @@
 //  Created by Christen Xie on 8/27/24.
 //
 
-class CurrentUser {
-    
-    var user: User?
-    
-    static let instance: CurrentUser = {
-        #if DEBUG 
-        return CurrentUser(user: mockUser)
-        #else
-        return CurrentUser()
-        #endif
-    }()
-    
-    init() {}
+import Foundation
 
-    init(user: User) {
+class CurrentUser {
+    static let instance = CurrentUser()
+
+    var user: User?
+
+    private init() {}
+    
+    func updateUser(user: User) {
         self.user = user
     }
+    
+    func getUserId() -> UUID? {
+        return user?.id
+    }
+    
+    func getUsername() -> String? {
+        return user?.username
+    }
+    
+    func setProfilePictureUrl(newUrl: URL){
+        user?.profilePictureUrl = newUrl
+    }
+    
 }

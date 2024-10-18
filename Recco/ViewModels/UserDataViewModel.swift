@@ -85,7 +85,10 @@ class UserDataViewModel: BaseSupabase {
     
     // Query is returning before loading cached user and currentUser is getting set to query and then cachedUser
     func loadCachedUser(){
-        currentUser = UserDefaults.standard.getUser(forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
+        if let userData = UserDefaults.standard.getUser(forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue){
+            currentUser = userData
+            CurrentUser.instance.updateUser(user: userData)
+        }
     }
     
     func refreshUserData(userId: UUID) {

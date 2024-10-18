@@ -70,6 +70,7 @@ struct ChooseProfilePictureView: View {
                         userDataViewModel.updateUserProfilePictureLocally(
                             newUrl: supabaseSignUp.profilePictureUrl
                         )
+                        CurrentUser.instance.setProfilePictureUrl(newUrl: supabaseSignUp.profilePictureUrl)
                         userDataViewModel.login()
                     }
                 }
