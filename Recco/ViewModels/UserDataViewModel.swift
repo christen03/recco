@@ -7,6 +7,7 @@
 
 import Foundation
 
+// CURRENTLY UNUSED
 extension UserDefaults {
     
     enum UserDefaultKeys: String {
@@ -40,6 +41,8 @@ extension UserDefaults {
         self.removeObject(forKey: key)
     }
 }
+// END CURRENTLY UNUSED
+
 
 class UserDataViewModel: BaseSupabase {
     
@@ -51,10 +54,9 @@ class UserDataViewModel: BaseSupabase {
         Task{
             let session = try? await supabase.auth.session
             guard let sessionData = session else { return }
-            let currentUser =  try await fetchUserDataFromSupabase(userId: sessionData.user.id)
-            print(currentUser)
+            let userResponse =  try await fetchUserDataFromSupabase(userId: sessionData.user.id)
             await MainActor.run {
-                self.currentUser = currentUser
+                self.currentUser = userResponse.toUser()
                 self.isUserAuthenticated = true
             }
         }
@@ -82,19 +84,44 @@ class UserDataViewModel: BaseSupabase {
         }
     }
     
-    func fetchUserDataFromSupabase(userId: UUID) async throws -> User {
-        return try await supabase
-            .from("users")
-            .select()
-            .eq("user_id", value: userId)
-            .single()
-            .execute()
-            .value
+    func fetchUserDataFromSupabase(userId: UUID) async throws -> SupabaseUserResponse {
+        do{
+            return try await supabase
+                .from("users")
+                .select("""
+user_id,
+first_name,
+last_name,
+username,
+profile_picture_url,
+email,
+phone_number,
+user_tags (
+    tags (
+        tag_id,
+        name,
+        emoji,
+        category
+        )
+    )
+""")
+                .eq("user_id", value: userId)
+                .single()
+                .execute()
+                .value
+            
+        } catch {
+            print("Error fetching user data, \(error.localizedDescription)")
+            throw error
+        }
     }
-    
     
     func updateUserProfilePictureLocally(newUrl: URL){
         self.currentUser?.profilePictureUrl=(newUrl)
+    }
+    
+    func updateUserTags(newTags: Set<Tag>){
+        self.currentUser?.tags=Array(newTags)
     }
     
 }

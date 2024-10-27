@@ -57,7 +57,10 @@ let mockSections:[Section] = [
     )
 ]
 
-let mockUser: User = User(id: UUID(), firstName: "Christen", lastName: "Xie", username: "chris10", profilePictureUrl: URL(string: "hi")!, email: "christenxie@gmail.com", phoneNumber: "5103345535")
+let mockUser: User = User(id: UUID(), firstName: "Christen", lastName: "Xie", username: "chris10", profilePictureUrl: URL(string: "https://pejyorpsrmoywwcerlkc.supabase.co/storage/v1/object/public/profile_pictures/BA83880C-E5EA-4F16-AB72-5D573517EFC1.jpg")!, email: "christenxie@gmail.com", phoneNumber: "5103345535",
+                          tags: [Tag(id: 1, name: "Food", emoji: "🍝", category: "Food"),
+                                 Tag(id: 2, name: "Cafes", emoji: "☕️", category: "Food")]
+)
 
 //let mockListVM = ListViewModel(userId: "123",selectedEmoji: "🫶", listName: "Christen's Recs", sections: mockSections, items: mockItems)
 

@@ -177,7 +177,8 @@ class SupabaseAuthViewModel: BaseSupabase {
                 username: self.username,
                 profilePictureUrl: self.profilePictureUrl,
                 email: self.email,
-                phoneNumber: self.phone
+                phoneNumber: self.phone,
+                tags: []
             )
             try await self.supabaseUserManager.createUserInSupabase(userData: newUser)
             UserDefaults.standard.saveUser(newUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)

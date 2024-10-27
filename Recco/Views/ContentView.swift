@@ -44,7 +44,7 @@ struct ContentView: View {
                             .scaledToFit()
                             .clipShape(Circle())
                             .shadow(radius: 10)
-                            .frame(width: 40, height: 50)
+                            .frame(width: 45, height: 45)
                     }
                     .position(x: geometry.size.width / 4 * 3, y: geometry.size.height - 30)
                     
