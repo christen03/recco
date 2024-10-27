@@ -12,7 +12,6 @@ import Supabase
 struct ReccoApp: App {
     
     @StateObject var userDataViewModel = UserDataViewModel()
-//    @StateObject var userDataViewModel = UserDataViewModel(user: mockUser)
     @StateObject var authViewModel = SupabaseAuthViewModel()
     
     var body: some Scene {
@@ -29,8 +28,6 @@ struct ReccoApp: App {
                     .environmentObject(userDataViewModel)
                     .preferredColorScheme(.light)
             }
-//            EditListView()
-//                .environmentObject(mockListVM)
         }
     }
 }

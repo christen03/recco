@@ -66,11 +66,9 @@ struct ChooseProfilePictureView: View {
                 Task{
                     let success = await supabaseSignUp.continueProfilePageButtonTapped()
                     if(success) {
-                        // TODO: combine this into one function, this feels messy
                         userDataViewModel.updateUserProfilePictureLocally(
                             newUrl: supabaseSignUp.profilePictureUrl
                         )
-                        CurrentUser.instance.setProfilePictureUrl(newUrl: supabaseSignUp.profilePictureUrl)
                         userDataViewModel.login()
                     }
                 }

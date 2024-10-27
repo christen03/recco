@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EnterUsernameView: View {
+    @EnvironmentObject var userDataViewModel: UserDataViewModel
     @EnvironmentObject var authNavigation: AuthNavigation
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
 
@@ -28,8 +29,8 @@ struct EnterUsernameView: View {
             
             Button(action: {
                 Task{
-                    let success = await supabaseSignUp.verifyUsernameIsUniqueAndCreateUser()
-                    if(success){
+                    if let user = await supabaseSignUp.verifyUsernameIsUniqueAndCreateUser() {
+                        userDataViewModel.currentUser=user
                         authNavigation.navigateToProfilePicturePage()
                     }
                 }

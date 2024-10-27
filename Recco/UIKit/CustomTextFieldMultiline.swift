@@ -19,7 +19,7 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     @Binding var currentIndex: ListFocusIndex
     @Binding var calculatedHeight: CGFloat
     var onDone: (() -> Void)?
-    var onBackspaceEmptyString: (() -> Void)
+    var onBackspaceEmptyString: (() -> Void)?
     
     @EnvironmentObject var listViewModel: ListViewModel
     
@@ -50,16 +50,17 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
                    uiView.text = self.text
                }
         if(!uiView.isFirstResponder && self.shouldBeFirstResponder()){
-            uiView.reloadInputViews()
+            uiView.becomeFirstResponder()
             DispatchQueue.main.async{
                 if(!self.isSectionTitle){
                     addSwiftUIButtonToToolbar(textView: uiView, currentIndex: currentIndex)
                 }
-                uiView.becomeFirstResponder()
             }
         } else if(self.currentIndex == nil){
+            if self.currentIndex == nil {
             uiView.resignFirstResponder()
-        }
+                }
+            }
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
     }
     
@@ -129,14 +130,14 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         var calculatedHeight: Binding<CGFloat>
         var onDone: (() -> Void)?
         var onTap: () -> Void
-        var onBackspaceEmptyString: (() -> Void)
+        var onBackspaceEmptyString: (() -> Void)?
 
         
         init(text: Binding<String>,
              height: Binding<CGFloat>,
              onDone: (() -> Void)? = nil,
              onTap: @escaping () -> Void,
-             onBackspaceEmptyString: @escaping (() -> Void)
+             onBackspaceEmptyString: (() -> Void)? = nil
         ) {
             self.text = text
             self.calculatedHeight = height
@@ -157,15 +158,17 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if let onDone = self.onDone, text == "\n" {
-                onDone()
+                    onDone()
+                textView.superview?.layoutIfNeeded()
                 return false
             }
-            
-            if text == "" && textView.text.isEmpty {
+            print(textView.text, "text")
+            if let onBackspaceEmptyString = self.onBackspaceEmptyString, text == "" && textView.text.isEmpty {
                 onBackspaceEmptyString()
+                textView.superview?.layoutIfNeeded()
                 return false
             }
-            return true
+            return true;
         }
     }
 }

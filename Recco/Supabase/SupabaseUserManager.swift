@@ -45,11 +45,15 @@ class SupabaseUserManager: BaseSupabase{
             )
         let filePath = URL(
             string: Constants.SUPABASE_STORAGE_BASE_URL+response.fullPath)!
-        try await supabase
-            .from("users")
-            .update(["profile_picture_url": filePath])
-            .eq("user_id", value: userId)
-            .execute()
+        do{
+            try await supabase
+                .from("users")
+                .update(["profile_picture_url": filePath])
+                .eq("user_id", value: userId)
+                .execute()
+        } catch {
+            print(error)
+        }
         return filePath
     }
     

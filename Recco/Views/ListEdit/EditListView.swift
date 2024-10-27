@@ -50,11 +50,11 @@ struct EditListView: View {
         SwiftUI.List {
             SwiftUI.Section {
                 VStack {
-//                    Button(action: {
-//                        listViewModel.printOutDebug()
-//                    }, label: {
-//                        Text("Current index: \(String(describing: currentIndex))")
-//                    })
+                    Button(action: {
+                        listViewModel.printOutDebug()
+                    }, label: {
+                        Text("Current index: \(String(describing: currentIndex))")
+                    })
                     Text(listViewModel.list.emoji!)
                         .font(.system(size: 50))
                         .onTapGesture {
@@ -275,7 +275,7 @@ struct VisibilitySelectView: View {
     }
 }
 
-#Preview {
-    EditListView()
-        .environmentObject(mockListVM)
-}
+//#Preview {
+//    EditListView()
+//        .environmentObject(mockListVM)
+//}

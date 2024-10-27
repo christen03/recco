@@ -38,6 +38,8 @@ struct VerificationCodeView: View {
                         if(supabaseSignUp.isSigningUp){
                             authNavigation.navigateToNamePage()
                         } else {
+                            let user = try await supabaseSignUp.fetchUserFromSupabase()
+                            userDataViewModel.currentUser = user
                             userDataViewModel.login()
                         }
                     }

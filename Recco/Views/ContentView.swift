@@ -10,12 +10,9 @@ import Kingfisher
 
 struct ContentView: View {
     
+    @EnvironmentObject var userDataViewModel: UserDataViewModel
     @StateObject var homeNavigation = HomeNavigation()
-    //    #if DEBUG
-    //    @StateObject var listViewModel = mockListVM
-    //    #else
-    @StateObject var listViewModel = ListViewModel()
-    //    #endif
+    @StateObject var listViewModel = ListViewModel.empty()
     @StateObject var homePageViewModel = HomePageViewModel()
     @State private var selectedTab = 0
     @State private var profileTab: Image?
@@ -39,18 +36,15 @@ struct ContentView: View {
                             .tag(1)
                     }
                     
-                    //TODO: Implement versioning strategy to show updated photo
-                    //FIXME: Doesn't display uploaded pfp on first render
                     Button(action: {
                         self.selectedTab = 1
                     }) {
-                        //                    KFImage(userDataViewModel.currentUser?.profilePictureUrl ?? Constants.DEFAULT_PROFILE_PICTURE_URL)
-                        KFImage(Constants.DEFAULT_PROFILE_PICTURE_URL)
+                        KFImage(userDataViewModel.currentUser?.profilePictureUrl ?? Constants.DEFAULT_PROFILE_PICTURE_URL)
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
                             .shadow(radius: 10)
-                            .frame(width: 35, height: 35)
+                            .frame(width: 40, height: 50)
                     }
                     .position(x: geometry.size.width / 4 * 3, y: geometry.size.height - 30)
                     

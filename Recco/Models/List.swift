@@ -78,5 +78,16 @@ struct List {
         self.sections = sections
         self.unsectionedItems = items
     }
+    
+    static func empty() -> List {
+            List(
+                name: "",
+                creatorId: UUID(),
+                emoji: nil,
+                visibility: .global,
+                sections: [],
+                items: []
+            )
+        }
 }
 

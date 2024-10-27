@@ -41,7 +41,6 @@ extension UserDefaults {
     }
 }
 
-// TODO: Refactor to not include currentUser
 class UserDataViewModel: BaseSupabase {
     
     @Published var isUserAuthenticated: Bool = false
@@ -50,14 +49,14 @@ class UserDataViewModel: BaseSupabase {
     override init(){
         super.init()
         Task{
-            print("Fetching session")
             let session = try? await supabase.auth.session
             guard let sessionData = session else { return }
+            let currentUser =  try await fetchUserDataFromSupabase(userId: sessionData.user.id)
+            print(currentUser)
             await MainActor.run {
+                self.currentUser = currentUser
                 self.isUserAuthenticated = true
-                loadCachedUser()
             }
-            refreshUserData(userId: sessionData.user.id)
         }
     }
     
@@ -83,29 +82,6 @@ class UserDataViewModel: BaseSupabase {
         }
     }
     
-    // Query is returning before loading cached user and currentUser is getting set to query and then cachedUser
-    func loadCachedUser(){
-        if let userData = UserDefaults.standard.getUser(forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue){
-            currentUser = userData
-            CurrentUser.instance.updateUser(user: userData)
-        }
-    }
-    
-    func refreshUserData(userId: UUID) {
-        Task {
-            do {
-                let refreshedUser = try await self.fetchUserDataFromSupabase(userId: userId)
-                UserDefaults.standard.saveUser(refreshedUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
-               await MainActor.run{
-                    self.currentUser = refreshedUser
-                }
-            } catch {
-                // TODO: Implement retry/error messaging
-                print("Failed to fetch updated user daata")
-            }
-        }
-    }
-    
     func fetchUserDataFromSupabase(userId: UUID) async throws -> User {
         return try await supabase
             .from("users")
@@ -116,15 +92,9 @@ class UserDataViewModel: BaseSupabase {
             .value
     }
     
-    func updateUserProfilePictureLocally(newUrl: URL){
-        if let user = UserDefaults.standard.getUser(forKey: "currentUser") {
-            user.profilePictureUrl = newUrl
-            UserDefaults.standard.saveUser(user, forKey: "currentUser")
-            print("Updated User: \(user.firstName) \(user.lastName)")
-        } else {
-            print("No user found in UserDefaults")
-        }
-    }
     
+    func updateUserProfilePictureLocally(newUrl: URL){
+        self.currentUser?.profilePictureUrl=(newUrl)
+    }
     
 }

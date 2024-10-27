@@ -14,7 +14,7 @@ struct ListItemView: View {
     let sectionIndex: Int?
     let index: Int
     let onCommit: ((ListItemType) -> Void)
-    let onBackspaceEmptyString: ((ListItemType) -> Void)
+let onBackspaceEmptyString: ((ListItemType) -> Void)
 
     var body: some View {
         VStack(alignment: .leading, spacing: -10){
@@ -27,7 +27,7 @@ struct ListItemView: View {
                     text: $item.name,
                     placeholder: "Add a recommendation",
                     foregroundColor: Colors.ListItemGray,
-                    fontString: Fonts.sfProRoundedBold,
+                    fontString: Fonts.sfProRoundedSemibold,
                     selfIndex: index,
                     selfSectionIndex: sectionIndex,
                     isDescription: false,
@@ -66,7 +66,7 @@ struct ListItemView: View {
                     CustomTextFieldMultiline(
                         text: Binding(
                             get: { item.description ?? "" },
-                            set: { item.description = $0.isEmpty ? nil : $0 }
+                            set: { item.description = $0.isEmpty ? "" : $0 }
                         ),
                         placeholder: "Add a description",
                         foregroundColor: Colors.ListItemGray,
@@ -127,7 +127,7 @@ struct ListItemView: View {
     }
 }
 
-#Preview {
-    EditListView()
-        .environmentObject(mockListVM)
-}
+//#Preview {
+//    EditListView()
+//        .environmentObject(mockListVM)
+//}

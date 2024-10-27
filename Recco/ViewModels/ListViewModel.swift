@@ -45,6 +45,7 @@ enum PriceRange{
 
 class ListViewModel: ObservableObject {
     
+    private var userDataViewModel: UserDataViewModel? = nil
     @Published var list: List {
         didSet {
             validateListFields()
@@ -55,18 +56,23 @@ class ListViewModel: ObservableObject {
     @Published var canCreateList: Bool = false
     @Published var isShowingVisibiltySheet: Bool = false
     
-    init(){
+    static func empty() -> ListViewModel {
+        return ListViewModel(list: List.empty())
+    }
+    
+    
+    init(list: List){
+        self.list=list
+    }
+    
+    func initialize(userDataViewModel: UserDataViewModel){
+        self.userDataViewModel=userDataViewModel
         self.list = List(name: "",
-                         creatorId: CurrentUser.instance.user!.id,
+                         creatorId: userDataViewModel.currentUser?.id ?? UUID(),
                          emoji: nil,
                          visibility: ListVisibility.global)
     }
-    
-    // For testing previews
-    init(userId: String, selectedEmoji: String, listName: String, sections: [Section], items: [Item]){
-        self.list = List(name: listName, creatorId: CurrentUser.instance.user!.id, emoji: selectedEmoji, visibility: ListVisibility.global, sections: sections, items: items)
-    }
-    
+
     var allItems: [ListItem] {
         var items = [ListItem]()
         

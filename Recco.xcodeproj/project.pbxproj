@@ -15,7 +15,6 @@
 		CA2F5EDB2C7D8E00006EA304 /* HomeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */; };
 		CA2F5EDD2C7D8E79006EA304 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EDC2C7D8E79006EA304 /* EditListView.swift */; };
 		CA2F5EDF2C7ECB1F006EA304 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EDE2C7ECB1F006EA304 /* List.swift */; };
-		CA2F5EE32C7ECCFD006EA304 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EE22C7ECCFD006EA304 /* CurrentUser.swift */; };
 		CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EE42C7ED112006EA304 /* MockData.swift */; };
 		CA7DFAEC2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */; };
 		CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */; };
@@ -93,7 +92,6 @@
 		CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigation.swift; sourceTree = "<group>"; };
 		CA2F5EDC2C7D8E79006EA304 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
 		CA2F5EDE2C7ECB1F006EA304 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
-		CA2F5EE22C7ECCFD006EA304 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CA2F5EE42C7ED112006EA304 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
 		CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterHorizontally.swift; sourceTree = "<group>"; };
@@ -203,7 +201,6 @@
 		CA2F5EE02C7ECCED006EA304 /* Singleton */ = {
 			isa = PBXGroup;
 			children = (
-				CA2F5EE22C7ECCFD006EA304 /* CurrentUser.swift */,
 			);
 			path = Singleton;
 			sourceTree = "<group>";
@@ -479,7 +476,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					CAB605042C5F068C007698B9 = {
 						CreatedOnToolsVersion = 15.4;
@@ -571,7 +568,6 @@
 				CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */,
 				C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */,
 				CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */,
-				CA2F5EE32C7ECCFD006EA304 /* CurrentUser.swift in Sources */,
 				CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */,
 				CAA43A492C7A62CB00808375 /* HomePageViewModel.swift in Sources */,
 				CAB605492C5F0D2B007698B9 /* ProfileView.swift in Sources */,
@@ -824,7 +820,6 @@
 		CAB6052D2C5F068D007698B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -844,7 +839,6 @@
 		CAB6052E2C5F068D007698B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -864,7 +858,6 @@
 		CAB605302C5F068D007698B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BK7MB9J3TD;
@@ -882,7 +875,6 @@
 		CAB605312C5F068D007698B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BK7MB9J3TD;

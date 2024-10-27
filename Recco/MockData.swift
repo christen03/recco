@@ -59,5 +59,5 @@ let mockSections:[Section] = [
 
 let mockUser: User = User(id: UUID(), firstName: "Christen", lastName: "Xie", username: "chris10", profilePictureUrl: URL(string: "hi")!, email: "christenxie@gmail.com", phoneNumber: "5103345535")
 
-let mockListVM = ListViewModel(userId: "123",selectedEmoji: "🫶", listName: "Christen's Recs", sections: mockSections, items: mockItems)
+//let mockListVM = ListViewModel(userId: "123",selectedEmoji: "🫶", listName: "Christen's Recs", sections: mockSections, items: mockItems)
 

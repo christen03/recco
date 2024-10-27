@@ -149,29 +149,42 @@ class SupabaseAuthViewModel: BaseSupabase {
         }
     }
     
+    // TODO: heavy refactor, maybe one signup flow?
     @MainActor
-    func verifyUsernameIsUniqueAndCreateUser() async -> Bool {
+    func fetchUserFromSupabase() async throws -> User {
+        isLoading = true
+        defer {isLoading = false}
+        let user: User = try await supabase
+                    .from("users")
+                    .select()
+                    .eq("user_id", value: self.userId)
+                    .single()
+                    .execute()
+                    .value
+        return user
+    }
+    
+    @MainActor
+    func verifyUsernameIsUniqueAndCreateUser() async -> User? {
         isLoading = true
         defer { isLoading = false }
+        
         do {
-            try await Task.detached(priority: .userInitiated) {
-                let newUser = User(
-                    id: self.userId!,
-                    firstName: self.firstName,
-                    lastName: self.lastName,
-                    username: self.username,
-                    profilePictureUrl: self.profilePictureUrl,
-                    email: self.email,
-                    phoneNumber: self.phone
-                )
-                UserDefaults.standard.saveUser(newUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
-                CurrentUser.instance.updateUser(user: newUser)
-                try await self.supabaseUserManager.createUserInSupabase(userData: newUser)
-            }.value
-            return true
+            let newUser = User(
+                id: self.userId!,
+                firstName: self.firstName,
+                lastName: self.lastName,
+                username: self.username,
+                profilePictureUrl: self.profilePictureUrl,
+                email: self.email,
+                phoneNumber: self.phone
+            )
+            try await self.supabaseUserManager.createUserInSupabase(userData: newUser)
+            UserDefaults.standard.saveUser(newUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
+            return newUser
         } catch {
             toast = Toast(style: .error, message: error.localizedDescription)
-            return false
+            return nil
         }
     }
     
