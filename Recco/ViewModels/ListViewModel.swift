@@ -56,6 +56,7 @@ class ListViewModel: ObservableObject {
     @Published var canCreateList: Bool = false
     @Published var isShowingVisibiltySheet: Bool = false
     @Published var toast: Toast? = nil
+    var isInitialized: Bool = false
     
     static func empty() -> ListViewModel {
         return ListViewModel(list: List.empty())
@@ -67,6 +68,7 @@ class ListViewModel: ObservableObject {
     }
     
     func initialize(userDataViewModel: UserDataViewModel){
+        guard !isInitialized else { return }
         self.userDataViewModel=userDataViewModel
         self.list = List(name: "",
                          creatorId: userDataViewModel.currentUser?.id ?? UUID(),
@@ -234,16 +236,14 @@ class ListViewModel: ObservableObject {
     }
     
     func postToSupabase() async throws -> UUID {
-        let databaseObject = ListUpsert(list: self.list)
+        let databaseObject = CreateListParams(list: self.list)
         
         do {
-                
-            try await supabase
-                .from("lists")
-                .upsert(databaseObject)
+            return try await supabase
+                .rpc("create_complete_list",
+                     params: databaseObject)
                 .execute()
-            
-            return databaseObject.listId
+                .value
         } catch {
             print(error)
             throw error

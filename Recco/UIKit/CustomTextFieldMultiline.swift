@@ -162,7 +162,6 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
                 textView.superview?.layoutIfNeeded()
                 return false
             }
-            print(textView.text, "text")
             if let onBackspaceEmptyString = self.onBackspaceEmptyString, text == "" && textView.text.isEmpty {
                 onBackspaceEmptyString()
                 textView.superview?.layoutIfNeeded()

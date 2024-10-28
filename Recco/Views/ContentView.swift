@@ -54,6 +54,9 @@ struct ContentView: View {
             }
             .navigationDestination(for: Int.self) { _ in EditListView()}
         }
+        .onAppear{
+            listViewModel.initialize(userDataViewModel: userDataViewModel)
+        }
         .overlay(
             ZStack(alignment: .bottom) {
                 if homePageViewModel.isShowingCreateButtonOptions {
@@ -190,6 +193,7 @@ struct PresentationSheetView: View {
             Spacer()
             
         }
+      
         .onAppear{
             listViewModel.validateListFields()
         }

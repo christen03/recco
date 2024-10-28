@@ -7,58 +7,52 @@
 
 import Foundation
 
-struct ListUpsert: Codable{
-    let listId: UUID
-    let name: String
-    let creatorId: UUID
-    let emoji: String?
-    let visibility: String
+
+struct CreateListParams: Encodable {
+    let p_name: String
+    let p_creator_id: UUID
+    let p_emoji: String?
+    let p_visibility: String
+    let p_sections: [SectionInput]
+    let p_unsectioned_items: [ItemInput]
     
-    init(list: List){
-        self.listId = UUID()
-        self.name = list.name
-        self.creatorId = list.creatorId
-        self.emoji = list.emoji
-        self.visibility = list.visibility.rawValue
+    // Helper structs for JSON structure
+    struct SectionInput: Encodable {
+        let name: String
+        let items: [ItemInput]
     }
     
-    enum CodingKeys: String, CodingKey {
-        case listId = "list_id"
-        case name
-        case creatorId = "creator_id"
-        case emoji
-        case visibility
+    struct ItemInput: Encodable {
+        let name: String
+        let description: String?
+    }
+    
+    init(list: List) {
+        self.p_name = list.name
+        self.p_creator_id = list.creatorId
+        self.p_emoji = list.emoji
+        self.p_visibility = list.visibility.rawValue
+        
+        // Convert sections
+        self.p_sections = list.sections.map { section in
+            SectionInput(
+                name: section.name,
+                items: section.items.map { item in
+                    ItemInput(
+                        name: item.name,
+                        description: item.description
+                    )
+                }
+            )
+        }
+        
+        // Convert unsectioned items
+        self.p_unsectioned_items = list.unsectionedItems.map { item in
+            ItemInput(
+                name: item.name,
+                description: item.description
+            )
+        }
     }
 }
 
-struct SectionUpsert: Codable {
-    let sectionId: UUID
-    let listId: UUID
-    let name: String
-    let orderIndex: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case sectionId = "section_id"
-        case listId = "list_id"
-        case name
-        case orderIndex = "order_index"
-    }
-}
-
-struct ItemUpsert: Codable {
-    let itemId: UUID
-    let listId: UUID
-    let sectionId: UUID?
-    let name: String
-    let description: String?
-    let orderIndex: Int
-    
-    enum CodingKeys: String, CodingKey {
-       case itemId = "item_id"
-        case listId = "list_id"
-        case sectionId = "section_id"
-        case name
-        case description
-        case orderIndex = "order_index" 
-    }
-}
