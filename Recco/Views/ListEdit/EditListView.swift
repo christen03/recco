@@ -10,7 +10,7 @@ import SwiftUI
 
 typealias ListFocusIndex = (section: Int?, index: Int, isDescription: Bool, isSectionTitle: Bool)?
 enum ListItemType {
-   case sectionTitle
+    case sectionTitle
     case itemName
     case itemDescription
 }
@@ -27,6 +27,7 @@ struct EditListView: View {
     
     @State private var currentIndex: ListFocusIndex = nil
     @State private var editingEmojiSectionID: UUID?
+    @State var toast: Toast? = nil
     
     var selectedEmojiBinding: Binding<String?> {
         guard let id = self.editingEmojiSectionID else {
@@ -155,7 +156,7 @@ struct EditListView: View {
                     }
                 )
             }
-            }
+        }
         .environmentObject(listViewModel)
         .padding(.bottom)
         .listStyle(InsetListStyle())
@@ -180,6 +181,15 @@ struct EditListView: View {
                     if(self.currentIndex != nil){
                         Button(action: {
                             self.currentIndex = nil
+                            Task{
+                                do{
+                                    _ = try await listViewModel.postToSupabase()
+                                } catch {
+                                    await MainActor.run{
+                                        self.toast=Toast(style: .error, message: "Error uploading list!")
+                                    }
+                                }
+                            }
                         }) {
                             FontedText("Done")
                                 .foregroundStyle(Color.black)
@@ -187,7 +197,7 @@ struct EditListView: View {
                     }
                 }
             }
-          
+            
         }
         .navigationBarBackButtonHidden()
         .onAppear{
@@ -201,6 +211,7 @@ struct EditListView: View {
         .sheet(isPresented: $listViewModel.isShowingEmojiPicker, content: {
             ElegantEmojiPickerView(selectedEmoji: self.selectedEmojiBinding)
         })
+        .toastView(toast: self.$toast)
     }
     
     func handleNewLine(sectionIndex: Int?, itemIndex: Int, listItemType: ListItemType){
@@ -218,8 +229,6 @@ struct EditListView: View {
             self.currentIndex = newIndex
         }
     }
-    
-    
 }
 
 

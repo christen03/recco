@@ -55,6 +55,7 @@ class ListViewModel: ObservableObject {
     @Published var isShowingEmojiPicker: Bool = false
     @Published var canCreateList: Bool = false
     @Published var isShowingVisibiltySheet: Bool = false
+    @Published var toast: Toast? = nil
     
     static func empty() -> ListViewModel {
         return ListViewModel(list: List.empty())
@@ -229,6 +230,23 @@ class ListViewModel: ObservableObject {
                 list.sections[atSectionIndex].items.removeSubrange((atItemIndex+1)...)
             }
             return (section: atSectionIndex+1, index: -1, isDescription: false, isSectionTitle: true)
+        }
+    }
+    
+    func postToSupabase() async throws -> UUID {
+        let databaseObject = ListUpsert(list: self.list)
+        
+        do {
+                
+            try await supabase
+                .from("lists")
+                .upsert(databaseObject)
+                .execute()
+            
+            return databaseObject.listId
+        } catch {
+            print(error)
+            throw error
         }
     }
     

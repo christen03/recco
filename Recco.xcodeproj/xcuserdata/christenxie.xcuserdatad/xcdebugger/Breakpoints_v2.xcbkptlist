@@ -88,7 +88,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "3768D153-B9B6-420A-9CBE-47185D6D088A"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Recco/UIKit/CustomTextFieldMultiline.swift"
@@ -104,7 +104,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "9EB5604A-5CD7-408C-8A8B-BDBFF8EF3FEE"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Recco/UIKit/CustomTextFieldMultiline.swift"
@@ -120,7 +120,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "99E22044-BFEA-4A35-947E-E65C8A940BED"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Recco/UIKit/CustomTextFieldMultiline.swift"
@@ -136,7 +136,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "4FD655D6-D5F9-4BC1-B6BE-BB7C6B6DD467"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Recco/UIKit/CustomTextFieldMultiline.swift"
@@ -168,7 +168,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "4FFC8078-6AD4-401B-8517-9262E54F8CE4"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Recco/Supabase/SupabaseUserManager.swift"
@@ -200,7 +200,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "67BBD267-A6AD-4653-905B-9C48BFF7F53B"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Recco/Supabase/SupabaseUserManager.swift"
@@ -210,36 +210,6 @@
             endingLineNumber = "55"
             landmarkName = "uploadProfilePictureToSupabase(imageData:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "67BBD267-A6AD-4653-905B-9C48BFF7F53B - 6a691c59b182a7fb"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for Recco.SupabaseUserManager.uploadProfilePictureToSupabase(imageData: Foundation.Data) async throws -&gt; Foundation.URL"
-                  moduleName = "Recco.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christenxie/Documents/GitHub/Recco/Recco/Supabase/SupabaseUserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "55"
-                  endingLineNumber = "55">
-               </Location>
-               <Location
-                  uuid = "67BBD267-A6AD-4653-905B-9C48BFF7F53B - e03da05685372fe7"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(7) suspend resume partial function for Recco.SupabaseUserManager.uploadProfilePictureToSupabase(imageData: Foundation.Data) async throws -&gt; Foundation.URL"
-                  moduleName = "Recco.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christenxie/Documents/GitHub/Recco/Recco/Supabase/SupabaseUserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "55"
-                  endingLineNumber = "55">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

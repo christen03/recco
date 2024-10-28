@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */; };
 		C26D201B2CC1BE6B00B919A8 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D201A2CC1BE6900B919A8 /* AuthError.swift */; };
+		CA1A3CBA2CCF0FC70036E66C /* ListUpsert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1A3CB92CCF0FC50036E66C /* ListUpsert.swift */; };
+		CA1A3CBC2CCF11890036E66C /* UserListsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1A3CBB2CCF11890036E66C /* UserListsViewModel.swift */; };
+		CA1A3CBE2CCF12EB0036E66C /* ListQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1A3CBD2CCF12EB0036E66C /* ListQuery.swift */; };
 		CA22577B2CCEC1EA00D5D261 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA22577A2CCEC1EA00D5D261 /* Tag.swift */; };
 		CA22577D2CCEC23C00D5D261 /* TagSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA22577C2CCEC23C00D5D261 /* TagSelectionViewModel.swift */; };
 		CA22577F2CCEC52E00D5D261 /* TagSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA22577E2CCEC52800D5D261 /* TagSelectionView.swift */; };
@@ -90,6 +93,9 @@
 /* Begin PBXFileReference section */
 		C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccoBackgroundText.swift; sourceTree = "<group>"; };
 		C26D201A2CC1BE6900B919A8 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
+		CA1A3CB92CCF0FC50036E66C /* ListUpsert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUpsert.swift; sourceTree = "<group>"; };
+		CA1A3CBB2CCF11890036E66C /* UserListsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListsViewModel.swift; sourceTree = "<group>"; };
+		CA1A3CBD2CCF12EB0036E66C /* ListQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListQuery.swift; sourceTree = "<group>"; };
 		CA22577A2CCEC1EA00D5D261 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		CA22577C2CCEC23C00D5D261 /* TagSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectionViewModel.swift; sourceTree = "<group>"; };
 		CA22577E2CCEC52800D5D261 /* TagSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagSelectionView.swift; sourceTree = "<group>"; };
@@ -262,9 +268,11 @@
 		CAA43A2B2C71890700808375 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CA1A3CB92CCF0FC50036E66C /* ListUpsert.swift */,
 				CAA43A2C2C71891100808375 /* User.swift */,
 				CA2F5EDE2C7ECB1F006EA304 /* List.swift */,
 				CA22577A2CCEC1EA00D5D261 /* Tag.swift */,
+				CA1A3CBD2CCF12EB0036E66C /* ListQuery.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -286,6 +294,7 @@
 				CAA43A482C7A62CB00808375 /* HomePageViewModel.swift */,
 				CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */,
 				CA22577C2CCEC23C00D5D261 /* TagSelectionViewModel.swift */,
+				CA1A3CBB2CCF11890036E66C /* UserListsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -571,11 +580,13 @@
 				CA2F5EDB2C7D8E00006EA304 /* HomeNavigation.swift in Sources */,
 				CAB6055D2C6B1BA9007698B9 /* AuthView.swift in Sources */,
 				CAB6055B2C6B153E007698B9 /* SplashScreenView.swift in Sources */,
+				CA1A3CBA2CCF0FC70036E66C /* ListUpsert.swift in Sources */,
 				CAB605582C6B139A007698B9 /* Supabase.swift in Sources */,
 				CAA43A402C71B1E500808375 /* Text.swift in Sources */,
 				CAA43A3C2C71ACBB00808375 /* Constants.swift in Sources */,
 				CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */,
 				C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */,
+				CA1A3CBE2CCF12EB0036E66C /* ListQuery.swift in Sources */,
 				CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */,
 				CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */,
 				CA22577F2CCEC52E00D5D261 /* TagSelectionView.swift in Sources */,
@@ -602,6 +613,7 @@
 				CA22577D2CCEC23C00D5D261 /* TagSelectionViewModel.swift in Sources */,
 				CAA43A3E2C71AEEE00808375 /* SignUpOrLoginView.swift in Sources */,
 				CAA43A382C71ABC700808375 /* ImagePrefetcher.swift in Sources */,
+				CA1A3CBC2CCF11890036E66C /* UserListsViewModel.swift in Sources */,
 				CAA43A472C72854B00808375 /* UserDataViewModel.swift in Sources */,
 				CAB605092C5F068C007698B9 /* ReccoApp.swift in Sources */,
 			);
