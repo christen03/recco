@@ -120,8 +120,12 @@ user_tags (
         self.currentUser?.profilePictureUrl=(newUrl)
     }
     
+    @MainActor
     func updateUserTags(newTags: Set<Tag>){
-        self.currentUser?.tags=Array(newTags)
+        if let updatedUser = currentUser{
+            updatedUser.tags=Array(newTags)
+            self.currentUser=updatedUser
+        }
     }
     
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Item: Hashable, Identifiable {
-    let id = UUID()
+    let id: UUID
     var name: String
     var description: String?
     var price: PriceRange? = nil
@@ -16,14 +16,16 @@ struct Item: Hashable, Identifiable {
     var tags: [String]?
     var sources: [String]?
     
-    init(name: String, description: String? = nil, tags: [String]? = nil, sources: [String]? = nil) {
+    init(id: UUID? = nil, name: String, description: String? = nil, tags: [String]? = nil, sources: [String]? = nil) {
+        self.id = id ?? UUID()
         self.name = name
         self.description = description
         self.tags = tags
         self.sources = sources
     }
     
-    init(name: String, description: String, price: PriceRange, isStarred: Bool? = false){
+    init(id: UUID? = nil, name: String, description: String, price: PriceRange, isStarred: Bool? = false){
+        self.id = id ?? UUID()
         self.name = name
         self.description = description
         self.price=price
@@ -32,12 +34,13 @@ struct Item: Hashable, Identifiable {
 }
 
 struct Section: Hashable, Identifiable {
-    let id = UUID()
+    let id: UUID
     var name: String
     var emoji: String?
     var items: [Item]
     
-    init(name: String, emoji: String? = nil, items: [Item] = []) {
+    init(id: UUID? = nil, name: String, emoji: String? = nil, items: [Item] = []) {
+        self.id = id ?? UUID()
         self.name = name
         self.emoji = emoji
         self.items = items
@@ -62,7 +65,8 @@ enum ListItem: Identifiable {
 }
 
 
-struct List {
+struct List: Identifiable, Equatable {
+    let id: UUID
     var name: String
     let creatorId: UUID
     var emoji: String?
@@ -70,7 +74,8 @@ struct List {
     var sections: [Section]
     var unsectionedItems: [Item]
     
-    init(name: String, creatorId: UUID, emoji: String? = nil, visibility: ListVisibility, sections: [Section] = [], items: [Item] = []) {
+    init(id: UUID? = nil, name: String, creatorId: UUID, emoji: String? = nil, visibility: ListVisibility, sections: [Section] = [], items: [Item] = []) {
+        self.id = id ?? UUID()
         self.name = name
         self.creatorId = creatorId
         self.emoji = emoji

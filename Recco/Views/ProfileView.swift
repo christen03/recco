@@ -13,6 +13,11 @@ struct ProfileView: View{
     @StateObject var userListsViewModel = UserListsViewModel()
     @State var isPresentingTagSheet: Bool = false
     
+    let columns = [
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12)
+        ]
+    
     var body: some View{
         VStack{
             FontedText(userDataViewModel.currentUser?.firstName ?? "" + (userDataViewModel.currentUser?.lastName ?? ""))
@@ -39,7 +44,7 @@ struct ProfileView: View{
                     }
                 }
             }
-
+            
             Button(action: {
                 isPresentingTagSheet.toggle()
             }, label: {
@@ -50,9 +55,31 @@ struct ProfileView: View{
             }, label: {
                 Text("Sign out")
             })
+            Text("num: \(userListsViewModel.userLists.count)")
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 12) {
+                    ForEach(userListsViewModel.userLists) { list in
+                        ProfileListItemView(list: list)
+                            .frame(height: 180)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .shadow(color: .black.opacity(0.1), radius: 8)
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                }
+                .padding(.horizontal, 16)
+                .animation(.spring(), value: userListsViewModel.userLists)
+            }
+            .overlay {
+                if userListsViewModel.isFetching {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(.ultraThinMaterial)
+                }
+            }
         }
         .sheet(isPresented: $isPresentingTagSheet){
-            TagSelectionView(userDataViewModel: userDataViewModel)
+            TagSelectionView(userDataViewModel: userDataViewModel,
+                             isPresentingTagSheet: $isPresentingTagSheet)
                 .presentationDetents([.medium])
         }
     }
@@ -78,6 +105,17 @@ struct TagView: View {
     }
 }
 
+struct ProfileListItemView: View {
+    let list: List
+    
+    var body: some View {
+        VStack{
+            Text(list.emoji ?? "")
+                .font(.system(size: 20))
+            TitleText(list.name)
+        }
+    }
+}
 
 
 #Preview {

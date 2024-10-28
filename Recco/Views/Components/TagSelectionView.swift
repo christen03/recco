@@ -10,10 +10,11 @@ import SwiftUI
 struct TagSelectionView: View {
     @StateObject var tagSelectionViewModel = TagSelectionViewModel()
     @ObservedObject var userDataViewModel: UserDataViewModel
+    @Binding var isPresentingTagSheet: Bool
     
-    init(userDataViewModel: UserDataViewModel) {
+    init(userDataViewModel: UserDataViewModel, isPresentingTagSheet: Binding<Bool>) {
         self.userDataViewModel = userDataViewModel
-        
+        self._isPresentingTagSheet = isPresentingTagSheet
     }
     
     func formatCategory(_ category: String) -> String {
@@ -32,6 +33,7 @@ struct TagSelectionView: View {
                             let success = await tagSelectionViewModel.applyTagChanges(userId: currentUser.id)
                             if(success){
                                 userDataViewModel.updateUserTags(newTags: tagSelectionViewModel.selectedTags)
+                                self.isPresentingTagSheet.toggle()
                             }
                         }
                     }
