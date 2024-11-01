@@ -65,7 +65,7 @@ enum ListItem: Identifiable {
 }
 
 
-struct List: Identifiable, Equatable {
+struct List: Identifiable, Equatable, Hashable {
     let id: UUID
     var name: String
     let creatorId: UUID

@@ -22,12 +22,15 @@ struct EditListView: View {
         case section(section: Int)
     }
     
-    @EnvironmentObject var listViewModel: ListViewModel
+    @StateObject var listViewModel: ListViewModel
     @EnvironmentObject var homeNavigation: HomeNavigation
-    
     @State private var currentIndex: ListFocusIndex = nil
     @State private var editingEmojiSectionID: UUID?
     @State var toast: Toast? = nil
+    
+    init(list: List){
+        _listViewModel = StateObject(wrappedValue: ListViewModel(list: list))
+    }
     
     var selectedEmojiBinding: Binding<String?> {
         guard let id = self.editingEmojiSectionID else {

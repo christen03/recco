@@ -12,12 +12,25 @@ struct ContentView: View {
     
     @EnvironmentObject var userDataViewModel: UserDataViewModel
     @StateObject var homeNavigation = HomeNavigation()
-    @StateObject var listViewModel = ListViewModel.empty()
     @StateObject var homePageViewModel = HomePageViewModel()
     @State private var selectedTab = 0
     @State private var profileTab: Image?
+    @State private var authenticationError: Bool = false
+    
+    var listViewModel: ListViewModel? = nil
     
     var body: some View {
+        if authenticationError{
+            VStack{
+                TitleText("Sorry! We had an error fetching your session. Please try signing out and signing back in.")
+                Button(action: {
+                    userDataViewModel.signOut()
+                },label: {
+                    FontedText("Sign Out")
+                })
+            }
+        }
+        
         NavigationStack(path: $homeNavigation.navigationPath){
             GeometryReader { geometry in
                 ZStack {
@@ -52,10 +65,14 @@ struct ContentView: View {
                         .position(x: geometry.size.width / 2, y: geometry.size.height - 40)
                 }
             }
-            .navigationDestination(for: Int.self) { _ in EditListView()}
+            .navigationDestination(for: List.self) { list in  EditListView(list: list )}
         }
         .onAppear{
-            listViewModel.initialize(userDataViewModel: userDataViewModel)
+            guard let userId = userDataViewModel.currentUser?.id else {
+                self.authenticationError=true
+                return
+            }
+            homePageViewModel.createList(userId: userId)
         }
         .overlay(
             ZStack(alignment: .bottom) {
@@ -82,15 +99,14 @@ struct ContentView: View {
         })
         .environmentObject(homePageViewModel)
         .environmentObject(homeNavigation)
-        .environmentObject(listViewModel)
     }
 }
 
 
 struct PresentationSheetView: View {
+    
     @EnvironmentObject var homePageViewModel: HomePageViewModel
     @EnvironmentObject var homeNavigation: HomeNavigation
-    @EnvironmentObject var listViewModel: ListViewModel
     
     var body: some View{
         VStack{
@@ -108,20 +124,20 @@ struct PresentationSheetView: View {
                 Spacer()
                 Button(action: {
                     homePageViewModel.isShowingListCreateSheet = false
-                    homeNavigation.navigateToEditList()
+                    homeNavigation.navigateToEditList(list: homePageViewModel.list)
                 }, label: {
                     FontedText("Create", size: 14)
                         .frame(width: 60)
-                        .foregroundColor(listViewModel.canCreateList ? Color.black : Colors.DisabledGray)
+                        .foregroundColor(homePageViewModel.canCreateList ? Color.black : Colors.DisabledGray)
                 })
-                .disabled(!listViewModel.canCreateList)
-                .environmentObject(listViewModel)
+                .disabled(!homePageViewModel.canCreateList)
+                .environmentObject(homePageViewModel)
             }
             Button(action: {
-                listViewModel.isShowingEmojiPicker = true
+                homePageViewModel.isShowingEmojiPicker = true
             }, label: {
                 // I used a package for this, but its a little outdated so it's only up to iOS 16 emojis
-                if let emoji = self.listViewModel.list.emoji{
+                if let emoji = self.homePageViewModel.list.emoji{
                     Text(emoji)
                         .font(.system(size: 50))
                 } else {
@@ -130,7 +146,7 @@ struct PresentationSheetView: View {
             })
             .padding(.vertical, 20)
             HStack {
-                TextField("", text: $listViewModel.list.name,
+                TextField("", text: $homePageViewModel.list.name,
                           prompt: Text("List name")
                     .foregroundColor(Colors.DarkGray)
                     .font(Font.custom(Fonts.sfProRounded, size: 25))
@@ -150,7 +166,7 @@ struct PresentationSheetView: View {
             HStack(spacing: 10){
                 ForEach(ListVisibility.allCases, id: \.self){ visibility in
                     Button(action: {
-                        self.listViewModel.list.visibility = visibility
+                        self.homePageViewModel.list.visibility = visibility
                     }) {
                         HStack{
                             FontedText(visibility.emoji, size: 16)
@@ -161,8 +177,8 @@ struct PresentationSheetView: View {
                         .fixedSize()
                         .padding(.vertical, 3)
                         .padding(.horizontal, 10)
-                        .background(self.listViewModel.list.visibility == visibility ? Color.black : nil)
-                        .foregroundColor(self.listViewModel.list.visibility == visibility ? Color.white : Color.black)
+                        .background(self.homePageViewModel.list.visibility == visibility ? Color.black : nil)
+                        .foregroundColor(self.homePageViewModel.list.visibility == visibility ? Color.white : Color.black)
                         .cornerRadius(15.0)
                         .font(.system(size: 16))
                         .overlay(
@@ -195,10 +211,10 @@ struct PresentationSheetView: View {
         }
       
         .onAppear{
-            listViewModel.validateListFields()
+            homePageViewModel.validateListFields()
         }
-        .sheet(isPresented: $listViewModel.isShowingEmojiPicker, content: {
-            ElegantEmojiPickerView(selectedEmoji: $listViewModel.list.emoji)
+        .sheet(isPresented: $homePageViewModel.isShowingEmojiPicker, content: {
+            ElegantEmojiPickerView(selectedEmoji: $homePageViewModel.list.emoji)
         })
         .padding(.vertical)
         .padding(.horizontal, 40)

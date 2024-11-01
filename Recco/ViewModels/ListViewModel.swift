@@ -46,11 +46,7 @@ enum PriceRange{
 class ListViewModel: ObservableObject {
     
     private var userDataViewModel: UserDataViewModel? = nil
-    @Published var list: List {
-        didSet {
-            validateListFields()
-        }
-    }
+    @Published var list: List
     @Published var isShowingCreateListSheet: Bool = false
     @Published var isShowingEmojiPicker: Bool = false
     @Published var canCreateList: Bool = false
@@ -110,10 +106,6 @@ class ListViewModel: ObservableObject {
         } else{
             self.list.unsectionedItems[atIndex].price = priceRange
         }
-    }
-    
-    func validateListFields(){
-        self.canCreateList = (list.emoji != nil && !list.name.isEmpty)
     }
     
     // TODO: heavy refactoring LOL

@@ -10,8 +10,8 @@ import SwiftUI
 class HomeNavigation: ObservableObject{
     @Published var navigationPath = NavigationPath()
     
-    func navigateToEditList(){
-        navigationPath.append(1)
+    func navigateToEditList(list: List){
+        navigationPath.append(list)
     }
     
     func back(){
