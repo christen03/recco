@@ -10,113 +10,61 @@ import UIKit
 
 protocol EditableTableViewControllerDelegate: AnyObject {
     func tableViewControllerDidUpdateData(_ controller: EditableTableViewController,
-                                         sections: [EditableTableViewController.TableSection],
+                                         sections: [Section],
                                          unsectionedItems: [Item])
 }
 
 struct EditableTableViewControllerRepresentable: UIViewControllerRepresentable {
     
     @ObservedObject var listViewModel: ListViewModel
+    
     func makeUIViewController(context: Context) -> EditableTableViewController {
-        let controller = EditableTableViewController()
-        controller.dataDelegate=context.coordinator
-        controller.listViewModel = listViewModel
+        // Create controller with the required view model
+        let controller = EditableTableViewController(viewModel: listViewModel)
+        // Set up any delegate relationships
+//        controller.dataDelegate = context.coordinator
+        // Store reference in coordinator if needed
         context.coordinator.tableViewController = controller
-        populateController(controller)
         
         return controller
     }
     
     func updateUIViewController(_ uiViewController: EditableTableViewController, context: Context) {
-            populateController(uiViewController)
-    }
-    
-    private func populateController(_ controller: EditableTableViewController) {
-        // Convert list sections to controller's TableSection format
-        var tableSections: [EditableTableViewController.TableSection] = []
-        
-        // Add all sections from the list
-        for section in listViewModel.list.sections {
-            let tableSection = EditableTableViewController.TableSection(
-                title: section.name,
-                emoji: section.emoji,
-                items: section.items
-            )
-            tableSections.append(tableSection)
+        // Handle view model reference changes if needed
+        if uiViewController.listViewModel !== listViewModel {
+            // If we somehow got a different view model instance, update it
+            // This should be rare since we pass it in the initializer
+//            uiViewController.updateViewModel(listViewModel)
         }
         
-        // Set the data in the controller
-        controller.sections = tableSections
-        controller.unsectionedItems = listViewModel.list.unsectionedItems
-        
-        // Reload the table to reflect the new data
-        controller.tableView.reloadData()
+        // No need to manually sync data since the controller accesses
+        // the view model directly and observes changes
     }
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
     
-    class Coordinator: NSObject, EditableSectionHeaderDelegate, EditableTableViewControllerDelegate {
+    class Coordinator: NSObject, EditableSectionHeaderDelegate {
+        func sectionHeader(_ header: SectionHeaderView, didChangeTitleTo title: String, forSectionAt index: Int) {}
+        
+        func sectionHeaderWillRemoveSection(_ header: SectionHeaderView, atIndex index: Int) {}
+        
         var parent: EditableTableViewControllerRepresentable
         weak var tableViewController: EditableTableViewController?
         
-        init(_ parent: EditableTableViewControllerRepresentable){
-            self.parent=parent
+        init(_ parent: EditableTableViewControllerRepresentable) {
+            self.parent = parent
         }
         
-        func tableViewControllerDidUpdateData(_ controller: EditableTableViewController, sections: [EditableTableViewController.TableSection], unsectionedItems: [Item]) {
-            var updatedList = parent.listViewModel.list
-            updatedList.sections = sections.map { section in
-                Section(name: section.title, emoji: section.emoji, items: section.items)
-            }
-            
-            updatedList.unsectionedItems = unsectionedItems
-            DispatchQueue.main.async{
-                self.parent.listViewModel.list = updatedList
-            }
-        }
+        // Most data sync methods can be removed since the controller
+        // now talks directly to the view model
         
-        func sectionHeader(_ header: SectionHeaderView, didChangeTitleTo title: String, forSectionAt index: Int) {
-            tableViewController?.sectionHeader(header, didChangeTitleTo: title, forSectionAt: index)
-            
-            guard index >= 0, index < parent.listViewModel.list.sections.count else { return }
-            
-            var updatedSections = parent.listViewModel.list.sections
-            updatedSections[index].name = title
-            
-            var updatedList = parent.listViewModel.list
-            updatedList.sections = updatedSections
-            
-            parent.listViewModel.list = updatedList
-        }
-        
+        // Keep only methods needed for delegate callbacks that aren't
+        // directly related to data sync
         func sectionHeaderDidChangeSize(_ header: SectionHeaderView) {
             tableViewController?.sectionHeaderDidChangeSize(header)
         }
-        
-        func sectionHeaderWillRemoveSection(_ header: SectionHeaderView, atIndex index: Int) {
-              tableViewController?.sectionHeaderWillRemoveSection(header, atIndex: index)
-              
-              guard index >= 0, index < parent.listViewModel.list.sections.count else { return }
-              
-              let itemsToMove = parent.listViewModel.list.sections[index].items
-              
-              var updatedList = parent.listViewModel.list
-              var updatedSections = updatedList.sections
-              
-              if index == 0 {
-                  var updatedUnsectionedItems = updatedList.unsectionedItems
-                  updatedUnsectionedItems.append(contentsOf: itemsToMove)
-                  updatedList.unsectionedItems = updatedUnsectionedItems
-              } else {
-                  updatedSections[index - 1].items.append(contentsOf: itemsToMove)
-              }
-              
-              updatedSections.remove(at: index)
-              updatedList.sections = updatedSections
-              parent.listViewModel.list = updatedList
-          }
-        
     }
 }
 

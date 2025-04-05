@@ -226,6 +226,36 @@
             endingLineNumber = "142"
             landmarkName = "verifyCodeButtonTapped()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "09A1342E-79DB-4700-BE51-F60FEB7B4845 - fe85893dcb7f01c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Recco.SupabaseAuthViewModel.verifyCodeButtonTapped() async -&gt; Swift.Bool"
+                  moduleName = "Recco.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/christenxie/Developer/Recco/Recco/Supabase/SupabaseAuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142">
+               </Location>
+               <Location
+                  uuid = "09A1342E-79DB-4700-BE51-F60FEB7B4845 - db2953f3a12645c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for Recco.SupabaseAuthViewModel.verifyCodeButtonTapped() async -&gt; Swift.Bool"
+                  moduleName = "Recco.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/christenxie/Developer/Recco/Recco/Supabase/SupabaseAuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -242,6 +272,64 @@
             endingLineNumber = "145"
             landmarkName = "verifyCodeButtonTapped()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7E01FECD-DFF6-4B51-8A27-975B17C1714D - fe85893dcb7f0161"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Recco.SupabaseAuthViewModel.verifyCodeButtonTapped() async -&gt; Swift.Bool"
+                  moduleName = "Recco.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/christenxie/Developer/Recco/Recco/Supabase/SupabaseAuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "145"
+                  endingLineNumber = "145">
+               </Location>
+               <Location
+                  uuid = "7E01FECD-DFF6-4B51-8A27-975B17C1714D - db2953f3a1264563"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for Recco.SupabaseAuthViewModel.verifyCodeButtonTapped() async -&gt; Swift.Bool"
+                  moduleName = "Recco.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/christenxie/Developer/Recco/Recco/Supabase/SupabaseAuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "145"
+                  endingLineNumber = "145">
+               </Location>
+               <Location
+                  uuid = "7E01FECD-DFF6-4B51-8A27-975B17C1714D - a56308ccac3a2762"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Recco.SupabaseAuthViewModel.verifyCodeButtonTapped() async -&gt; Swift.Bool"
+                  moduleName = "Recco.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/christenxie/Developer/Recco/Recco/Supabase/SupabaseAuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "145"
+                  endingLineNumber = "145">
+               </Location>
+               <Location
+                  uuid = "7E01FECD-DFF6-4B51-8A27-975B17C1714D - 375d3da9b70d8965"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for Recco.SupabaseAuthViewModel.verifyCodeButtonTapped() async -&gt; Swift.Bool"
+                  moduleName = "Recco.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/christenxie/Developer/Recco/Recco/Supabase/SupabaseAuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "145"
+                  endingLineNumber = "145">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -334,25 +422,9 @@
             filePath = "Recco/Views/ViewControllers/EditableTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "tableView(_:viewForHeaderInSection:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "76E1A95D-153C-4ECE-AA16-859BBC4B1AF8"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Recco/Views/ViewControllers/EditableTableViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "tableView(_:willDisplay:forRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -366,8 +438,8 @@
             filePath = "Recco/Views/ViewControllers/EditableTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "getAndUpdateItem(at:update:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -375,16 +447,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "926C0BCE-28C9-448E-B352-D368F74BBA0E"
+            uuid = "E1F3D294-9BEF-4C61-8DDA-38152483B255"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Recco/Views/ViewControllers/EditableTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
-            landmarkName = "textViewDidEndEditing(_:)"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "updateItem(_:at:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

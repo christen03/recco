@@ -48,7 +48,7 @@ class ListViewModel: ObservableObject {
     private var userDataViewModel: UserDataViewModel? = nil
     @Published var list: List
     
-    
+    private var observers: [UUID: (List)-> Void] = [:]
     struct UIState {
         var isShowingVisibilitySheet: Bool = false
     }
@@ -98,10 +98,46 @@ class ListViewModel: ObservableObject {
         self.list.unsectionedItems.move(fromOffsets: source, toOffset: destination)
     }
     
+    func addObserver(id: UUID, handler: @escaping (List) -> Void){
+        observers[id] = handler
+    }
+    
+    func removeObserver(id: UUID){
+        observers.removeValue(forKey: id)
+    }
+    
+    func createNewItemInSection(at index: Int) {
+        var updatedList = self.list
+        guard index >= 0 && index < updatedList.sections.count else {return}
+        updatedList.sections[index].items.append(Item(name: "", description: ""))
+        self.list=updatedList
+    }
+    
+    func updateList(_ newList: List){
+        self.list=newList
+        for(_, handler) in observers {
+            handler(self.list)
+        }
+    }
+    
+    func updateSection(at index: Int, with newSection: Section) {
+            var updatedList = self.list
+            if index < updatedList.sections.count {
+                updatedList.sections[index] = newSection
+                updateList(updatedList)
+            }
+        }
+        
+        func updateUnsectionedItem(at index: Int, with newItem: Item) {
+            var updatedList = self.list
+            if index < updatedList.unsectionedItems.count {
+                updatedList.unsectionedItems[index] = newItem
+                updateList(updatedList)
+            }
+        }
+    
     func updateListVisibilty(_ visibilty: ListVisibility){
         guard visibilty != self.list.visibility else { return }
-        print("name: \(self.list.unsectionedItems[0].name) description: \(self.list.unsectionedItems[0].description)")
-        
         var updatedList = self.list
         updatedList.visibility=visibilty
         

@@ -167,7 +167,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
                 }
             }
         } else {
-            tableViewController.sections[sectionIndex].items.append(Item(name: "", description: ""))
+            tableViewController.listViewModel.createNewItemInSection(at: sectionIndex)
             let indexPath = IndexPath(row: 0, section: sectionIndex+1)
             tableView.beginUpdates()
             tableView.insertRows(at: [indexPath], with: .top)
