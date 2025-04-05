@@ -20,21 +20,20 @@ struct ContentView: View {
     var listViewModel: ListViewModel? = nil
     
     var body: some View {
-        if authenticationError{
-            VStack{
-                TitleText("Sorry! We had an error fetching your session. Please try signing out and signing back in.")
-                Button(action: {
-                    userDataViewModel.signOut()
-                },label: {
-                    FontedText("Sign Out")
-                })
-            }
-        }
+//        if authenticationError{
+//            VStack{
+//                TitleText("Sorry! We had an error fetching your session. Please try signing out and signing back in.")
+//                Button(action: {
+//                    userDataViewModel.signOut()
+//                },label: {
+//                    FontedText("Sign Out")
+//                })
+//            }
+//        }
         
         NavigationStack(path: $homeNavigation.navigationPath){
             GeometryReader { geometry in
                 ZStack {
-                    // Main TabView
                     TabView(selection: $selectedTab) {
                         FeedView()
                             .tabItem {
@@ -65,7 +64,7 @@ struct ContentView: View {
                         .position(x: geometry.size.width / 2, y: geometry.size.height - 40)
                 }
             }
-            .navigationDestination(for: List.self) { list in  EditListView(list: list )}
+            .navigationDestination(for: List.self) { list in  ListEditView(list: list )}
         }
         .onAppear{
             guard let userId = userDataViewModel.currentUser?.id else {
@@ -124,7 +123,9 @@ struct PresentationSheetView: View {
                 Spacer()
                 Button(action: {
                     homePageViewModel.isShowingListCreateSheet = false
-                    homeNavigation.navigateToEditList(list: homePageViewModel.list)
+                    let newList = homePageViewModel.list
+                    homeNavigation.navigateToEditList(list: newList)
+                    homePageViewModel.list = List.empty()
                 }, label: {
                     FontedText("Create", size: 14)
                         .frame(width: 60)
@@ -171,7 +172,6 @@ struct PresentationSheetView: View {
                         HStack{
                             FontedText(visibility.emoji, size: 16)
                             FontedText(visibility.rawValue, size: 16)
-                            
                         }
                         .lineLimit(1)
                         .fixedSize()
@@ -207,7 +207,6 @@ struct PresentationSheetView: View {
                 Spacer()
             }
             Spacer()
-            
         }
       
         .onAppear{

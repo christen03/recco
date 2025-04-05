@@ -32,8 +32,9 @@ let mockSections:[Section] = [
         name: "Groceries",
         emoji: "🛒",
         items: [
-            Item(name: "Apples", description: "A bag of fresh apples", price: PriceRange.one, isStarred: true),
-            Item(name: "Milk", description: "1 gallon of whole milk", price: PriceRange.two),
+            Item(name: "Yank", description: "A bag of fresh apples", price: PriceRange.one, isStarred: true),
+            Item(name: "A lot of apples", description: "A bag of fresh apples", price: PriceRange.one, isStarred: true),
+            Item(name: "Whole Milk", description: "1 gallon of whole milk", price: PriceRange.two),
             Item(name: "Bread", description: "Whole grain bread", price: PriceRange.one)
         ]
     ),
@@ -57,10 +58,13 @@ let mockSections:[Section] = [
     )
 ]
 
-let mockUser: User = User(id: UUID(), firstName: "Christen", lastName: "Xie", username: "chris10", profilePictureUrl: URL(string: "https://pejyorpsrmoywwcerlkc.supabase.co/storage/v1/object/public/profile_pictures/BA83880C-E5EA-4F16-AB72-5D573517EFC1.jpg")!, email: "christenxie@gmail.com", phoneNumber: "5103345535",
+let mockUser: User = User(id: UUID(), firstName: "Christen", lastName: "Xie", username: "chris10", profilePictureUrl: URL(string: "https://pejyorpsrmoywwcerlkc.supabase.co/storage/v1/object/public/profile-pictures/BA83880C-E5EA-4F16-AB72-5D573517EFC1.jpg")!, email: "christenxie@gmail.com", phoneNumber: "5103345535",
                           tags: [Tag(id: 1, name: "Food", emoji: "🍝", category: "Food"),
                                  Tag(id: 2, name: "Cafes", emoji: "☕️", category: "Food")]
 )
 
-//let mockListVM = ListViewModel(userId: "123",selectedEmoji: "🫶", listName: "Christen's Recs", sections: mockSections, items: mockItems)
+let mockList = List(id: UUID(), name: "Mock List", creatorId: UUID(), emoji: "🫶", visibility: ListVisibility.friends, sections: mockSections, items: mockItems)
+
+
+let mockListVM = ListViewModel(list: mockList)
 

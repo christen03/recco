@@ -15,9 +15,8 @@ struct ReccoApp: App {
     @StateObject var authViewModel = SupabaseAuthViewModel()
     
     var body: some Scene {
-        WindowGroup {
+                WindowGroup {
             if(userDataViewModel.isUserAuthenticated){
-                
                 ContentView()
                 .environmentObject(authViewModel)
                 .environmentObject(userDataViewModel)
@@ -30,5 +29,6 @@ struct ReccoApp: App {
                     .preferredColorScheme(.light)
             }
         }
-    }
+                  
+                }
 }

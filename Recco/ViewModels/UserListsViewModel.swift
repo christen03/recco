@@ -13,19 +13,13 @@ class UserListsViewModel: ObservableObject {
     @Published var isFetching: Bool = false
     
     init(){
-        self.isFetching=true
         Task{
-            let userId = try await supabase.auth.session.user.id
-            let response = try await fetchUserLists(userId: userId)
-            await MainActor.run{
-                self.userLists=response.map{$0.toClientModel()}
-                self.isFetching = false;
-            }
+            await fetchUsersLists()
         }
     }
     
     let fetchListsQuery: String =
-    """
+        """
             list_id, 
             name, 
             creator_id, 
@@ -45,7 +39,7 @@ class UserListsViewModel: ObservableObject {
             )
         """
     
-    func fetchUserLists(userId: UUID) async throws -> [ListQuery] {
+    private func userListsQuery(userId: UUID) async throws -> [ListQuery] {
         do{
             let data: [ListQuery] = try await supabase
                 .from("lists")
@@ -59,6 +53,18 @@ class UserListsViewModel: ObservableObject {
         } catch {
             print("fetchUserLists error:  \(error.localizedDescription)")
             throw error
+        }
+    }
+    
+    func fetchUsersLists() async {
+        self.isFetching=true
+        Task{
+            let userId = try await supabase.auth.session.user.id
+            let response = try await self.userListsQuery(userId: userId)
+            await MainActor.run{
+                self.userLists=response.map{$0.toClientModel()}
+                self.isFetching = false;
+            }
         }
     }
 }

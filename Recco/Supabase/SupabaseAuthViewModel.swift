@@ -92,11 +92,9 @@ class SupabaseAuthViewModel: BaseSupabase {
                 if(self.isSigningUp){
                     if(try await self.supabaseUserManager.checkUserExists(email: self.email, phone: self.phone))
                     {
-                        print("User exists")
                         throw AuthError.userAlreadyExists(message: "User already exists!")
                     }
                 }
-                print("Going down")
                 if(self.authMethod == .email){
                     try await self.supabase.auth.signInWithOTP(
                         email: self.email,
@@ -120,28 +118,27 @@ class SupabaseAuthViewModel: BaseSupabase {
     }
     
     @MainActor
-    func verifyCodeButtonTapped() async -> Bool{
+    func verifyCodeButtonTapped() async -> Bool {
         isLoading = true
         defer { isLoading = false }
+        
         do {
-            try await Task.detached(priority: .userInitiated) {
-                var authResp: AuthResponse
-                if(self.authMethod == .email){
-                    authResp = try await self.supabase.auth.verifyOTP(
-                        email: self.email,
-                        token: self.code,
-                        type: .email
-                    )
-                } else {
-                    authResp = try await self.supabase.auth.verifyOTP(
-                        phone: self.phone,
-                        token: self.code,
-                        type: .sms
-                    )
-                }
-                self.userId = authResp.user.id
-            }.value
+            let authResp: AuthResponse
             
+            if self.authMethod == .email {
+                authResp = try await supabase.auth.verifyOTP(
+                    email: self.email,
+                    token: self.code,
+                    type: .email
+                )
+            } else {
+                authResp = try await supabase.auth.verifyOTP(
+                    phone: self.phone,
+                    token: self.code,
+                    type: .sms
+                )
+            }
+            self.userId = authResp.user.id
             return true
         } catch {
             toast = Toast(style: .error, message: error.localizedDescription)
@@ -180,7 +177,16 @@ class SupabaseAuthViewModel: BaseSupabase {
                 phoneNumber: self.phone,
                 tags: []
             )
-            try await self.supabaseUserManager.createUserInSupabase(userData: newUser)
+            let createUserParams = CreateUserParams(
+                id: self.userId!,
+                firstName: self.firstName,
+                lastName: self.lastName,
+                username: self.username,
+                profilePictureUrl: self.profilePictureUrl,
+                email: self.email,
+                phoneNumber: self.phone
+            )
+            try await self.supabaseUserManager.createUserInSupabase(userData: createUserParams)
             UserDefaults.standard.saveUser(newUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
             return newUser
         } catch {

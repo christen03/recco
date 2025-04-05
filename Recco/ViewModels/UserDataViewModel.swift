@@ -85,10 +85,8 @@ class UserDataViewModel: BaseSupabase {
     }
     
     func fetchUserDataFromSupabase(userId: UUID) async throws -> SupabaseUserResponse {
-        do{
-            return try await supabase
-                .from("users")
-                .select("""
+       let query =
+"""
 user_id,
 first_name,
 last_name,
@@ -104,7 +102,11 @@ user_tags (
         category
         )
     )
-""")
+"""
+        do{
+            return try await supabase
+                .from("users")
+                .select(query)
                 .eq("user_id", value: userId)
                 .single()
                 .execute()

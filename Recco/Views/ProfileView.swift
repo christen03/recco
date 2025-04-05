@@ -66,6 +66,9 @@ struct ProfileView: View{
                     .padding(.horizontal, 16)
                     .animation(.spring(), value: userListsViewModel.userLists)
                 }
+                .refreshable{
+                    await userListsViewModel.fetchUsersLists()
+                }
                 .overlay {
                     if userListsViewModel.isFetching {
                         ProgressView()
@@ -79,8 +82,15 @@ struct ProfileView: View{
                                  isPresentingTagSheet: $isPresentingTagSheet)
                 .presentationDetents([.medium])
             }
-            .navigationDestination(for: List.self) {
-                list in EditListView(list: list)
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing){
+                    Button(action: {
+                        print("hi")
+                    }) {
+                        Image(systemName: "gearshape.fill")
+                            .foregroundStyle(Color.black)
+                    }
+                }
             }
         }
         .environmentObject(homeNavigation)

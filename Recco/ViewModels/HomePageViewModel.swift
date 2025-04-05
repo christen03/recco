@@ -34,7 +34,8 @@ class HomePageViewModel: ObservableObject {
         self.list = List(name: "",
                                 creatorId: userId,
                                 emoji: nil,
-                                visibility: ListVisibility.global)
+                                visibility: ListVisibility.global,
+                         items: [Item(name: "", description: "")])
         self.isListCreated = true
     }
     

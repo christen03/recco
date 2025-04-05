@@ -19,16 +19,13 @@
 		CA2F5ECF2C7C30C6006EA304 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5ECE2C7C30C6006EA304 /* Colors.swift */; };
 		CA2F5ED82C7C3CC8006EA304 /* ElegantEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = CA2F5ED72C7C3CC8006EA304 /* ElegantEmojiPicker */; };
 		CA2F5EDB2C7D8E00006EA304 /* HomeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */; };
-		CA2F5EDD2C7D8E79006EA304 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EDC2C7D8E79006EA304 /* EditListView.swift */; };
 		CA2F5EDF2C7ECB1F006EA304 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EDE2C7ECB1F006EA304 /* List.swift */; };
 		CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EE42C7ED112006EA304 /* MockData.swift */; };
+		CA3A78472D682D3200A9D370 /* KeyboardAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A78462D682D3200A9D370 /* KeyboardAccessoryView.swift */; };
+		CA4ADB882D81179100FFA62B /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4ADB872D81178C00FFA62B /* SectionHeaderView.swift */; };
 		CA7DFAEC2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */; };
 		CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */; };
-		CA7DFAF22C84F1FE00B2239A /* ListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAF12C84F1FE00B2239A /* ListItemView.swift */; };
 		CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */; };
-		CA87139F2C97E525004BFE07 /* ListKeyboardButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */; };
-		CA876DE22C8D506000440DFF /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA876DE12C8D505B00440DFF /* CustomTextField.swift */; };
-		CA876DE42C96A22200440DFF /* CustomTextFieldMultiline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA876DE32C96A21E00440DFF /* CustomTextFieldMultiline.swift */; };
 		CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1B2C7119DB00808375 /* Toast.swift */; };
 		CAA43A1E2C711A0800808375 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1D2C711A0800808375 /* ToastView.swift */; };
 		CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA43A1F2C711A2F00808375 /* ToastModifier.swift */; };
@@ -71,6 +68,11 @@
 		CAB605602C6B1EF4007698B9 /* SupabaseAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6055F2C6B1EF4007698B9 /* SupabaseAuthViewModel.swift */; };
 		CAB605632C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CAB605622C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf */; };
 		CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605672C6B23B6007698B9 /* FontManager.swift */; };
+		CAB6A8D32CD61CB700F8D0A1 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6A8D22CD61CB700F8D0A1 /* ProfileSettingsView.swift */; };
+		CAD0CFDB2CDDD13D009C0FE8 /* ListEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD0CFDA2CDDD13D009C0FE8 /* ListEditView.swift */; };
+		CADEDDF92D97302900BC21F0 /* VisbiltySelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADEDDF82D97302500BC21F0 /* VisbiltySelectView.swift */; };
+		CAF6C3D72D5458430001BC57 /* EditableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF6C3D62D5458430001BC57 /* EditableTableViewCell.swift */; };
+		CAF6C3DA2D5459460001BC57 /* EditableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF6C3D92D5459460001BC57 /* EditableTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,16 +104,13 @@
 		CA2F5ECC2C7C235B006EA304 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		CA2F5ECE2C7C30C6006EA304 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigation.swift; sourceTree = "<group>"; };
-		CA2F5EDC2C7D8E79006EA304 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
 		CA2F5EDE2C7ECB1F006EA304 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		CA2F5EE42C7ED112006EA304 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		CA3A78462D682D3200A9D370 /* KeyboardAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAccessoryView.swift; sourceTree = "<group>"; };
+		CA4ADB872D81178C00FFA62B /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
 		CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterHorizontally.swift; sourceTree = "<group>"; };
-		CA7DFAF12C84F1FE00B2239A /* ListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemView.swift; sourceTree = "<group>"; };
 		CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElegantEmojiPickerView.swift; sourceTree = "<group>"; };
-		CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListKeyboardButtons.swift; sourceTree = "<group>"; };
-		CA876DE12C8D505B00440DFF /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
-		CA876DE32C96A21E00440DFF /* CustomTextFieldMultiline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldMultiline.swift; sourceTree = "<group>"; };
 		CAA43A1B2C7119DB00808375 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		CAA43A1D2C711A0800808375 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		CAA43A1F2C711A2F00808375 /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
@@ -151,6 +150,11 @@
 		CAB605622C6B21C4007698B9 /* SF-Pro-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Regular.otf"; sourceTree = "<group>"; };
 		CAB605672C6B23B6007698B9 /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
 		CAB605692C6B255E007698B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CAB6A8D22CD61CB700F8D0A1 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
+		CAD0CFDA2CDDD13D009C0FE8 /* ListEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEditView.swift; sourceTree = "<group>"; };
+		CADEDDF82D97302500BC21F0 /* VisbiltySelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisbiltySelectView.swift; sourceTree = "<group>"; };
+		CAF6C3D62D5458430001BC57 /* EditableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableTableViewCell.swift; sourceTree = "<group>"; };
+		CAF6C3D92D5459460001BC57 /* EditableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +221,21 @@
 			path = Singleton;
 			sourceTree = "<group>";
 		};
+		CA3A78452D682D1C00A9D370 /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				CA3A78462D682D3200A9D370 /* KeyboardAccessoryView.swift */,
+			);
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
+		CA3A78482D68700C00A9D370 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		CA7DFAED2C84DB7600B2239A /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,8 +247,8 @@
 		CA7DFAF02C84F1EE00B2239A /* ListEdit */ = {
 			isa = PBXGroup;
 			children = (
-				CA2F5EDC2C7D8E79006EA304 /* EditListView.swift */,
-				CA7DFAF12C84F1FE00B2239A /* ListItemView.swift */,
+				CADEDDF82D97302500BC21F0 /* VisbiltySelectView.swift */,
+				CAD0CFDA2CDDD13D009C0FE8 /* ListEditView.swift */,
 			);
 			path = ListEdit;
 			sourceTree = "<group>";
@@ -237,11 +256,13 @@
 		CA7DFAF32C84F76400B2239A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				CA4ADB872D81178C00FFA62B /* SectionHeaderView.swift */,
+				CA3A78482D68700C00A9D370 /* New Group */,
 				CA22577E2CCEC52800D5D261 /* TagSelectionView.swift */,
 				C26D20172CC19D0E00B919A8 /* ReccoBackgroundText.swift */,
 				CAA43A3F2C71B1E500808375 /* Text.swift */,
-				CA87139E2C97E521004BFE07 /* ListKeyboardButtons.swift */,
 				CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */,
+				CAF6C3D62D5458430001BC57 /* EditableTableViewCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -249,8 +270,6 @@
 		CA876DE02C8D505600440DFF /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				CA876DE32C96A21E00440DFF /* CustomTextFieldMultiline.swift */,
-				CA876DE12C8D505B00440DFF /* CustomTextField.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -373,6 +392,8 @@
 		CAB605452C5F0D07007698B9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CA3A78452D682D1C00A9D370 /* Keyboard */,
+				CAF6C3D82D5459300001BC57 /* ViewControllers */,
 				CA7DFAF32C84F76400B2239A /* Components */,
 				CA7DFAF02C84F1EE00B2239A /* ListEdit */,
 				CA7DFAED2C84DB7600B2239A /* Modifiers */,
@@ -380,6 +401,7 @@
 				CAB6050A2C5F068C007698B9 /* ContentView.swift */,
 				CAB605462C5F0D1D007698B9 /* FeedView.swift */,
 				CAB605482C5F0D2B007698B9 /* ProfileView.swift */,
+				CAB6A8D22CD61CB700F8D0A1 /* ProfileSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -418,6 +440,14 @@
 				CAB605672C6B23B6007698B9 /* FontManager.swift */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		CAF6C3D82D5459300001BC57 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CAF6C3D92D5459460001BC57 /* EditableTableViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -569,12 +599,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA3A78472D682D3200A9D370 /* KeyboardAccessoryView.swift in Sources */,
 				CAA43A2A2C71855800808375 /* ChooseProfilePictureView.swift in Sources */,
 				CA2F5EDF2C7ECB1F006EA304 /* List.swift in Sources */,
 				CAA43A2F2C718C4500808375 /* SupabaseUserManager.swift in Sources */,
 				CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */,
 				CA2F5ECD2C7C235B006EA304 /* ListViewModel.swift in Sources */,
-				CA876DE42C96A22200440DFF /* CustomTextFieldMultiline.swift in Sources */,
 				C26D201B2CC1BE6B00B919A8 /* AuthError.swift in Sources */,
 				CAA43A362C71ABBF00808375 /* ImageLoader.swift in Sources */,
 				CA2F5EDB2C7D8E00006EA304 /* HomeNavigation.swift in Sources */,
@@ -589,6 +619,7 @@
 				CA1A3CBE2CCF12EB0036E66C /* ListQuery.swift in Sources */,
 				CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */,
 				CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */,
+				CA4ADB882D81179100FFA62B /* SectionHeaderView.swift in Sources */,
 				CA22577F2CCEC52E00D5D261 /* TagSelectionView.swift in Sources */,
 				CAA43A492C7A62CB00808375 /* HomePageViewModel.swift in Sources */,
 				CAB605492C5F0D2B007698B9 /* ProfileView.swift in Sources */,
@@ -598,15 +629,16 @@
 				CAB6050B2C5F068C007698B9 /* ContentView.swift in Sources */,
 				CA22577B2CCEC1EA00D5D261 /* Tag.swift in Sources */,
 				CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */,
+				CAF6C3D72D5458430001BC57 /* EditableTableViewCell.swift in Sources */,
+				CAF6C3DA2D5459460001BC57 /* EditableTableViewController.swift in Sources */,
+				CAD0CFDB2CDDD13D009C0FE8 /* ListEditView.swift in Sources */,
 				CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */,
-				CA876DE22C8D506000440DFF /* CustomTextField.swift in Sources */,
+				CADEDDF92D97302900BC21F0 /* VisbiltySelectView.swift in Sources */,
 				CAA43A282C7182C900808375 /* EnterUsernameView.swift in Sources */,
 				CAA43A222C712F8200808375 /* VerificationCodeView.swift in Sources */,
-				CA2F5EDD2C7D8E79006EA304 /* EditListView.swift in Sources */,
+				CAB6A8D32CD61CB700F8D0A1 /* ProfileSettingsView.swift in Sources */,
 				CA2F5ECF2C7C30C6006EA304 /* Colors.swift in Sources */,
-				CA7DFAF22C84F1FE00B2239A /* ListItemView.swift in Sources */,
 				CAA43A2D2C71891100808375 /* User.swift in Sources */,
-				CA87139F2C97E525004BFE07 /* ListKeyboardButtons.swift in Sources */,
 				CAA43A3A2C71ABD400808375 /* Kingfisher.swift in Sources */,
 				CAA43A242C71725800808375 /* AuthNavigation.swift in Sources */,
 				CAB605472C5F0D1D007698B9 /* FeedView.swift in Sources */,
@@ -776,6 +808,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -811,6 +844,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

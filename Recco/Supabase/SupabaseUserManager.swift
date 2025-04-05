@@ -25,7 +25,7 @@ class SupabaseUserManager: BaseSupabase{
         }
     }
     
-    func createUserInSupabase(userData: User) async throws{
+    func createUserInSupabase(userData: CreateUserParams) async throws{
         try await self.supabase
             .from("users")
             .insert(userData)
@@ -38,7 +38,7 @@ class SupabaseUserManager: BaseSupabase{
         }
         let fileName = "\(userId).jpg"
         let response = try await supabase.storage
-            .from("profile_pictures")
+            .from("profile-pictures")
             .upload(
                 path: fileName,
                 file: imageData
