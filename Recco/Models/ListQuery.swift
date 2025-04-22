@@ -17,13 +17,13 @@ struct ListQuery: Decodable {
     let items: [ItemQuery]
     
     enum CodingKeys: String, CodingKey {
-        case listId = "list_id"
+        case listId = "id"
         case name
         case creatorId = "creator_id"
         case emoji
         case visibility
         case sections
-        case items
+        case items = "unsectioned_items"
     }
     
     func toClientModel() -> List{
@@ -42,13 +42,15 @@ struct ListQuery: Decodable {
 struct SectionQuery: Decodable {
     let sectionId: UUID
     let name: String
-    let orderIndex: Int
+    let emoji: String?
+    let displayOrder: Int
     let items: [ItemQuery]
     
     enum CodingKeys: String, CodingKey {
-        case sectionId = "section_id"
+        case sectionId = "id"
         case name
-        case orderIndex = "order_index"
+        case emoji
+        case displayOrder = "display_order"
         case items
     }
     
@@ -56,6 +58,7 @@ struct SectionQuery: Decodable {
         Section(
             id: sectionId,
             name: name,
+            emoji: emoji,
             items: items.map { $0.toClientModel() }
         )
     }
@@ -65,13 +68,13 @@ struct ItemQuery: Decodable {
     let itemId: UUID
     let name: String
     let description: String?
-    let orderIndex: Int
+    let displayOrder: Int
     
     enum CodingKeys: String, CodingKey {
-        case itemId = "item_id"
+        case itemId = "id"
         case name
         case description
-        case orderIndex = "order_index"
+        case displayOrder = "display_order"
     }
     
     func toClientModel() -> Item {

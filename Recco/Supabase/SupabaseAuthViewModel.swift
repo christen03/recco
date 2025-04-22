@@ -14,6 +14,9 @@ import Supabase
 class SupabaseAuthViewModel: BaseSupabase {
     
     let supabaseUserManager = SupabaseUserManager()
+    var formattedPhoneNumber: String {
+        return "1"+self.phone
+    }
     
     @Published var isSigningUp: Bool = false
     @Published var authMethod: AuthOptions? = nil
@@ -102,7 +105,7 @@ class SupabaseAuthViewModel: BaseSupabase {
                     )
                 } else {
                     try await self.supabase.auth.signInWithOTP(
-                        phone: self.phone,
+                        phone: self.formattedPhoneNumber,
                         shouldCreateUser: self.isSigningUp
                     )
                 }
@@ -133,7 +136,7 @@ class SupabaseAuthViewModel: BaseSupabase {
                 )
             } else {
                 authResp = try await supabase.auth.verifyOTP(
-                    phone: self.phone,
+                    phone: self.formattedPhoneNumber,
                     token: self.code,
                     type: .sms
                 )

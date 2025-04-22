@@ -66,12 +66,8 @@ struct ContentView: View {
             }
             .navigationDestination(for: List.self) { list in  ListEditView(list: list )}
         }
-        .onAppear{
-            guard let userId = userDataViewModel.currentUser?.id else {
-                self.authenticationError=true
-                return
-            }
-            homePageViewModel.createList(userId: userId)
+        .task{
+           await homePageViewModel.createList()
         }
         .overlay(
             ZStack(alignment: .bottom) {
@@ -122,16 +118,21 @@ struct PresentationSheetView: View {
                 FontedText("New list", size: 16)
                 Spacer()
                 Button(action: {
-                    homePageViewModel.isShowingListCreateSheet = false
-                    let newList = homePageViewModel.list
-                    homeNavigation.navigateToEditList(list: newList)
-                    homePageViewModel.list = List.empty()
+                    Task {
+                            let newListId = await homePageViewModel.createListInSupabase()
+                            DispatchQueue.main.async {
+                            homePageViewModel.isShowingListCreateSheet = false
+                                let newList = homePageViewModel.list
+                                homeNavigation.navigateToEditList(list: newList)
+                            }
+                            await homePageViewModel.createList()
+                    }
                 }, label: {
                     FontedText("Create", size: 14)
                         .frame(width: 60)
                         .foregroundColor(homePageViewModel.canCreateList ? Color.black : Colors.DisabledGray)
                 })
-                .disabled(!homePageViewModel.canCreateList)
+                .disabled(!homePageViewModel.canCreateList && !homePageViewModel.isUploadingListToSupabase)
                 .environmentObject(homePageViewModel)
             }
             Button(action: {

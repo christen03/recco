@@ -36,9 +36,6 @@ struct EditableTableViewControllerRepresentable: UIViewControllerRepresentable {
             // This should be rare since we pass it in the initializer
 //            uiViewController.updateViewModel(listViewModel)
         }
-        
-        // No need to manually sync data since the controller accesses
-        // the view model directly and observes changes
     }
     
     func makeCoordinator() -> Coordinator {
@@ -57,11 +54,6 @@ struct EditableTableViewControllerRepresentable: UIViewControllerRepresentable {
             self.parent = parent
         }
         
-        // Most data sync methods can be removed since the controller
-        // now talks directly to the view model
-        
-        // Keep only methods needed for delegate callbacks that aren't
-        // directly related to data sync
         func sectionHeaderDidChangeSize(_ header: SectionHeaderView) {
             tableViewController?.sectionHeaderDidChangeSize(header)
         }
@@ -71,10 +63,12 @@ struct EditableTableViewControllerRepresentable: UIViewControllerRepresentable {
 struct ListEditView: View {
     
     @StateObject var listViewModel: ListViewModel
+    @EnvironmentObject var homeNavigation: HomeNavigation
     @State private var isKeyboardVisible = false
     @State var toast: Toast? = nil
     @State var isShowingEmojiPicker: Bool = false
     @State var isShowingVisibilitySheet = false
+    @State var isShowingDeleteAlert: Bool = false
     
     init(list: List){
         _listViewModel = StateObject(wrappedValue: ListViewModel(list: list))
@@ -82,6 +76,7 @@ struct ListEditView: View {
     
     var body: some View {
         VStack{
+            
             Text(listViewModel.list.emoji ?? "")
                 .font(.system(size: 50))
                 .onTapGesture {
@@ -100,7 +95,6 @@ struct ListEditView: View {
             }
             .fontWeight(.light)
             .onTapGesture {
-//                listViewModel.toggleVisibilitySheet()
                 self.isShowingVisibilitySheet = true
             }
             
@@ -114,17 +108,29 @@ struct ListEditView: View {
         .sheet(isPresented: $isShowingEmojiPicker) {
             ElegantEmojiPickerView(selectedEmoji: $listViewModel.list.emoji)
         }
-        .navigationBarItems(trailing: keyboardDoneButton)
+        .navigationBarItems(trailing: menuButton)
+        
+        .alert(isPresented: $isShowingDeleteAlert) {
+                   Alert(
+                       title: Text("Delete List"),
+                       message: Text("Are you sure you want to delete '\(listViewModel.list.name)'? This action cannot be undone."),
+                       primaryButton: .destructive(Text("Delete")) {
+                           Task {
+                               await listViewModel.deleteList()
+                           }
+                           homeNavigation.back()
+                       },
+                       secondaryButton: .cancel()
+                   )
+               }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
                   isKeyboardVisible = true
               }
               .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
                   isKeyboardVisible = false
               }
-        
-              .onChange(of: listViewModel.uiState.isShowingVisibilitySheet) { newValue in
-                  print("Sheet visibilty changed to \(newValue)")
-                  print("Current list has \(listViewModel.list.sections.count) sections and \(listViewModel.list.unsectionedItems[0].name)")
+              .onDisappear {
+                  listViewModel.saveNow()
               }
     }
     
@@ -133,11 +139,62 @@ struct ListEditView: View {
             if isKeyboardVisible {
                 Button("Done"){
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        listViewModel.saveNow()
                 }
                 .foregroundColor(.blue)
             }
         }
     }
+    
+    private var menuButton: some View {
+            Menu {
+                Button {
+                    self.isShowingVisibilitySheet.toggle()
+                } label:{
+                    HStack {
+                        FontedText("Show Visibility")
+                        Image(systemName: "lock")
+                    }
+                }
+                
+                Button {
+                   print("Coming soon")
+                } label : {
+                    HStack {
+                        FontedText("Ask for recs")
+                        Image(systemName: "list.clipboard.fill")
+                    }
+                }
+                
+                Button {
+                    print("Coming soon")
+                } label: {
+                    HStack {
+                        FontedText("Share link")
+                        Image(systemName: "link")
+                    }
+                }
+                
+                Button {
+                    self.isShowingDeleteAlert = true
+                } label : {
+                    HStack {
+                      FontedText("Delete")
+                        Image(systemName: "trash")
+                    }
+                }
+                
+            } label: {
+                Image(systemName: "ellipsis")
+            }
+    }
+    
+    
+    private func formatDate(_ date: Date) -> String {
+          let formatter = DateFormatter()
+          formatter.timeStyle = .short
+          return formatter.string(from: date)
+      }
     
 }
 

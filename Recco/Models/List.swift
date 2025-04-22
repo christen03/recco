@@ -8,7 +8,7 @@
 import Foundation
 
 struct Item: Hashable, Identifiable {
-    let id: UUID
+    var id: UUID
     var name: String
     var description: String?
     var price: PriceRange? = nil
@@ -34,7 +34,7 @@ struct Item: Hashable, Identifiable {
 }
 
 struct Section: Hashable, Identifiable {
-    let id: UUID
+    var id: UUID
     var name: String
     var emoji: String?
     var items: [Item]
@@ -47,26 +47,8 @@ struct Section: Hashable, Identifiable {
     }
 }
 
-enum ListItem: Identifiable {
-    case header(String)          // Section header with the section name
-    case item(Item)              // Regular item
-    case section(Section)        // Entire section with items
-    
-    var id: UUID {
-        switch self {
-        case .header(let name):
-            return UUID()
-        case .item(let item):
-            return item.id
-        case .section(let section):
-            return UUID()
-        }
-    }
-}
-
-
 struct List: Identifiable, Equatable, Hashable {
-    let id: UUID
+    var id: UUID
     var name: String
     let creatorId: UUID
     var emoji: String?

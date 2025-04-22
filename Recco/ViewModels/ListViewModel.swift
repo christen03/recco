@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Network
 
 enum ListVisibility: String, CaseIterable {
     // Named global becuase 'public' is a reserved keyword
@@ -36,7 +37,7 @@ enum ListVisibility: String, CaseIterable {
     }
 }
 
-enum PriceRange{
+enum PriceRange: String{
     case free
     case one
     case two
@@ -45,8 +46,15 @@ enum PriceRange{
 
 class ListViewModel: ObservableObject {
     
+    
+    private var saveWorkItem: DispatchWorkItem? = nil
+    private let saveDelay: TimeInterval = 2.0
+    private let networkMonitor = NWPathMonitor()
+
+    var isListCreated: Bool = false
     private var userDataViewModel: UserDataViewModel? = nil
-    @Published var list: List
+    @Published var list: List { didSet { scheduleSave() } }
+    @Published var lastSaveDate: Date? = nil
     
     private var observers: [UUID: (List)-> Void] = [:]
     struct UIState {
@@ -58,44 +66,35 @@ class ListViewModel: ObservableObject {
     @Published var isShowingEmojiPicker: Bool = false
     @Published var canCreateList: Bool = false
     @Published var toast: Toast? = nil
+    
+    
+    @Published var isNetworkAvailable: Bool = false
+    @Published var isSaving: Bool = false
+    
     var isInitialized: Bool = false
     
     static func empty() -> ListViewModel {
         return ListViewModel(list: List.empty())
     }
     
+    private func setupNetworkMonitoring() {
+        networkMonitor.pathUpdateHandler = { [weak self] path in
+            let isAvailable = path.status == .satisfied
+        }
+    }
+    
     
     init(list: List){
-        self.list=list
+        var listWithItem = list
+        if list.sections.isEmpty && list.unsectionedItems.isEmpty {
+            listWithItem.unsectionedItems.append(Item(name: "", description: ""))
+        }
+        self.list=listWithItem
     }
     
-    func initialize(userDataViewModel: UserDataViewModel){
-        guard !isInitialized else { return }
-        self.userDataViewModel=userDataViewModel
-        self.list = List(name: "",
-                         creatorId: userDataViewModel.currentUser?.id ?? UUID(),
-                         emoji: nil,
-                         visibility: ListVisibility.global)
-    }
-
-    var allItems: [ListItem] {
-        var items = [ListItem]()
-        
-        // Add unsectioned items first
-        items.append(contentsOf: list.unsectionedItems.map { ListItem.item($0) })
-        
-        // Add sections
-        items.append(contentsOf: list.sections.map { ListItem.section($0) })
-        
-        return items
-    }
     
     func toggleVisibilitySheet(){
         self.uiState.isShowingVisibilitySheet.toggle()
-    }
-    
-    func move(from source: IndexSet, to destination: Int) {
-        self.list.unsectionedItems.move(fromOffsets: source, toOffset: destination)
     }
     
     func addObserver(id: UUID, handler: @escaping (List) -> Void){
@@ -140,33 +139,59 @@ class ListViewModel: ObservableObject {
         guard visibilty != self.list.visibility else { return }
         var updatedList = self.list
         updatedList.visibility=visibilty
-        
-           
         self.list=updatedList
     }
     
     
-    func postToSupabase() async throws -> UUID {
-        let databaseObject = CreateListParams(list: self.list)
+    private func scheduleSave(){
+        saveWorkItem?.cancel()
         
+        let workItem = DispatchWorkItem { [weak self] in
+            Task { [weak self] in
+                await self?.saveListToSupabase()
+            }
+        }
+        
+        saveWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + saveDelay, execute: workItem)
+    }
+    
+    @MainActor
+    private func saveListToSupabase() async {
+        guard !isSaving else {return}
+        defer {isSaving = false}
+        
+        isSaving = true
+        
+        if(self.list.unsectionedItems.count == 1 && self.list.sections.isEmpty && self.list.unsectionedItems[0].name=="" && self.list.unsectionedItems[0].description=="") { return }
         do {
-            return try await supabase
-                .rpc("create_complete_list",
-                     params: databaseObject)
+            let updateListParams = UpdateListParams(list: self.list)
+            try await supabase.rpc(SupabaseFunctions.updateList.rawValue, params: updateListParams)
                 .execute()
                 .value
+                lastSaveDate = Date();
         } catch {
-            print(error)
-            throw error
+            print("Error saving list, \(error)")
+                self.toast=Toast(style: ToastStyle.error, message: "Error saving list")
         }
     }
     
-    func printOutDebug(){
-        for (index, item) in self.list.unsectionedItems.enumerated() {
-            let itemDescription = item.description ?? "No description"
-            print("Index: \(index), Name: \(item.name), Description: \(itemDescription)")
+    @MainActor
+    func deleteList() async {
+        do  {
+            try await supabase.from("lists").delete().eq("id", value: self.list.id.uuidString).execute().value
+        } catch {
+            print("Error deleting list, \(error)")
+            self.toast = Toast(style: ToastStyle.error, message: "Error deleting list")
         }
-        print("------------------------------")
+    }
+    
+    func saveNow() {
+        saveWorkItem?.cancel()
+        saveWorkItem = nil
+        Task{
+            await saveListToSupabase()
+        }
     }
     
 }

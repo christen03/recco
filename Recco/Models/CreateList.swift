@@ -10,7 +10,6 @@ import Foundation
 
 struct CreateListParams: Encodable {
     
-    let p_list_id: UUID
     let p_name: String
     let p_creator_id: UUID
     let p_emoji: String?
@@ -22,6 +21,7 @@ struct CreateListParams: Encodable {
     struct SectionInput: Encodable {
         let section_id: UUID
         let name: String
+        let emoji: String?
         let items: [ItemInput]
     }
     
@@ -29,25 +29,29 @@ struct CreateListParams: Encodable {
         let item_id: UUID
         let name: String
         let description: String?
+        let price_range: String?
+        let is_starred: Bool
     }
     
     init(list: List) {
-        self.p_list_id = list.id
         self.p_name = list.name
         self.p_creator_id = list.creatorId
         self.p_emoji = list.emoji
-        self.p_visibility = list.visibility.rawValue
+        self.p_visibility = list.visibility.rawValue.lowercased()
         
         // Convert sections
         self.p_sections = list.sections.map { section in
             SectionInput(
                 section_id: section.id,
                 name: section.name,
-                items: section.items.map { item in
+                emoji: section.emoji,
+                items: section.items.map {  item in
                     ItemInput(
                         item_id: item.id,
                         name: item.name,
-                        description: item.description
+                        description: item.description,
+                        price_range: item.price?.rawValue.lowercased(),
+                        is_starred: item.isStarred
                     )
                 }
             )
@@ -58,9 +62,12 @@ struct CreateListParams: Encodable {
             ItemInput(
                 item_id: item.id,
                 name: item.name,
-                description: item.description
+                description: item.description,
+                price_range: item.price?.rawValue.lowercased(),
+                is_starred: item.isStarred
             )
         }
     }
 }
+
 

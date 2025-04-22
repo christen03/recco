@@ -29,6 +29,5 @@ struct ReccoApp: App {
                     .preferredColorScheme(.light)
             }
         }
-                  
                 }
 }

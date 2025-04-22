@@ -440,7 +440,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     // In EditableTableViewController.swift
     func textViewDidChange(_ textView: UITextView) {
         // Update table view layout
-        UIView.performWithoutAnimation {
+    UIView.performWithoutAnimation {
             tableView.beginUpdates()
             tableView.endUpdates()
         }
@@ -449,7 +449,26 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
             if let editableCell = cell as? EditableTableViewCell,
                (editableCell.itemNameTextField == textView || editableCell.descriptionTextView == textView),
                let indexPath = tableView.indexPath(for: cell) {
-                tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+                let textViewRect = textView.convert(textView.bounds, to: tableView)
+                           let isTextViewVisible = tableView.bounds.contains(textViewRect)
+                           
+                if !isTextViewVisible {
+                    tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+                }
+                
+                if let currentItem = getItemAt(indexPath){
+                    var updatedItem = currentItem
+                    if textView == editableCell.itemNameTextField {
+                        updatedItem.name = textView.text
+                    } else {
+                        updatedItem.description = textView.text
+                    }
+                    
+                    
+                    if textView.text != placeholderItem && textView.text != placeholderDesc {
+                        updateItem(updatedItem, at: indexPath)
+                    }
+                }
                 break
             }
         }

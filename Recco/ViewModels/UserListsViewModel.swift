@@ -20,22 +20,23 @@ class UserListsViewModel: ObservableObject {
     
     let fetchListsQuery: String =
         """
-            list_id, 
+            id, 
             name, 
             creator_id, 
             emoji, 
             visibility, 
             sections(
-                section_id, 
+                id, 
                 name, 
-                order_index,
+                emoji,
+                display_order,
                 items(*)
             ),
-            items(
-                item_id,
+            unsectioned_items:items(
+                id,
                 name,
                 description,
-                order_index
+                display_order
             )
         """
     
@@ -48,23 +49,20 @@ class UserListsViewModel: ObservableObject {
                 .order("created_at", ascending: false)
                 .execute()
                 .value
-            print(data)
             return data
         } catch {
-            print("fetchUserLists error:  \(error.localizedDescription)")
+            print("fetchUserLists error:  \(error)")
             throw error
         }
     }
     
+    @MainActor
     func fetchUsersLists() async {
-        self.isFetching=true
         Task{
             let userId = try await supabase.auth.session.user.id
             let response = try await self.userListsQuery(userId: userId)
-            await MainActor.run{
                 self.userLists=response.map{$0.toClientModel()}
                 self.isFetching = false;
-            }
         }
     }
 }

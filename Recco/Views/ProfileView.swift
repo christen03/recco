@@ -20,7 +20,6 @@ struct ProfileView: View{
         ]
     
     var body: some View{
-        NavigationStack(path: $homeNavigation.navigationPath){
             VStack{
                 FontedText(userDataViewModel.currentUser?.firstName ?? "" + (userDataViewModel.currentUser?.lastName ?? ""))
                 FontedText("@\(userDataViewModel.currentUser?.username ?? "")")
@@ -76,7 +75,6 @@ struct ProfileView: View{
                             .background(.ultraThinMaterial)
                     }
                 }
-            }
             .sheet(isPresented: $isPresentingTagSheet){
                 TagSelectionView(userDataViewModel: userDataViewModel,
                                  isPresentingTagSheet: $isPresentingTagSheet)
@@ -91,6 +89,9 @@ struct ProfileView: View{
                             .foregroundStyle(Color.black)
                     }
                 }
+            }
+            .task {
+                await userListsViewModel.fetchUsersLists()
             }
         }
         .environmentObject(homeNavigation)
@@ -137,15 +138,15 @@ struct ProfileListItemView: View {
             
             Spacer()
         }
-        .onTapGesture {
-            homeNavigation.navigateToEditList(list: self.list)
-        }
         .padding()
         .aspectRatio(1, contentMode: .fill)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .transition(.scale.combined(with: .opacity))
         .background(Colors.LightGray)
         .cornerRadius(16)
+        .onTapGesture {
+            homeNavigation.navigateToEditList(list: self.list)
+        }
     }
 }
 

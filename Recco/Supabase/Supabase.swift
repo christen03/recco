@@ -17,3 +17,8 @@ class BaseSupabase: ObservableObject {
 }
 
 
+enum SupabaseFunctions: String {
+    case createList = "create_complete_list"
+    case updateList = "update_complete_list"
+}
+
