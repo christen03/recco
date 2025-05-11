@@ -8,6 +8,7 @@
 import UIKit
 
 class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
+    
     public let titleTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,7 +20,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
         return textView
     }()
     
-    private let emojiButton: UIButton = {
+    public let emojiButton: UIButton = {
           let button = UIButton(type: .system)
           button.translatesAutoresizingMaskIntoConstraints = false
           button.setTitle("", for: .normal)
@@ -78,7 +79,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
     }
     
     @objc private func emojiButtonTapped(){
-//        delegate?.sectionHeaderDidRequestEmojiPicker(self, forSectionAt: sectionIndex)
+        delegate?.sectionHeaderDidRequestEmojiPicker(self, forSectionAt: sectionIndex)
     }
     
     func configure(title: String, emoji: String?, sectionIndex: Int) {
@@ -187,6 +188,6 @@ protocol EditableSectionHeaderDelegate: AnyObject {
 //    func sectionHeader(_ header: SectionHeaderView, didSelectEmoji emoji: String, forSectionAt index: Int)
     func sectionHeaderDidChangeSize(_ header: SectionHeaderView)
     func sectionHeaderWillRemoveSection(_ header: SectionHeaderView, atIndex index: Int)
-//    func sectionHeaderDidRequestEmojiPicker(_ header: SectionHeaderView, forSectionAt index: Int)
+    func sectionHeaderDidRequestEmojiPicker(_ header: SectionHeaderView, forSectionAt index: Int)
     
 }

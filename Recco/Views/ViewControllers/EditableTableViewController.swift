@@ -8,17 +8,18 @@
 import UIKit
 import ElegantEmojiPicker
 
-
 struct Recommendation {
     var name: String
     var description: String
 }
 
-class EditableTableViewController: UITableViewController, UITextViewDelegate, KeyboardAccessoryViewDelegate, EditableSectionHeaderDelegate, EditableTableViewCellDelegate {
+class EditableTableViewController: UITableViewController, UITextViewDelegate, KeyboardAccessoryViewDelegate, EditableSectionHeaderDelegate, EditableTableViewCellDelegate, ElegantEmojiPickerDelegate {
+    
     
     let listViewModel: ListViewModel
     private let observerId = UUID()
     private var isUpdating = false
+    private var pendingEmojiSectionIndex: Int?
 
     init(viewModel: ListViewModel){
         self.listViewModel = viewModel
@@ -258,6 +259,12 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
             tableView.beginUpdates()
             tableView.endUpdates()
         }
+    }
+    
+    func sectionHeaderDidRequestEmojiPicker(_ header: SectionHeaderView, forSectionAt index: Int) {
+        self.pendingEmojiSectionIndex = index
+        let picker = ElegantEmojiPicker(delegate: self)
+        present(picker, animated: true)
     }
     
     // MARK: - UITextViewDelegate
@@ -757,6 +764,20 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                 
             }
         })
+    }
+    
+    // MARK: - ElegantEmojiPickerDelegate
+    
+    func emojiPicker(_ picker: ElegantEmojiPicker, didSelectEmoji emoji: Emoji?){
+        picker.dismiss(animated: true)
+        guard let picked = emoji?.emoji, let sectionIndex = pendingEmojiSectionIndex else { return }
+        
+        var newSection = listViewModel.list.sections[sectionIndex]
+        newSection.emoji = picked
+        listViewModel.updateSection(at: sectionIndex, with: newSection)
+        let tableSection = listViewModel.hasUnsectioned ? sectionIndex + 1 : sectionIndex
+        tableView.reloadSections(IndexSet(integer: tableSection), with: .automatic)
+        pendingEmojiSectionIndex = nil
     }
     
     // MARK: - Helper functions

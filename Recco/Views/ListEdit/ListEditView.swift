@@ -43,6 +43,8 @@ struct EditableTableViewControllerRepresentable: UIViewControllerRepresentable {
     }
     
     class Coordinator: NSObject, EditableSectionHeaderDelegate {
+        func sectionHeaderDidRequestEmojiPicker(_ header: SectionHeaderView, forSectionAt index: Int) {}
+        
         func sectionHeader(_ header: SectionHeaderView, didChangeTitleTo title: String, forSectionAt index: Int) {}
         
         func sectionHeaderWillRemoveSection(_ header: SectionHeaderView, atIndex index: Int) {}
