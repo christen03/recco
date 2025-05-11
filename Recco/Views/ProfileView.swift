@@ -67,17 +67,6 @@ struct ProfileView: View{
                         }
                     }
                 }
-                
-//                Button(action: {
-//                    isPresentingTagSheet.toggle()
-//                }, label: {
-//                    Text("Show sheet")
-//                })
-//                Button(action: {
-//                    userDataViewModel.signOut()
-//                }, label: {
-//                    Text("Sign out")
-//                })
                     ScrollView {
                         if userListsViewModel.userLists.isEmpty {
                             TitleText("Try creating a new list!")
@@ -146,6 +135,7 @@ struct ProfileListItemView: View {
             
             Text(list.name)
                 .font(Font.custom(Fonts.sfProDisplaySemibold, size: 24))
+                .foregroundStyle(Colors.ListTitleGray)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             // Show items summary that fits in 2 lines with ellipses
@@ -168,7 +158,7 @@ struct ProfileListItemView: View {
         .aspectRatio(1, contentMode: .fill)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .transition(.scale.combined(with: .opacity))
-        .background(Colors.LightGray)
+        .background(Colors.SuperLightGray)
         .cornerRadius(16)
         .onTapGesture {
             homeNavigation.navigateToEditList(list: self.list)

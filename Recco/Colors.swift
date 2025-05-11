@@ -12,6 +12,9 @@ struct Colors {
     // #6B6B6B
     static let DarkGray: Color = Color(red: 107/255, green: 107/255, blue: 107/255)
 
+    // #7A7A7A
+    static let ListTitleGray: Color = Color(red: 122/255, green: 122/255, blue: 122/255)
+    
     // #838383
     static let ListItemGray: Color = Color(red: 131/255, green: 131/255, blue: 131/255)
     
@@ -29,4 +32,7 @@ struct Colors {
     
     // F2F2F2
     static let LightGray: Color = Color(red: 242/255, green: 242/255, blue: 242/255)
+    
+    // FCFCFC
+    static let SuperLightGray: Color = Color(red: 252/255, green: 252/255, blue: 252/255)
 }

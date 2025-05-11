@@ -13,7 +13,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = UIFont(name: Fonts.sfProDisplaySemibold, size: 20)
-        textView.textColor = .black
+        textView.textColor = UIColor(red: 80/255.0, green: 80/255.0, blue: 80/255.0, alpha: 1.0)
         textView.isScrollEnabled = false
         textView.textContainerInset = .zero
         textView.setContentOffset(.zero, animated: false)
@@ -85,13 +85,11 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
     func configure(title: String, emoji: String?, sectionIndex: Int) {
         self.sectionIndex=sectionIndex
         if(sectionIndex == -1)  {return}
-        
+        titleTextView.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         if title.isEmpty && !titleTextView.isFirstResponder {
             titleTextView.text = placeholderText
-            titleTextView.textColor = .lightGray
         } else {
             titleTextView.text = title
-            titleTextView.textColor = .darkGray
         }
         
         if let emoji = emoji, !emoji.isEmpty {
