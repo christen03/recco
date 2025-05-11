@@ -15,16 +15,16 @@ struct Item: Hashable, Identifiable {
     var isStarred: Bool = false
     var tags: [String]?
     var sources: [String]?
+//    
+//    init(id: UUID? = nil, name: String, description: String? = nil, tags: [String]? = nil, sources: [String]? = nil) {
+//        self.id = id ?? UUID()
+//        self.name = name
+//        self.description = description
+//        self.tags = tags
+//        self.sources = sources
+//    }
     
-    init(id: UUID? = nil, name: String, description: String? = nil, tags: [String]? = nil, sources: [String]? = nil) {
-        self.id = id ?? UUID()
-        self.name = name
-        self.description = description
-        self.tags = tags
-        self.sources = sources
-    }
-    
-    init(id: UUID? = nil, name: String, description: String, price: PriceRange? = nil, isStarred: Bool? = false){
+    init(id: UUID? = nil, name: String, description: String? = nil, price: PriceRange? = nil, isStarred: Bool? = false){
         self.id = id ?? UUID()
         self.name = name
         self.description = description

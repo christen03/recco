@@ -98,7 +98,7 @@ class KeyboardAccessoryView: UIView {
             button.tintColor = .black
         } else if let text = text {
             button.setTitle(text, for: .normal)
-            button.titleLabel?.font = UIFont(name: Fonts.sfProRoundedBold, size: 18)
+            button.titleLabel?.font = UIFont(name: Fonts.sfProDisplayBold, size: 18)
             button.tintColor = .black
         }
         button.addTarget(self, action: action, for: .touchUpInside)

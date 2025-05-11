@@ -11,7 +11,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
     public let titleTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.font = UIFont(name: Fonts.sfProRoundedBold, size: 22)
+        textView.font = UIFont(name: Fonts.sfProDisplaySemibold, size: 20)
         textView.textColor = .black
         textView.isScrollEnabled = false
         textView.textContainerInset = .zero
@@ -106,7 +106,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == placeholderText {
             textView.text = ""
-            textView.textColor = .darkGray
+            textView.textColor = UIColor(Colors.ListItemGray)
         }
     }
     
@@ -184,7 +184,9 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
 
 protocol EditableSectionHeaderDelegate: AnyObject {
     func sectionHeader(_ header: SectionHeaderView, didChangeTitleTo title: String, forSectionAt index: Int)
+//    func sectionHeader(_ header: SectionHeaderView, didSelectEmoji emoji: String, forSectionAt index: Int)
     func sectionHeaderDidChangeSize(_ header: SectionHeaderView)
     func sectionHeaderWillRemoveSection(_ header: SectionHeaderView, atIndex index: Int)
+//    func sectionHeaderDidRequestEmojiPicker(_ header: SectionHeaderView, forSectionAt index: Int)
     
 }

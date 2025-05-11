@@ -36,3 +36,20 @@ struct FontedText: View {
             .font(Font.custom(Fonts.sfProRounded, size: size ?? 18 ))
     }
 }
+
+
+struct BodyText: View {
+    
+    let text: String
+    let size: CGFloat?
+    
+    init(_ text: String, size: CGFloat? = nil){
+        self.text=text
+        self.size=size
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(Font.custom(Fonts.sfProDisplayMedium, size: size ?? 14))
+    }
+}

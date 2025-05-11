@@ -9,8 +9,13 @@ import SwiftUI
 
 struct ProfileSettingsView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        SwiftUI.List{
+           BodyText("Account")
+            BodyText("Edit Profile")
+            BodyText("Sign out of Recco")
+        }
     }
+    
 }
 
 #Preview {

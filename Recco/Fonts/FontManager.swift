@@ -11,4 +11,9 @@ struct Fonts {
     static let sfProRoundedSemibold: String = "SFProRounded-Semibold"
     static let sfProRoundedBold: String = "SFProRounded-Bold"
     static let sfProRoundedLight: String = "SFProRounded-Light"
+    static let sfProDisplay: String = "SFProDisplay-Regular"
+    static let sfProDisplayMedium: String = "SFProDisplay-Medium"
+    static let sfProDisplaySemibold: String = "SFProDisplay-Semibold"
+    static let sfProDisplayBold: String = "SFProDisplay-Bold"
+    static let sfProDisplayLight: String = "SFProDisplay-Light"
 }

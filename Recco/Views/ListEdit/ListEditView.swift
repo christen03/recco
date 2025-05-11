@@ -108,7 +108,7 @@ struct ListEditView: View {
         .sheet(isPresented: $isShowingEmojiPicker) {
             ElegantEmojiPickerView(selectedEmoji: $listViewModel.list.emoji)
         }
-        .navigationBarItems(trailing: menuButton)
+        .navigationBarItems(trailing: keyboardDoneButton)
         
         .alert(isPresented: $isShowingDeleteAlert) {
                    Alert(
@@ -142,6 +142,8 @@ struct ListEditView: View {
                         listViewModel.saveNow()
                 }
                 .foregroundColor(.blue)
+            } else {
+                menuButton
             }
         }
     }

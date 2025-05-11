@@ -9,6 +9,18 @@ import UIKit
 
 
 class AutoGrowingTextView: UITextView {
+    override var text: String! {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+    
+    override var attributedText: NSAttributedString! {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+    
     override var intrinsicContentSize: CGSize {
         let textWidth = frame.width - textContainerInset.left - textContainerInset.right
         let newSize = sizeThatFits(CGSize(width: textWidth, height: .greatestFiniteMagnitude))
@@ -34,18 +46,20 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
     let itemNameTextField: UITextView = {
         let title = UITextView()
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.font = UIFont(name: Fonts.sfProRoundedBold, size: 18)
+        title.font = UIFont(name: Fonts.sfProDisplayMedium, size: 16 )
         title.isScrollEnabled = false
-        title.textColor = .lightGray
+        title.textColor = UIColor(Colors.ListItemGray)
+        title.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         return title
     }()
     
     let descriptionTextView: AutoGrowingTextView = {
         let desc = AutoGrowingTextView()
         desc.translatesAutoresizingMaskIntoConstraints = false
-        desc.font = UIFont(name: Fonts.sfProRoundedSemibold, size: 14)
+        desc.font = UIFont(name: Fonts.sfProDisplayLight, size: 14)
         desc.isScrollEnabled = false
-        desc.textColor = .lightGray
+        desc.textColor = UIColor(Colors.MediumGray)
+        desc.textContainerInset = .zero
         return desc
     }()
     
@@ -75,7 +89,7 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "⭐️"
-        label.font = UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
         label.alpha=0
         label.isUserInteractionEnabled = false
         return label
@@ -84,9 +98,11 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
     let priceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.alpha=0
         label.isUserInteractionEnabled = false
+        label.font = UIFont(name: Fonts.sfProDisplayBold, size: 16)
+        label.textColor = UIColor(Colors.ListItemGray)
         return label
     }()
 
@@ -94,7 +110,11 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.layoutMargins = UIEdgeInsets.zero
+        self.contentView.layoutMargins = UIEdgeInsets.zero
+        self.separatorInset = UIEdgeInsets.zero
+        self.preservesSuperviewLayoutMargins = false
+        self.contentView.preservesSuperviewLayoutMargins = false
         // Configure container views first
         starContainerView.addSubview(starLabel)
         priceContainerView.addSubview(priceLabel)
@@ -118,30 +138,45 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
         starContainerView.setContentCompressionResistancePriority(.required, for: .horizontal)
         itemNameTextField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
+        let badgesStackView = UIStackView(arrangedSubviews: [priceContainerView, starContainerView])
+           badgesStackView.translatesAutoresizingMaskIntoConstraints = false
+           badgesStackView.axis = .horizontal
+           badgesStackView.spacing = 8
+           badgesStackView.alignment = .center
+           
+           // Add this offset to compensate for the text inset
+           let badgesOffset: CGFloat = -5
+           
+           let titleStackView = UIStackView(arrangedSubviews: [itemNameTextField, badgesStackView])
+           titleStackView.translatesAutoresizingMaskIntoConstraints = false
+           titleStackView.axis = .horizontal
+           titleStackView.spacing = 8
+           titleStackView.alignment = .center
+           
+           // Apply transform to move the badges up
+           badgesStackView.transform = CGAffineTransform(translationX: 0, y: badgesOffset)
+           
+           contentView.addSubview(titleStackView)
+           contentView.addSubview(descriptionTextView)
+           
+           NSLayoutConstraint.activate([
+               titleStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+               titleStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+           ])
 
-        let titleStackView = UIStackView(arrangedSubviews: [itemNameTextField, priceContainerView, starContainerView])
-        titleStackView.translatesAutoresizingMaskIntoConstraints = false
-        titleStackView.axis = .horizontal
-        titleStackView.spacing = 8
-        titleStackView.alignment = .center
-        
-        
-        contentView.addSubview(titleStackView)
-        contentView.addSubview(descriptionTextView)
-        NSLayoutConstraint.activate([
-            titleStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            titleStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-        ])
-
-        NSLayoutConstraint.activate([
-            descriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            descriptionTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            descriptionTextView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: -6),
-            descriptionTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
-            titleStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -15)
-        ])
+           NSLayoutConstraint.activate([
+               descriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+               descriptionTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+               descriptionTextView.topAnchor.constraint(equalTo: titleStackView.bottomAnchor, constant: -6),
+               descriptionTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
+               titleStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -15)
+           ])
+           
         // This makes the text field expand to fill available space
         
+//        titleStackView.backgroundColor = .yellow
+//        descriptionTextView.backgroundColor = .green
+//        contentView.backgroundColor = .red
         setupKeyboardButtons()
         itemNameTextField.delegate = self
         descriptionTextView.delegate = self
@@ -149,8 +184,14 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
     }
 
     
-    private func rerender() {
+    func rerender() {
             guard let item = item else { return }
+            
+            descriptionTextView.setNeedsLayout()
+            descriptionTextView.layoutIfNeeded()
+            DispatchQueue.main.async {
+                   self.delegate?.textViewDidChangeSize(in: self)
+               }
             
             if item.isStarred {
                 starContainerView.alpha=1
@@ -161,7 +202,7 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
             }
             
             if let price = item.price {
-                priceContainerView.alpha=0
+                priceLabel.alpha=1
                 priceContainerView.alpha=1
                 
                 switch price {

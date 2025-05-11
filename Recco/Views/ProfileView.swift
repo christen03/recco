@@ -21,13 +21,35 @@ struct ProfileView: View{
     
     var body: some View{
             VStack{
-                FontedText(userDataViewModel.currentUser?.firstName ?? "" + (userDataViewModel.currentUser?.lastName ?? ""))
-                FontedText("@\(userDataViewModel.currentUser?.username ?? "")")
+                HStack {
+                  Spacer()
+                  VStack {
+                    TitleText(
+                      (userDataViewModel.currentUser?.firstName ?? "") + " "
+                      + (userDataViewModel.currentUser?.lastName  ?? "")
+                    )
+                    FontedText("@\(userDataViewModel.currentUser?.username ?? "")")
+                  }
+                  Spacer()
+                }
+                .padding(.horizontal)
+                .overlay(
+                  Button {
+                    homeNavigation.navigateToSettings()
+                  } label: {
+                    Image(systemName: "gearshape.fill")
+                      .foregroundStyle(.black)
+                  }
+                  .padding(.horizontal),
+                  alignment: .trailing
+                )
+                .padding(.horizontal)
                 KFImage(userDataViewModel.currentUser?.profilePictureUrl ?? Constants.DEFAULT_PROFILE_PICTURE_URL)
                     .resizable()
                     .scaledToFit()
                     .clipShape(Circle())
-                    .frame(width: 150, height: 150)
+                    .frame(width: 100, height: 100)
+                    Spacer()
                 
                 VStack {
                     HStack {
@@ -46,49 +68,43 @@ struct ProfileView: View{
                     }
                 }
                 
-                Button(action: {
-                    isPresentingTagSheet.toggle()
-                }, label: {
-                    Text("Show sheet")
-                })
-                Button(action: {
-                    userDataViewModel.signOut()
-                }, label: {
-                    Text("Sign out")
-                })
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(userListsViewModel.userLists) { list in
-                            ProfileListItemView(list: list)
+//                Button(action: {
+//                    isPresentingTagSheet.toggle()
+//                }, label: {
+//                    Text("Show sheet")
+//                })
+//                Button(action: {
+//                    userDataViewModel.signOut()
+//                }, label: {
+//                    Text("Sign out")
+//                })
+                    ScrollView {
+                        if userListsViewModel.userLists.isEmpty {
+                            TitleText("Try creating a new list!")
+                        } else {
+                            LazyVGrid(columns: columns, spacing: 12) {
+                                ForEach(userListsViewModel.userLists) { list in
+                                    ProfileListItemView(list: list)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                            .animation(.spring(), value: userListsViewModel.userLists)
                         }
                     }
-                    .padding(.horizontal, 16)
-                    .animation(.spring(), value: userListsViewModel.userLists)
-                }
-                .refreshable{
-                    await userListsViewModel.fetchUsersLists()
-                }
-                .overlay {
-                    if userListsViewModel.isFetching {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(.ultraThinMaterial)
+                    .refreshable {
+                        await userListsViewModel.fetchUsersLists()
                     }
+                    .overlay {
+                        if userListsViewModel.isFetching {
+                            ProgressView()
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(.ultraThinMaterial)
+                        }
                 }
             .sheet(isPresented: $isPresentingTagSheet){
                 TagSelectionView(userDataViewModel: userDataViewModel,
                                  isPresentingTagSheet: $isPresentingTagSheet)
                 .presentationDetents([.medium])
-            }
-            .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
-                    Button(action: {
-                        print("hi")
-                    }) {
-                        Image(systemName: "gearshape.fill")
-                            .foregroundStyle(Color.black)
-                    }
-                }
             }
             .task {
                 await userListsViewModel.fetchUsersLists()
@@ -117,7 +133,7 @@ struct TagView: View {
             .fixedSize()
     }
 }
-
+// MARK: - ProfileListItemView
 struct ProfileListItemView: View {
     @EnvironmentObject var homeNavigation: HomeNavigation
     let list: List
@@ -128,15 +144,25 @@ struct ProfileListItemView: View {
                 .font(.system(size: 20))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            TitleText(list.name)
+            Text(list.name)
+                .font(Font.custom(Fonts.sfProDisplaySemibold, size: 24))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            FontedText(list.formatItemSummary())
+            // Show items summary that fits in 2 lines with ellipses
+            BodyText(list.formatItemSummary())
                 .foregroundStyle(Colors.MediumGray)
                 .font(.system(size: 10))
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(2)
+                .truncationMode(.tail)
             
             Spacer()
+            
+            // Total item count in bottom left
+            Text("\(list.totalItemCount) item\(list.totalItemCount == 1 ? "" : "s")")
+                .foregroundStyle(Colors.MediumGray)
+                .font(.system(size: 10))
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding()
         .aspectRatio(1, contentMode: .fill)
@@ -150,29 +176,34 @@ struct ProfileListItemView: View {
     }
 }
 
-extension List{
-    func itemSummary(maxItems: Int = 3) -> (displayedItems: [String], leftoverItemCount: Int){
+// MARK: - List Extension
+extension List {
+    var totalItemCount: Int {
+        let allItems: [Item] = sections.flatMap {$0.items} + unsectionedItems
+        return allItems.count
+    }
+    
+    func itemSummary(maxItems: Int = 10) -> (displayedItems: [String], hasMore: Bool) {
         let allItems: [Item] = sections.flatMap {$0.items} + unsectionedItems
         
         guard !allItems.isEmpty else {
-           return ([], 0)
+           return ([], false)
         }
         
         let itemsToShow = Array(allItems.prefix(maxItems))
         let displayItems = itemsToShow.map(\.name)
         
-        let remainingCount = allItems.count - itemsToShow.count
-        return (displayItems, remainingCount)
+        let hasMore = allItems.count > itemsToShow.count
+        return (displayItems, hasMore)
     }
     
-    func formatItemSummary(maxItems: Int = 3) -> String {
+    func formatItemSummary(maxItems: Int = 10) -> String {
         let summary = itemSummary(maxItems: maxItems)
        
-        var resString = ""
         if !summary.displayedItems.isEmpty {
-            resString += summary.displayedItems.joined(separator: ", ")
-            if summary.leftoverItemCount > 0 {
-                resString += ", and \(summary.leftoverItemCount) more"
+            var resString = summary.displayedItems.joined(separator: " • ")
+            if summary.hasMore {
+                resString += "..."
             }
             return resString
         } else {
@@ -180,8 +211,6 @@ extension List{
         }
     }
 }
-
-
 #Preview {
     ProfileView()
         .environmentObject(UserDataViewModel(user: mockUser))

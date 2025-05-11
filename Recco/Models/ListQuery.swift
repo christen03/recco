@@ -1,10 +1,3 @@
-//
-//  ListQuery.swift
-//  Recco
-//
-//  Created by Christen Xie on 10/27/24.
-//
-
 import Foundation
 
 struct ListQuery: Decodable {
@@ -26,15 +19,17 @@ struct ListQuery: Decodable {
         case items = "unsectioned_items"
     }
     
-    func toClientModel() -> List{
-        List(
+    func toClientModel() -> List {
+        // Ensure unsectioned items are sorted by displayOrder
+        let sortedItems = items.sorted { $0.displayOrder < $1.displayOrder }
+        return List(
             id: listId,
             name: name,
             creatorId: creatorId,
             emoji: emoji,
             visibility: ListVisibility(rawValue: visibility) ?? .global,
             sections: sections.map { $0.toClientModel() },
-            items: items.map { $0.toClientModel() }
+            items: sortedItems.map { $0.toClientModel() }
         )
     }
 }
@@ -55,11 +50,12 @@ struct SectionQuery: Decodable {
     }
     
     func toClientModel() -> Section {
-        Section(
+        let sortedItems = items.sorted { $0.displayOrder < $1.displayOrder }
+        return Section(
             id: sectionId,
             name: name,
             emoji: emoji,
-            items: items.map { $0.toClientModel() }
+            items: sortedItems.map { $0.toClientModel() }
         )
     }
 }
@@ -69,19 +65,25 @@ struct ItemQuery: Decodable {
     let name: String
     let description: String?
     let displayOrder: Int
+    let priceRange: PriceRange?
+    let isStarred: Bool?
     
     enum CodingKeys: String, CodingKey {
         case itemId = "id"
         case name
         case description
         case displayOrder = "display_order"
+        case priceRange = "price_range"
+        case isStarred = "is_starred"
     }
     
     func toClientModel() -> Item {
-        Item(
+        return Item(
             id: itemId,
             name: name,
-            description: description
+            description: description,
+            price: priceRange,
+            isStarred: isStarred
         )
     }
 }

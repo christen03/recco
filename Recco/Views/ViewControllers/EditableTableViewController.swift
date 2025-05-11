@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ElegantEmojiPicker
 
 
 struct Recommendation {
@@ -125,25 +126,26 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
       }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 0 {
+        
+        if listViewModel.hasUnsectioned && section == 0 {
             return nil
         }
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "sectionHeader") as! SectionHeaderView
         headerView.delegate = self
-        let sectionIndex: Int
         let title: String
         let emoji: String?
         
-        
-        sectionIndex = section-1
+        let sectionIndex = listViewModel.hasUnsectioned ? section - 1 : section
         title = sections[sectionIndex].name
         emoji = sections[sectionIndex].emoji
         
-        headerView.configure(title: title, emoji: emoji, sectionIndex: sectionIndex)
+    headerView.configure(title: title, emoji: emoji, sectionIndex: sectionIndex)
         return headerView
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{ return section == 0 ? 0 : 44 }
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
+        return listViewModel.hasUnsectioned && section == 0 ? 0 : 44
+    }
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? { return nil }
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat { return 0 }
     
@@ -233,6 +235,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     
     // MARK: EditableSectionHeaderDelegate
     
+    
     func sectionHeader(_ header: SectionHeaderView, didChangeTitleTo title: String, forSectionAt index: Int) {
         guard !title.isEmpty && title != "Section Title" else { return }
         
@@ -242,13 +245,20 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         }
     }
     
+    func sectionHeader(_ header: SectionHeaderView, didSelectEmoji emoji: String, forSectionAt index: Int){
+        var section = listViewModel.list.sections[index]
+        section.emoji = emoji
+        listViewModel.updateSection(at: index, with: section)
+        let tableSection = listViewModel.hasUnsectioned ? index+1 : index
+        tableView.reloadSections([tableSection], with: .automatic)
+    }
+    
     func sectionHeaderDidChangeSize(_ header: SectionHeaderView) {
         UIView.performWithoutAnimation {
             tableView.beginUpdates()
             tableView.endUpdates()
         }
     }
-    
     
     // MARK: - UITextViewDelegate
     func textView(_ textView: UITextView,
@@ -283,6 +293,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
             
             // Handle Backspace key in empty itemNameTextField
             if text.isEmpty && textView.text.isEmpty {
+                if (listViewModel.list.unsectionedItems.count == 1 && listViewModel.list.sections.isEmpty) { return false }
                 isDeletingItem = true
                 if indexPath.row == 0 {
                     if let headerView = tableView.headerView(forSection: indexPath.section) as? SectionHeaderView? {
@@ -298,22 +309,31 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                     
                     // Focus on previous cell's description field
                     
-                    // Remove the current item
                 if !unsectionedItems.isEmpty && indexPath.section == 0 {
-                            // Remove from unsectioned items
+                    // Remove from unsectioned items
                     listViewModel.list.unsectionedItems.remove(at: indexPath.row)
-                        } else {
-                            // Remove from a section
-                            let sectionIndex = unsectionedItems.isEmpty ? indexPath.section : indexPath.section - 1
-                            listViewModel.list.sections[sectionIndex].items.remove(at: indexPath.row)
-                        }
+                    let wasLastUnsectionedItem = listViewModel.list.unsectionedItems.isEmpty
                     
                     tableView.performBatchUpdates({
                         tableView.deleteRows(at: [indexPath], with: .automatic)
-                    }, completion: {
-                        _ in self.isDeletingItem = false
+                        if wasLastUnsectionedItem {
+                            tableView.deleteSections(IndexSet(integer: 0), with: .automatic)
+                        }
+                    }, completion: { _ in
+                        self.isDeletingItem = false
                     })
-                    return false
+                } else {
+                    // Remove from a section
+                    let sectionIndex = unsectionedItems.isEmpty ? indexPath.section : indexPath.section - 1
+                    listViewModel.list.sections[sectionIndex].items.remove(at: indexPath.row)
+                    
+                    tableView.performBatchUpdates({
+                        tableView.deleteRows(at: [indexPath], with: .automatic)
+                    }, completion: { _ in
+                        self.isDeletingItem = false
+                    })
+                }
+                return false
                 }
             
         } else if textView == cell.descriptionTextView {
@@ -403,10 +423,10 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             if textView == cell.itemNameTextField {
                 textView.text = placeholderItem
-                textView.textColor = .lightGray
+                textView.textColor = UIColor(Colors.ListItemGray)
             } else {
                 textView.text = placeholderDesc
-                textView.textColor = .lightGray
+                textView.textColor = UIColor(Colors.MediumGray)
             }
         } else {
             // Get the current item and update it

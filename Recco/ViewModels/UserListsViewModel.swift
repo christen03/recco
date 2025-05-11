@@ -32,11 +32,13 @@ class UserListsViewModel: ObservableObject {
                 display_order,
                 items(*)
             ),
-            unsectioned_items:items(
+            unsectioned_items(
                 id,
                 name,
                 description,
-                display_order
+                display_order,
+                price_range,
+                is_starred
             )
         """
     
@@ -46,7 +48,9 @@ class UserListsViewModel: ObservableObject {
                 .from("lists")
                 .select(fetchListsQuery)
                 .eq("creator_id",value: userId)
-                .order("created_at", ascending: false)
+                .order("updated_at", ascending: false)
+                .order("display_order", ascending: true, referencedTable: "sections")
+                .order("display_order", ascending: true, referencedTable: "unsectioned_items")
                 .execute()
                 .value
             return data

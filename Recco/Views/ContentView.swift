@@ -65,6 +65,7 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(for: List.self) { list in  ListEditView(list: list )}
+            .navigationDestination(for: Int.self) { _ in ProfileSettingsView()} 
         }
         .task{
            await homePageViewModel.createList()
@@ -132,7 +133,7 @@ struct PresentationSheetView: View {
                         .frame(width: 60)
                         .foregroundColor(homePageViewModel.canCreateList ? Color.black : Colors.DisabledGray)
                 })
-                .disabled(!homePageViewModel.canCreateList && !homePageViewModel.isUploadingListToSupabase)
+                .disabled(!homePageViewModel.canCreateList || homePageViewModel.isUploadingListToSupabase)
                 .environmentObject(homePageViewModel)
             }
             Button(action: {

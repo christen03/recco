@@ -37,7 +37,7 @@ enum ListVisibility: String, CaseIterable {
     }
 }
 
-enum PriceRange: String{
+enum PriceRange: String, Decodable{
     case free
     case one
     case two
@@ -72,6 +72,9 @@ class ListViewModel: ObservableObject {
     @Published var isSaving: Bool = false
     
     var isInitialized: Bool = false
+    var hasUnsectioned: Bool {
+        return !list.unsectionedItems.isEmpty
+    }
     
     static func empty() -> ListViewModel {
         return ListViewModel(list: List.empty())

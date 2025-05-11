@@ -11,7 +11,13 @@ class HomeNavigation: ObservableObject{
     @Published var navigationPath = NavigationPath()
     
     func navigateToEditList(list: List){
+        print("sections: \(list.sections)")
+        print("unsectionedItems \(list.unsectionedItems)")
         navigationPath.append(list)
+    }
+    
+    func navigateToSettings(){
+        navigationPath.append(1)
     }
     
     func back(){
