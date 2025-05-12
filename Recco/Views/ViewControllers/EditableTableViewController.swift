@@ -20,7 +20,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     private let observerId = UUID()
     private var isUpdating = false
     private var pendingEmojiSectionIndex: Int?
-
+    
     init(viewModel: ListViewModel){
         self.listViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -82,49 +82,49 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     // MARK: - TableView Data Source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-         let hasUnsectioned = !(listViewModel.list.unsectionedItems.isEmpty)
-         let sectionCount = listViewModel.list.sections.count
-         return sectionCount + (hasUnsectioned ? 1 : 0)
-     }
-     
-     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         let hasUnsectioned = !(listViewModel.list.unsectionedItems.isEmpty)
-         
-         if hasUnsectioned && section == 0 {
-             return listViewModel.list.unsectionedItems.count
-         } else {
-             let sectionIndex = hasUnsectioned ? section - 1 : section
-             return listViewModel.list.sections[sectionIndex].items.count
-         }
-     }
+        let hasUnsectioned = !(listViewModel.list.unsectionedItems.isEmpty)
+        let sectionCount = listViewModel.list.sections.count
+        return sectionCount + (hasUnsectioned ? 1 : 0)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let hasUnsectioned = !(listViewModel.list.unsectionedItems.isEmpty)
+        
+        if hasUnsectioned && section == 0 {
+            return listViewModel.list.unsectionedItems.count
+        } else {
+            let sectionIndex = hasUnsectioned ? section - 1 : section
+            return listViewModel.list.sections[sectionIndex].items.count
+        }
+    }
     
     func updateSectionTitle(_ title: String, forSectionAt index: Int) {
-          isUpdating = true
-          
-          var section = sections[index]
-          section.name = title
-          listViewModel.updateSection(at: index, with: section)
-          
-          isUpdating = false
-      }
-      
-      func updateItem(_ item: Item, at indexPath: IndexPath) {
-         
-          isUpdating = true
-          
-          let hasUnsectioned = !unsectionedItems.isEmpty
-          
-          if hasUnsectioned && indexPath.section == 0 {
-              listViewModel.updateUnsectionedItem(at: indexPath.row, with: item)
-          } else {
-              let sectionIndex = hasUnsectioned ? indexPath.section - 1 : indexPath.section
-              var section = listViewModel.list.sections[sectionIndex]
-              section.items[indexPath.row] = item
-              listViewModel.updateSection(at: sectionIndex, with: section)
-          }
-          
-          isUpdating = false
-      }
+        isUpdating = true
+        
+        var section = sections[index]
+        section.name = title
+        listViewModel.updateSection(at: index, with: section)
+        
+        isUpdating = false
+    }
+    
+    func updateItem(_ item: Item, at indexPath: IndexPath) {
+        
+        isUpdating = true
+        
+        let hasUnsectioned = !unsectionedItems.isEmpty
+        
+        if hasUnsectioned && indexPath.section == 0 {
+            listViewModel.updateUnsectionedItem(at: indexPath.row, with: item)
+        } else {
+            let sectionIndex = hasUnsectioned ? indexPath.section - 1 : indexPath.section
+            var section = listViewModel.list.sections[sectionIndex]
+            section.items[indexPath.row] = item
+            listViewModel.updateSection(at: sectionIndex, with: section)
+        }
+        
+        isUpdating = false
+    }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -140,7 +140,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         title = sections[sectionIndex].name
         emoji = sections[sectionIndex].emoji
         
-    headerView.configure(title: title, emoji: emoji, sectionIndex: sectionIndex)
+        headerView.configure(title: title, emoji: emoji, sectionIndex: sectionIndex)
         return headerView
     }
     
@@ -154,7 +154,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EditableTableViewCell
         cell.separatorInset = .zero
-
+        
         // Get the item from the view model based on indexPath
         let item: Item
         
@@ -168,7 +168,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
             let sectionIndex = hasUnsectioned ? indexPath.section - 1 : indexPath.section
             item = sections[sectionIndex].items[indexPath.row]
         }
-
+        
         // Configure the cell with the item
         cell.item = item
         
@@ -183,13 +183,13 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         if let accessoryView = cell.descriptionTextView.inputAccessoryView as? KeyboardAccessoryView {
             accessoryView.delegate = self
         }
-
+        
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? EditableTableViewCell else { return }
-
+        
         let item: Item
         
         let hasUnsectioned = !(listViewModel.list.unsectionedItems.isEmpty)
@@ -198,21 +198,23 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
             // Item is in unsectioned items
             item = listViewModel.list.unsectionedItems[indexPath.row]
         } else {
-            // Item is in a section
             let sectionIndex = hasUnsectioned ? indexPath.section - 1 : indexPath.section
             item = listViewModel.list.sections[sectionIndex].items[indexPath.row]
         }
-
+        
+        cell.descriptionTextView.isHidden = false
+        
         // Name field
         if item.name.isEmpty && !cell.itemNameTextField.isFirstResponder {
             cell.itemNameTextField.text = self.placeholderItem
         } else {
             cell.itemNameTextField.text = item.name
         }
-
+        
         // Description field
         if let description = item.description, !description.isEmpty {
             cell.descriptionTextView.text = description
+            cell.descriptionTextView.isHidden = false
             cell.descriptionTextView.setNeedsLayout()
             cell.descriptionTextView.layoutIfNeeded()
             DispatchQueue.main.async {
@@ -222,11 +224,12 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                 }
             }
         } else {
+            cell.descriptionTextView.isHidden = true
             cell.descriptionTextView.text = placeholderDesc
         }
         
     }
-
+    
     
     func getAndUpdateItem(at indexPath: IndexPath, update: (inout Item) -> Void) {
         if listViewModel.list.unsectionedItems.isEmpty {
@@ -297,10 +300,24 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         
         // Handle different textViews and key presses
         if textView == cell.itemNameTextField {
-            // Handle Return key in itemNameTextField
             if text == "\n" {
-                // Move to the description field
-                cell.descriptionTextView.becomeFirstResponder()
+                // TODO: Is this needed? 
+                var needsLayoutUpdate = false
+                if cell.descriptionTextView.isHidden {
+                    cell.descriptionTextView.isHidden = false
+                    needsLayoutUpdate = true
+                }
+                if needsLayoutUpdate {
+                    UIView.performWithoutAnimation {
+                        tableView.beginUpdates()
+                        tableView.endUpdates()
+                    }
+                    DispatchQueue.main.async{
+                        cell.descriptionTextView.becomeFirstResponder()
+                    }
+                } else {
+                    cell.descriptionTextView.becomeFirstResponder()
+                }
                 return false
             }
             
@@ -315,13 +332,13 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                 }
                 
                 // Get previous cell
-                    let prevRow = indexPath.row - 1
-                    let prevIndexPath = IndexPath(row: prevRow, section: indexPath.section)
-                    
-                    if let prevCell = self.tableView.cellForRow(at: prevIndexPath) as? EditableTableViewCell { prevCell.descriptionTextView.becomeFirstResponder() }
-                    
-                    // Focus on previous cell's description field
-                    
+                let prevRow = indexPath.row - 1
+                let prevIndexPath = IndexPath(row: prevRow, section: indexPath.section)
+                
+                if let prevCell = self.tableView.cellForRow(at: prevIndexPath) as? EditableTableViewCell { prevCell.descriptionTextView.becomeFirstResponder() }
+                
+                // Focus on previous cell's description field
+                
                 if !unsectionedItems.isEmpty && indexPath.section == 0 {
                     // Remove from unsectioned items
                     listViewModel.list.unsectionedItems.remove(at: indexPath.row)
@@ -346,7 +363,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                     })
                 }
                 return false
-                }
+            }
             
         } else if textView == cell.descriptionTextView {
             // Handle Return key in descriptionTextView
@@ -378,7 +395,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                         if let newCell = self.tableView.cellForRow(at: newIndexPath) as? EditableTableViewCell {
                             newCell.itemNameTextField.becomeFirstResponder()
                         }
-                }
+                    }
                     tableView.endUpdates()
                     tableView.scrollToRow(at: newIndexPath, at: .middle, animated: true)
                 } else {
@@ -410,6 +427,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.isHidden=false
         if textView.text == placeholderItem || textView.text == placeholderDesc {
             textView.text = ""
         }
@@ -432,31 +450,28 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         
         guard let cell = cell, let indexPath = indexPath else { return }
         
-        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if let currentItem = getItemAt(indexPath){
+            var updatedItem = currentItem
             if textView == cell.itemNameTextField {
-                textView.text = placeholderItem
-                textView.textColor = UIColor(Colors.ListItemGray)
-            } else {
-                textView.text = placeholderDesc
-                textView.textColor = UIColor(Colors.MediumGray)
-            }
-        } else {
-            // Get the current item and update it
-            if let currentItem = getItemAt(indexPath) {
-                var updatedItem = currentItem
-                
-                if textView == cell.itemNameTextField {
-                    updatedItem.name = textView.text
-                } else {
-                    updatedItem.description = textView.text
+                updatedItem.name = textView.text
+                if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    textView.text = placeholderItem
+                    textView.textColor = UIColor(Colors.ListItemGray)
                 }
-                
-                // Update the item in the view model
-                updateItem(updatedItem, at: indexPath)
+            } else {
+                updatedItem.description = textView.text
+                if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    textView.isHidden=true
+                    UIView.performWithoutAnimation {
+                        tableView.beginUpdates()
+                        tableView.endUpdates()
+                    }
+                }
             }
+            updateItem(updatedItem, at: indexPath)
         }
     }
-
+    
     // Helper to get an item at a specific index path
     func getItemAt(_ indexPath: IndexPath) -> Item? {
         
@@ -565,7 +580,6 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         guard let activeCell = getActiveCell() else { return }
         guard let indexPath = tableView.indexPath(for: activeCell) else { return }
         
-        let isNameFieldActive = activeCell.itemNameTextField.isFirstResponder
         
         let tempTextField = UITextField(frame: CGRect.zero)
         tempTextField.autocorrectionType = .no
@@ -711,7 +725,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         if let indexPath = tableView.indexPath(for: cell) {
             let textViewRect = textView.convert(textView.bounds, to: tableView)
             let isTextViewVisible = tableView.bounds.contains(textViewRect)
-                   
+            
             if !isTextViewVisible {
                 tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
             }
@@ -776,12 +790,12 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         
         // Remove the section from data model
         let lastIndexPath = IndexPath(row: lastItemIndex, section: focusSectionIndex)
-            if let cell = self.tableView.cellForRow(at: lastIndexPath) as? EditableTableViewCell {
-                cell.descriptionTextView.becomeFirstResponder()
+        if let cell = self.tableView.cellForRow(at: lastIndexPath) as? EditableTableViewCell {
+            cell.descriptionTextView.becomeFirstResponder()
         }
-
+        
         listViewModel.list.sections.remove(at: index)
-
+        
         // Perform batch updates
         tableView.performBatchUpdates({
             tableView.deleteSections(IndexSet(integer: sectionBeingDeleted), with: .automatic)

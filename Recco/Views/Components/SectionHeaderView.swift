@@ -51,7 +51,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
         let stackView = UIStackView(arrangedSubviews: [emojiButton, titleTextView])
         stackView.axis = .horizontal
         stackView.distribution = .fill
-        stackView.spacing = 8
+        stackView.spacing = 4
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -155,10 +155,9 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
         guard let tableView = getUITableView() else { return }
         guard let tableViewController = tableView.delegate as? EditableTableViewController else { return }
         
-        
         let sectionHasItems = !tableViewController.sections[sectionIndex].items.isEmpty
         if sectionHasItems {
-            let indexPath = IndexPath(row: 0, section: sectionIndex+1)
+            let indexPath = IndexPath(row: 0, section: tableViewController.listViewModel.hasUnsectioned ? sectionIndex+1 : sectionIndex)
             tableView.scrollToRow(at: indexPath, at: .top, animated: true)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
                 if let cell = tableView.cellForRow(at: indexPath) as? EditableTableViewCell {
@@ -167,7 +166,7 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
             }
         } else {
             tableViewController.listViewModel.createNewItemInSection(at: sectionIndex)
-            let indexPath = IndexPath(row: 0, section: sectionIndex+1)
+            let indexPath = IndexPath(row: 0, section: tableViewController.listViewModel.hasUnsectioned ? sectionIndex+1 : sectionIndex)
             tableView.beginUpdates()
             tableView.insertRows(at: [indexPath], with: .top)
             DispatchQueue.main.async{
@@ -179,7 +178,9 @@ class SectionHeaderView: UITableViewHeaderFooterView, UITextViewDelegate {
             tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         }
     }
+    
 }
+
 
 protocol EditableSectionHeaderDelegate: AnyObject {
     func sectionHeader(_ header: SectionHeaderView, didChangeTitleTo title: String, forSectionAt index: Int)

@@ -11,7 +11,7 @@ import PhotosUI
 import Supabase
 
 // TODO: Reset fields when user gets signed in, validate strings when user hits back
-class SupabaseAuthViewModel: BaseSupabase {
+class SupabaseAuthViewModel: ObservableObject {
     
     let supabaseUserManager = SupabaseUserManager()
     var formattedPhoneNumber: String {
@@ -93,11 +93,11 @@ class SupabaseAuthViewModel: BaseSupabase {
         do {
             try await Task.detached(priority: .userInitiated) {
                 if(self.authMethod == .email){
-                    try await self.supabase.auth.signInWithOTP(
+                    try await supabase.auth.signInWithOTP(
                         email: self.email,
                     )
                 } else {
-                    try await self.supabase.auth.signInWithOTP(
+                    try await supabase.auth.signInWithOTP(
                         phone: self.formattedPhoneNumber,
                     )
                 }
@@ -141,7 +141,6 @@ class SupabaseAuthViewModel: BaseSupabase {
         }
     }
     
-    // TODO: heavy refactor, maybe one signup flow?
     @MainActor
     func fetchUserFromSupabase() async throws -> User? {
         isLoading = true

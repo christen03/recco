@@ -28,7 +28,8 @@ struct ProfileView: View{
                       (userDataViewModel.currentUser?.firstName ?? "") + " "
                       + (userDataViewModel.currentUser?.lastName  ?? "")
                     )
-                    FontedText("@\(userDataViewModel.currentUser?.username ?? "")")
+                    BodyText("@\(userDataViewModel.currentUser?.username ?? "")")
+                          .foregroundStyle(Colors.ListTitleGray)
                   }
                   Spacer()
                 }
@@ -133,15 +134,15 @@ struct ProfileListItemView: View {
                 .font(.system(size: 20))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Text(list.name)
+            HeaderText(list.name)
+                .lineLimit(2)
                 .font(Font.custom(Fonts.sfProDisplaySemibold, size: 24))
                 .foregroundStyle(Colors.ListTitleGray)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             // Show items summary that fits in 2 lines with ellipses
-            BodyText(list.formatItemSummary())
+            BodyText(list.formatItemSummary(), size: 12)
                 .foregroundStyle(Colors.MediumGray)
-                .font(.system(size: 10))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(2)
                 .truncationMode(.tail)

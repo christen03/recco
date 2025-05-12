@@ -13,7 +13,7 @@ enum ImageUploadError: Error {
     case missingUserId
 }
 
-class SupabaseUserManager: BaseSupabase{
+class SupabaseUserManager {
     
     struct UpsertProfilePictureParams: Encodable {
         let id: UUID
@@ -26,14 +26,14 @@ class SupabaseUserManager: BaseSupabase{
     }
     
     func createUserInSupabase(userData: CreateUserParams) async throws{
-        try await self.supabase
+        try await supabase
             .from("users")
             .insert(userData)
             .execute()
     }
     
     func uploadProfilePictureToSupabase(imageData: Data) async throws  -> URL{
-        guard let userId = self.supabase.auth.currentSession?.user.id else {
+        guard let userId = supabase.auth.currentSession?.user.id else {
             throw ImageUploadError.missingUserId
         }
         let fileName = "\(userId).jpg"

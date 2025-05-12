@@ -21,15 +21,19 @@ class AutoGrowingTextView: UITextView {
         }
     }
     
+    override var isHidden: Bool {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+    
     override var intrinsicContentSize: CGSize {
+        if isHidden {
+            return .zero
+        }
         let textWidth = frame.width - textContainerInset.left - textContainerInset.right
         let newSize = sizeThatFits(CGSize(width: textWidth, height: .greatestFiniteMagnitude))
         return CGSize(width: frame.width, height: newSize.height)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        invalidateIntrinsicContentSize()
     }
 }
 
@@ -54,7 +58,7 @@ class EditableTableViewCell: UITableViewCell {
     let descriptionTextView: AutoGrowingTextView = {
         let desc = AutoGrowingTextView()
         desc.translatesAutoresizingMaskIntoConstraints = false
-        desc.font = UIFont(name: Fonts.sfProDisplayLight, size: 14)
+        desc.font = UIFont(name: Fonts.sfProDisplay, size: 14)
         desc.isScrollEnabled = false
         desc.textColor = UIColor(Colors.MediumGray)
         desc.textContainerInset = .zero

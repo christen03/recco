@@ -20,6 +20,19 @@ struct TitleText: View {
     }
 }
 
+struct HeaderText: View {
+    let text: String
+    
+    init(_ text: String){
+        self.text=text;
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(Font.custom(Fonts.sfProDisplaySemibold, size: 25))
+    }
+}
+
 struct FontedText: View {
     
     let text: String
