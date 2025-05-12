@@ -6,68 +6,22 @@
 //
 
 import Foundation
-
-// CURRENTLY UNUSED
-extension UserDefaults {
-    
-    enum UserDefaultKeys: String {
-        case currentUser
-    }
-    
-    func saveUser(_ user: User, forKey key: String) {
-        do {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(user)
-            self.set(data, forKey: key)
-        } catch {
-            print("Failed to encode user: \(error.localizedDescription)")
-        }
-    }
-    
-    func getUser(forKey key: String) -> User? {
-        if let data = self.data(forKey: key) {
-            do {
-                let decoder = JSONDecoder()
-                let user = try decoder.decode(User.self, from: data)
-                return user
-            } catch {
-                print("Failed to decode user: \(error.localizedDescription)")
-            }
-        }
-        return nil
-    }
-    
-    func removeUser(forKey key: String) {
-        self.removeObject(forKey: key)
-    }
-}
-// END CURRENTLY UNUSED
+import Supabase
 
 
-class UserDataViewModel: BaseSupabase {
+class UserDataViewModel: ObservableObject {
     
     @Published var isUserAuthenticated: Bool = false
     @Published var currentUser: User? = nil
     
-    override init(){
-        super.init()
+    init(){
         Task{
-            let session = try? await supabase.auth.session
-            guard let sessionData = session else { return }
-            let userResponse =  try await fetchUserDataFromSupabase(userId: sessionData.user.id)
-            await MainActor.run {
-                self.currentUser = userResponse.toUser()
-                self.isUserAuthenticated = true
-            }
+            await fetchUserDataFromSupabase()
         }
     }
     
     init(user: User){
         self.currentUser=user
-    }
-    
-    func login(){
-        self.isUserAuthenticated=true
     }
     
     func signOut(){
@@ -76,50 +30,38 @@ class UserDataViewModel: BaseSupabase {
                 try await supabase.auth.signOut()
                 await MainActor.run{
                     self.isUserAuthenticated=false
+                    self.currentUser=nil
                 }
             } catch {
-                // TODO: also implement failure here
                 print("Failed to sign user out")
             }
         }
     }
     
-    func fetchUserDataFromSupabase(userId: UUID) async throws -> SupabaseUserResponse {
-       let query =
-"""
-user_id,
-first_name,
-last_name,
-username,
-profile_picture_url,
-email,
-phone_number,
-user_tags (
-    tags (
-        tag_id,
-        name,
-        emoji,
-        category
-        )
-    )
-"""
-        do{
-            return try await supabase
+    func fetchUserDataFromSupabase() async {
+        do {
+            let userId = try await supabase.auth.session.user.id
+            let userResponse: SupabaseUserResponse = try await supabase
                 .from("users")
-                .select(query)
+                .select("*")
                 .eq("user_id", value: userId)
                 .single()
                 .execute()
                 .value
-            
-        } catch {
-            print("Error fetching user data, \(error.localizedDescription)")
-            throw error
+            await MainActor.run {
+                self.currentUser = userResponse.toUser()
+                self.isUserAuthenticated=true
+            }
         }
-    }
-    
-    func updateUserProfilePictureLocally(newUrl: URL){
-        self.currentUser?.profilePictureUrl=(newUrl)
+        catch {
+            if let error = error as? PostgrestError {
+                if (error.code == "PGRST116"){
+                    await MainActor.run{
+                        self.isUserAuthenticated=true
+                    }
+                }
+            }
+        }
     }
     
     @MainActor

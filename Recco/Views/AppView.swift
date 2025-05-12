@@ -8,23 +8,52 @@
 import SwiftUI
 
 struct AppView: View {
-  @State var isAuthenticated = false
-
-  var body: some View {
-    Group {
-      if isAuthenticated {
-          ContentView()
-      } else {
-        SplashScreenView()
-      }
+    
+    enum AppState {
+        case signedOut
+        case newUser
+        case returningUser
     }
-    .task {
-      for await state in supabase.auth.authStateChanges {
-        if [.initialSession, .signedIn, .signedOut].contains(state.event) {
-          isAuthenticated = state.session != nil
+    
+    @EnvironmentObject private var userDataViewModel: UserDataViewModel
+    @State private var appState: AppState = .signedOut
+    
+    var body: some View {
+        Group {
+            switch appState {
+            case .signedOut:
+                SplashScreenView()
+            case .newUser:
+                EnterNameView()
+            case .returningUser:
+                ContentView()
+                
+            }
+            
         }
-      }
+        .task {
+            for await state in supabase.auth.authStateChanges {
+                if state.event == .signedOut {
+                    appState = .signedOut
+                    userDataViewModel.currentUser = nil
+                } else if [.initialSession, .signedIn].contains(state.event){
+                    if state.session != nil {
+                        await userDataViewModel.fetchUserDataFromSupabase()
+                        if userDataViewModel.isUserAuthenticated {
+                            appState = userDataViewModel.currentUser == nil ? .newUser : .returningUser
+                        } else {
+                            appState = .signedOut
+                        }
+                    }
+                }
+            }
+        }
+        .onChange(of: userDataViewModel.currentUser) { newValue in
+                  if userDataViewModel.isUserAuthenticated {
+                      appState = newValue == nil ? .newUser : .returningUser
+            }
+        }
     }
-  }
+    
 }
 

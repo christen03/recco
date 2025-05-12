@@ -22,11 +22,4 @@ class AuthNavigation: ObservableObject{
         self.navigationPath.append(1)
     }
     
-    func navigateToNamePage(){
-        self.navigationPath.append("ab")
-    }
-    
-    func navigateToProfilePicturePage(){
-        self.navigationPath.append(Character("A"))
-    }
 }

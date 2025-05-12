@@ -29,6 +29,7 @@
 		CA2F5EE52C7ED112006EA304 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2F5EE42C7ED112006EA304 /* MockData.swift */; };
 		CA3A78472D682D3200A9D370 /* KeyboardAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A78462D682D3200A9D370 /* KeyboardAccessoryView.swift */; };
 		CA4ADB882D81179100FFA62B /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4ADB872D81178C00FFA62B /* SectionHeaderView.swift */; };
+		CA4C4C632DD17F6C001F773A /* OnboardingNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4C4C622DD17F6B001F773A /* OnboardingNavigation.swift */; };
 		CA7DFAEC2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */; };
 		CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */; };
 		CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */; };
@@ -76,7 +77,6 @@
 		CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB605672C6B23B6007698B9 /* FontManager.swift */; };
 		CAB6A8D32CD61CB700F8D0A1 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6A8D22CD61CB700F8D0A1 /* ProfileSettingsView.swift */; };
 		CAC04C222DA8B16B002ED187 /* UpdateList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC04C212DA8B16B002ED187 /* UpdateList.swift */; };
-		CAC2BCBC2DB63D9F00281670 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC2BCBB2DB63D9F00281670 /* AuthManager.swift */; };
 		CAC2BCBE2DB64B4100281670 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC2BCBD2DB64B4100281670 /* AppView.swift */; };
 		CAD0CFDB2CDDD13D009C0FE8 /* ListEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD0CFDA2CDDD13D009C0FE8 /* ListEditView.swift */; };
 		CADEDDF92D97302900BC21F0 /* VisbiltySelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADEDDF82D97302500BC21F0 /* VisbiltySelectView.swift */; };
@@ -124,6 +124,7 @@
 		CA2F5EE42C7ED112006EA304 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		CA3A78462D682D3200A9D370 /* KeyboardAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAccessoryView.swift; sourceTree = "<group>"; };
 		CA4ADB872D81178C00FFA62B /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
+		CA4C4C622DD17F6B001F773A /* OnboardingNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNavigation.swift; sourceTree = "<group>"; };
 		CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
 		CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterHorizontally.swift; sourceTree = "<group>"; };
 		CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElegantEmojiPickerView.swift; sourceTree = "<group>"; };
@@ -168,7 +169,6 @@
 		CAB605692C6B255E007698B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CAB6A8D22CD61CB700F8D0A1 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		CAC04C212DA8B16B002ED187 /* UpdateList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateList.swift; sourceTree = "<group>"; };
-		CAC2BCBB2DB63D9F00281670 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		CAC2BCBD2DB64B4100281670 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		CAD0CFDA2CDDD13D009C0FE8 /* ListEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEditView.swift; sourceTree = "<group>"; };
 		CADEDDF82D97302500BC21F0 /* VisbiltySelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisbiltySelectView.swift; sourceTree = "<group>"; };
@@ -230,6 +230,7 @@
 			children = (
 				CAA43A232C71725800808375 /* AuthNavigation.swift */,
 				CA2F5EDA2C7D8E00006EA304 /* HomeNavigation.swift */,
+				CA4C4C622DD17F6B001F773A /* OnboardingNavigation.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -237,7 +238,6 @@
 		CA2F5EE02C7ECCED006EA304 /* Singleton */ = {
 			isa = PBXGroup;
 			children = (
-				CAC2BCBB2DB63D9F00281670 /* AuthManager.swift */,
 			);
 			path = Singleton;
 			sourceTree = "<group>";
@@ -665,12 +665,12 @@
 				CAA43A1E2C711A0800808375 /* ToastView.swift in Sources */,
 				CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */,
 				CAB6050B2C5F068C007698B9 /* ContentView.swift in Sources */,
-				CAC2BCBC2DB63D9F00281670 /* AuthManager.swift in Sources */,
 				CA22577B2CCEC1EA00D5D261 /* Tag.swift in Sources */,
 				CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */,
 				CAF6C3D72D5458430001BC57 /* EditableTableViewCell.swift in Sources */,
 				CAF6C3DA2D5459460001BC57 /* EditableTableViewController.swift in Sources */,
 				CAD0CFDB2CDDD13D009C0FE8 /* ListEditView.swift in Sources */,
+				CA4C4C632DD17F6C001F773A /* OnboardingNavigation.swift in Sources */,
 				CAA43A1C2C7119DB00808375 /* Toast.swift in Sources */,
 				CADEDDF92D97302900BC21F0 /* VisbiltySelectView.swift in Sources */,
 				CAA43A282C7182C900808375 /* EnterUsernameView.swift in Sources */,

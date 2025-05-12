@@ -22,10 +22,13 @@ struct SignUpOrLoginView: View {
                     authNavigation.navigateToAuthPage(option: .phone)
                 }) {
                     FontedText("Continue with Phone")
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.black)
+                        .overlay(
+                                  RoundedRectangle(cornerRadius: 25)
+                                      .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                              )
                         .cornerRadius(25)
                         .padding(.horizontal, 40)
                         .padding(.top, 20)
@@ -36,13 +39,16 @@ struct SignUpOrLoginView: View {
                     
                 }){
                     FontedText("Continue with Email")
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(red: 111/255, green: 111/255, blue: 111/255))
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.black)
+                        .overlay(
+                                  RoundedRectangle(cornerRadius: 25)
+                                      .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                              )
                         .cornerRadius(25)
                         .padding(.horizontal, 40)
-                        .padding(.top, 20)
+                        .padding(.top, 10)
                 }
             }
         }
