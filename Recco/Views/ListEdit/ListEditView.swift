@@ -19,25 +19,12 @@ struct EditableTableViewControllerRepresentable: UIViewControllerRepresentable {
     @ObservedObject var listViewModel: ListViewModel
     
     func makeUIViewController(context: Context) -> EditableTableViewController {
-        // Create controller with the required view model
         let controller = EditableTableViewController(viewModel: listViewModel)
-        // Set up any delegate relationships
-//        controller.dataDelegate = context.coordinator
-        // Store reference in coordinator if needed
         context.coordinator.tableViewController = controller
-        
         return controller
     }
     
-    func updateUIViewController(_ uiViewController: EditableTableViewController, context: Context) {
-        // Handle view model reference changes if needed
-        if uiViewController.listViewModel !== listViewModel {
-            // If we somehow got a different view model instance, update it
-            // This should be rare since we pass it in the initializer
-//            uiViewController.updateViewModel(listViewModel)
-        }
-    }
-    
+    func updateUIViewController(_ uiViewController: EditableTableViewController, context: Context) {}
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }

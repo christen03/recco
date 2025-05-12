@@ -33,6 +33,9 @@ struct Colors {
     // F2F2F2
     static let LightGray: Color = Color(red: 242/255, green: 242/255, blue: 242/255)
     
+    // F5F5F5
+    static let ButtonGray: Color = Color(red: 245/255, green: 245/255, blue: 245/255)
+    
     // FCFCFC
     static let SuperLightGray: Color = Color(red: 252/255, green: 252/255, blue: 252/255)
 }

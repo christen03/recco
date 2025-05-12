@@ -172,11 +172,6 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
                titleStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -15)
            ])
            
-        // This makes the text field expand to fill available space
-        
-//        titleStackView.backgroundColor = .yellow
-//        descriptionTextView.backgroundColor = .green
-//        contentView.backgroundColor = .red
         setupKeyboardButtons()
         itemNameTextField.delegate = self
         descriptionTextView.delegate = self
@@ -189,9 +184,6 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
             
             descriptionTextView.setNeedsLayout()
             descriptionTextView.layoutIfNeeded()
-            DispatchQueue.main.async {
-                   self.delegate?.textViewDidChangeSize(in: self)
-               }
             
             if item.isStarred {
                 starContainerView.alpha=1
@@ -204,7 +196,6 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
             if let price = item.price {
                 priceLabel.alpha=1
                 priceContainerView.alpha=1
-                
                 switch price {
                 case .free: priceLabel.text = "Free"
                 case .one: priceLabel.text = "$"
@@ -212,8 +203,8 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
                 case .three: priceLabel.text = "$$$"
                 }
             } else {
-                priceContainerView.alpha = 1
-                priceLabel.alpha = 1
+                priceContainerView.alpha = 0
+                priceLabel.alpha = 0
             }
         }
     

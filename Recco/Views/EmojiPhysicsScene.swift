@@ -19,7 +19,13 @@ class EmojiPhysicsScene: SKScene {
     private var emojisSpawned: Int = 0
     private var uniqueEmojiSpawnIndex: Int = 0
 
-    let emojiCharacters = ["🌈", "🦢", "💿", "👽", "🍎", "🧊", "🎾", "🍭", "🧩", "🥩", "🎨", "🍇", "🍆", "🥐", "🛸", "🌷", "🏝️", "🧸", "🎈", "🧀", "✂️", "⛱️", "🪑", "🌀", "🧢", "🧤", "🌕", "🦠", "🔮", "🪩", "🖼️", "🌐"]
+    let emojiCharacters = [
+        "🌈", "🦢", "💿", "👽", "🍎", "🧊", "🎾", "🍭", "🧩", "🥩",
+        "🎨", "🍇", "🍆", "🥐", "🛸", "🌷", "🏝️", "🧸", "🎈", "🧀",
+        "✂️", "⛱️", "🪑", "🌀", "🧢", "🧤", "🌕", "🦠", "🔮", "🪩",
+        "🖼️", "🌐", "🦋", "🍒", "🪼", "🧃", "🍉", "🎀", "🍩", "🐚"
+      ]
+
     
 
     init(size: CGSize, maxEmojis: Int) {
@@ -46,7 +52,7 @@ class EmojiPhysicsScene: SKScene {
 
         // Ground
         let ground = SKNode()
-        ground.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: 0, y: 1), to: CGPoint(x: size.width, y: 1))
+        ground.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: 0, y: 0), to: CGPoint(x: size.width, y: 0))
         ground.physicsBody?.isDynamic = false
         ground.physicsBody?.friction = 0.8
         ground.physicsBody?.restitution = 0.05 // Less bouncy
@@ -91,10 +97,11 @@ class EmojiPhysicsScene: SKScene {
            }
            
            let emojiNode = SKLabelNode(text: emojiChar)
-           let fontSize = CGFloat.random(in: 40...55)
+           let fontSize = CGFloat.random(in: 70...80)
            emojiNode.fontSize = fontSize
            emojiNode.verticalAlignmentMode = .center
            emojiNode.horizontalAlignmentMode = .center
+            emojiNode.zRotation = CGFloat.random(in: 0...(2 * .pi))
            
            let halfWidth = emojiNode.frame.width / 2
            let halfHeight = emojiNode.frame.height / 2
@@ -109,16 +116,16 @@ class EmojiPhysicsScene: SKScene {
            let xPosition = CGFloat.random(in: minX...maxX)
            emojiNode.position = CGPoint(x: xPosition, y: size.height + halfHeight)
 
-           let radius = max(5, emojiNode.frame.width * 0.40)
+           let radius = max(5, emojiNode.frame.width * 0.3)
            emojiNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
            
            if let pb = emojiNode.physicsBody {
                pb.mass = 0.1 + CGFloat.random(in: -0.01...0.01)
-               pb.friction = 0.7
+               pb.friction = 0.5
                pb.restitution = 0.1
                pb.allowsRotation = true
-               pb.linearDamping = 0.3
-               pb.angularDamping = 0.3
+               pb.linearDamping = 0.2
+               pb.angularDamping = 0.2
            }
 
            addChild(emojiNode)

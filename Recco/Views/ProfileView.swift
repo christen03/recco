@@ -160,6 +160,10 @@ struct ProfileListItemView: View {
         .transition(.scale.combined(with: .opacity))
         .background(Colors.SuperLightGray)
         .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Colors.LightGray, lineWidth: 1)
+        )
         .onTapGesture {
             homeNavigation.navigateToEditList(list: self.list)
         }

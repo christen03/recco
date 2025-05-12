@@ -176,7 +176,6 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         cell.itemNameTextField.delegate = self
         cell.descriptionTextView.delegate = self
         cell.delegate = self
-
         // Set up keyboard accessory views
         if let accessoryView = cell.itemNameTextField.inputAccessoryView as? KeyboardAccessoryView {
             accessoryView.delegate = self
@@ -192,7 +191,6 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? EditableTableViewCell else { return }
 
-        // Get the item from the view model
         let item: Item
         
         let hasUnsectioned = !(listViewModel.list.unsectionedItems.isEmpty)
@@ -216,9 +214,18 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         // Description field
         if let description = item.description, !description.isEmpty {
             cell.descriptionTextView.text = description
+            cell.descriptionTextView.setNeedsLayout()
+            cell.descriptionTextView.layoutIfNeeded()
+            DispatchQueue.main.async {
+                UIView.performWithoutAnimation{
+                    tableView.beginUpdates()
+                    tableView.endUpdates()
+                }
+            }
         } else {
             cell.descriptionTextView.text = placeholderDesc
         }
+        
     }
 
     
@@ -466,7 +473,6 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     }
     // In EditableTableViewController.swift
     func textViewDidChange(_ textView: UITextView) {
-        // Update table view layout
     UIView.performWithoutAnimation {
             tableView.beginUpdates()
             tableView.endUpdates()
@@ -697,6 +703,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         tableView.endUpdates()
         UIView.setAnimationsEnabled(true)
         if let indexPath = tableView.indexPath(for: cell){
+            print("Scrolling to cell: \(cell.itemNameTextField.text)")
             tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
         }
     }

@@ -39,8 +39,6 @@ class SceneHolder: ObservableObject {
         }
     }
 }
-
-
 struct SplashScreenView: View {
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
     @StateObject var authNavigation = AuthNavigation()
@@ -52,43 +50,47 @@ struct SplashScreenView: View {
         GeometryReader { geometry in
             NavigationStack(path: $authNavigation.navigationPath) {
                 ZStack {
-                    // Your actual background
+                    // Background layer - z-index 0 (default)
                     ReccoBackgroundText()
                         .edgesIgnoringSafeArea(.all)
-
-                    // SpriteKit View for Physics Emojis
-                    // Use a default empty scene if sceneHolder.scene is nil initially
+                        .zIndex(0)
+                    
+                    // Emoji animation layer - z-index 1
                     SpriteView(scene: sceneHolder.scene ?? SKScene(size: geometry.size),
                                options: [.allowsTransparency])
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .edgesIgnoringSafeArea(.all) // Let emojis use the whole area
+                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                        .edgesIgnoringSafeArea(.all)
+                        .zIndex(1)
 
-
-                    // Your "Get Started" Button
+                    // Button layer - z-index 2 (on top)
                     VStack {
                         Spacer()
-                        NavigationLink(destination: SignUpOrLoginView()) { // Placeholder destination
-                            FontedText("Get Started") // Placeholder text view
-                                .foregroundColor(.white)
+                        NavigationLink(destination: SignUpOrLoginView()) {
+                            FontedText("Get Started")
+                                .foregroundColor(Colors.ButtonGray)
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.black)
+                                .opacity(0.9)
                                 .cornerRadius(25)
                                 .padding(.horizontal, 40)
                         }
                         .opacity(showButton ? 1 : 0)
                         .animation(.easeIn(duration: 1.0).delay(0.2), value: showButton)
+                        .padding(.bottom, 40) // Add some padding at the bottom
                     }
+                    .zIndex(2)
                 }
-                .navigationDestination(for: AuthOptions.self) { option in AuthView(authOption: option) } // Placeholder
-                .navigationDestination(for: Int.self) { _ in VerificationCodeView() } // Placeholder
+                .ignoresSafeArea() // Apply to the whole ZStack
+                .navigationDestination(for: AuthOptions.self) { option in AuthView(authOption: option) }
+                .navigationDestination(for: Int.self) { _ in VerificationCodeView() }
                 .onAppear {
-                    sceneHolder.setupScene(size: CGSize(width: geometry.size.width*2, height: geometry.size.height*2))
+                    // Use UIScreen bounds to ensure we get full screen size
+                    let fullScreenSize = UIScreen.main.bounds.size
+                    sceneHolder.setupScene(size: fullScreenSize)
 
-                    // Calculate delay for button appearance
-                    // (maxEmojis * spawnInterval) + estimated settling time
-                    let spawnDuration = Double(sceneHolder.maxEmojis) * 0.1 // From spawnInterval in EmojiPhysicsScene
-                    let settlingTimeGuess = 2.5 // Seconds for emojis to settle
+                    let spawnDuration = Double(sceneHolder.maxEmojis) * 0.1
+                    let settlingTimeGuess = 2.5
                     let buttonAppearanceDelay = spawnDuration + settlingTimeGuess
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + buttonAppearanceDelay) {
@@ -96,8 +98,9 @@ struct SplashScreenView: View {
                     }
                 }
             }
-            .environmentObject(authNavigation) // Pass along your actual object
+            .environmentObject(authNavigation)
         }
+        .ignoresSafeArea() // Apply to the outermost GeometryReader too
     }
 }
 
