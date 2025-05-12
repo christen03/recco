@@ -28,10 +28,6 @@ class UserDataViewModel: ObservableObject {
         Task{
             do{
                 try await supabase.auth.signOut()
-                await MainActor.run{
-                    self.isUserAuthenticated=false
-                    self.currentUser=nil
-                }
             } catch {
                 print("Failed to sign user out")
             }

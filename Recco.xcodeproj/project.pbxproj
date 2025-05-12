@@ -30,6 +30,7 @@
 		CA3A78472D682D3200A9D370 /* KeyboardAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3A78462D682D3200A9D370 /* KeyboardAccessoryView.swift */; };
 		CA4ADB882D81179100FFA62B /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4ADB872D81178C00FFA62B /* SectionHeaderView.swift */; };
 		CA4C4C632DD17F6C001F773A /* OnboardingNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4C4C622DD17F6B001F773A /* OnboardingNavigation.swift */; };
+		CA4C4C652DD189CD001F773A /* EmojiPhysicsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4C4C642DD189CD001F773A /* EmojiPhysicsScene.swift */; };
 		CA7DFAEC2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */; };
 		CA7DFAEF2C84DB8300B2239A /* CenterHorizontally.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */; };
 		CA7DFAF52C84F76D00B2239A /* ElegantEmojiPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */; };
@@ -125,6 +126,7 @@
 		CA3A78462D682D3200A9D370 /* KeyboardAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAccessoryView.swift; sourceTree = "<group>"; };
 		CA4ADB872D81178C00FFA62B /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		CA4C4C622DD17F6B001F773A /* OnboardingNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNavigation.swift; sourceTree = "<group>"; };
+		CA4C4C642DD189CD001F773A /* EmojiPhysicsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPhysicsScene.swift; sourceTree = "<group>"; };
 		CA7DFAEB2C841C2E00B2239A /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
 		CA7DFAEE2C84DB7E00B2239A /* CenterHorizontally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterHorizontally.swift; sourceTree = "<group>"; };
 		CA7DFAF42C84F76D00B2239A /* ElegantEmojiPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElegantEmojiPickerView.swift; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 				CAB605482C5F0D2B007698B9 /* ProfileView.swift */,
 				CAB6A8D22CD61CB700F8D0A1 /* ProfileSettingsView.swift */,
 				CAC2BCBD2DB64B4100281670 /* AppView.swift */,
+				CA4C4C642DD189CD001F773A /* EmojiPhysicsScene.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -656,6 +659,7 @@
 				C26D20182CC19D1200B919A8 /* ReccoBackgroundText.swift in Sources */,
 				CA1A3CBE2CCF12EB0036E66C /* ListQuery.swift in Sources */,
 				CAA43A202C711A2F00808375 /* ToastModifier.swift in Sources */,
+				CA4C4C652DD189CD001F773A /* EmojiPhysicsScene.swift in Sources */,
 				CAB605682C6B23B6007698B9 /* FontManager.swift in Sources */,
 				CA4ADB882D81179100FFA62B /* SectionHeaderView.swift in Sources */,
 				CA22577F2CCEC52E00D5D261 /* TagSelectionView.swift in Sources */,

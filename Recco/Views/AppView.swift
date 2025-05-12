@@ -34,24 +34,33 @@ struct AppView: View {
         .task {
             for await state in supabase.auth.authStateChanges {
                 if state.event == .signedOut {
-                    appState = .signedOut
-                    userDataViewModel.currentUser = nil
-                } else if [.initialSession, .signedIn].contains(state.event){
+                    await MainActor.run {
+                        userDataViewModel.currentUser = nil
+                        userDataViewModel.isUserAuthenticated = false
+                        appState = .signedOut
+                    }
+                } else if [.initialSession, .signedIn].contains(state.event) {
                     if state.session != nil {
                         await userDataViewModel.fetchUserDataFromSupabase()
-                        if userDataViewModel.isUserAuthenticated {
-                            appState = userDataViewModel.currentUser == nil ? .newUser : .returningUser
-                        } else {
-                            appState = .signedOut
+                        await MainActor.run {
+                            updateAppState()
                         }
                     }
                 }
             }
         }
-        .onChange(of: userDataViewModel.currentUser) { newValue in
-                  if userDataViewModel.isUserAuthenticated {
-                      appState = newValue == nil ? .newUser : .returningUser
+        .onChange(of: userDataViewModel.currentUser) { _ in
+            if userDataViewModel.isUserAuthenticated {
+                updateAppState()
             }
+        }
+    }
+    
+    private func updateAppState() {
+        if !userDataViewModel.isUserAuthenticated {
+            appState = .signedOut
+        } else {
+            appState = userDataViewModel.currentUser == nil ? .newUser : .returningUser
         }
     }
     
