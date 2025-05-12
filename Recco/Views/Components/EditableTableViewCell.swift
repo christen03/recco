@@ -33,15 +33,13 @@ class AutoGrowingTextView: UITextView {
     }
 }
 
-class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
+class EditableTableViewCell: UITableViewCell {
     
     var item: Item? {
         didSet {
             rerender()
         }
     }
-    
-    weak var delegate: EditableTableViewCellDelegate?
     
     let itemNameTextField: UITextView = {
         let title = UITextView()
@@ -158,7 +156,6 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
            
            contentView.addSubview(titleStackView)
            contentView.addSubview(descriptionTextView)
-           
            NSLayoutConstraint.activate([
                titleStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
                titleStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
@@ -173,17 +170,12 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
            ])
            
         setupKeyboardButtons()
-        itemNameTextField.delegate = self
-        descriptionTextView.delegate = self
         self.selectionStyle = .none
     }
 
     
     func rerender() {
             guard let item = item else { return }
-            
-            descriptionTextView.setNeedsLayout()
-            descriptionTextView.layoutIfNeeded()
             
             if item.isStarred {
                 starContainerView.alpha=1
@@ -206,6 +198,7 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
                 priceContainerView.alpha = 0
                 priceLabel.alpha = 0
             }
+        
         }
     
     private func toggleItemVisibility(container: UIView, label: UILabel){
@@ -224,18 +217,10 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
         keyboardAccessoryView.frame.size.height=44
     }
     
-    func textViewDidChange(_ textView: UITextView){
-        delegate?.textViewDidChangeSize(in: self)
-    }
-
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
-}
-// MARK: - Delegate Protocol
-protocol EditableTableViewCellDelegate: AnyObject {
-    func textViewDidChangeSize(in cell: EditableTableViewCell)
 }

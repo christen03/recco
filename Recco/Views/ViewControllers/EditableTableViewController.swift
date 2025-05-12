@@ -13,7 +13,7 @@ struct Recommendation {
     var description: String
 }
 
-class EditableTableViewController: UITableViewController, UITextViewDelegate, KeyboardAccessoryViewDelegate, EditableSectionHeaderDelegate, EditableTableViewCellDelegate, ElegantEmojiPickerDelegate {
+class EditableTableViewController: UITableViewController, UITextViewDelegate, KeyboardAccessoryViewDelegate, EditableSectionHeaderDelegate,  ElegantEmojiPickerDelegate {
     
     
     let listViewModel: ListViewModel
@@ -35,7 +35,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     
     
     let placeholderItem = "Add a recommendation"
-    let placeholderDesc = "Add a description"
+    let placeholderDesc = ""
     var sections: [Section] {
         return listViewModel.list.sections
     }
@@ -175,7 +175,6 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         // Set up delegates
         cell.itemNameTextField.delegate = self
         cell.descriptionTextView.delegate = self
-        cell.delegate = self
         // Set up keyboard accessory views
         if let accessoryView = cell.itemNameTextField.inputAccessoryView as? KeyboardAccessoryView {
             accessoryView.delegate = self
@@ -327,7 +326,6 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                     // Remove from unsectioned items
                     listViewModel.list.unsectionedItems.remove(at: indexPath.row)
                     let wasLastUnsectionedItem = listViewModel.list.unsectionedItems.isEmpty
-                    
                     tableView.performBatchUpdates({
                         tableView.deleteRows(at: [indexPath], with: .automatic)
                         if wasLastUnsectionedItem {
@@ -473,41 +471,48 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     }
     // In EditableTableViewController.swift
     func textViewDidChange(_ textView: UITextView) {
-    UIView.performWithoutAnimation {
+        UIView.performWithoutAnimation {
             tableView.beginUpdates()
             tableView.endUpdates()
         }
         
         for cell in tableView.visibleCells {
-            if let editableCell = cell as? EditableTableViewCell,
-               (editableCell.itemNameTextField == textView || editableCell.descriptionTextView == textView),
-               let indexPath = tableView.indexPath(for: cell) {
-                let textViewRect = textView.convert(textView.bounds, to: tableView)
-                           let isTextViewVisible = tableView.bounds.contains(textViewRect)
-                           
-                if !isTextViewVisible {
-                    tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+            guard let editableCell = cell as? EditableTableViewCell,
+                  (editableCell.itemNameTextField === textView ||
+                   editableCell.descriptionTextView === textView),
+                  let indexPath = tableView.indexPath(for: cell) else {
+                continue
+            }
+            
+            if let currentItem = getItemAt(indexPath) {
+                var updatedItem = currentItem
+                if textView === editableCell.itemNameTextField {
+                    updatedItem.name = textView.text
+                } else {
+                    updatedItem.description = textView.text
                 }
                 
-                if let currentItem = getItemAt(indexPath){
-                    var updatedItem = currentItem
-                    if textView == editableCell.itemNameTextField {
-                        updatedItem.name = textView.text
-                    } else {
-                        updatedItem.description = textView.text
-                    }
-                    
-                    
-                    if textView.text != placeholderItem && textView.text != placeholderDesc {
-                        updateItem(updatedItem, at: indexPath)
-                    }
+                if textView.text != placeholderItem && textView.text != placeholderDesc {
+                    updateItem(updatedItem, at: indexPath)
                 }
-                break
             }
+            
+            if let selectedRange = textView.selectedTextRange {
+                let cursorRect = textView.caretRect(for: selectedRange.end)
+                let convertedRect = textView.convert(cursorRect, to: tableView)
+                
+                let paddedRect = CGRect(
+                    x: convertedRect.origin.x,
+                    y: convertedRect.origin.y,
+                    width: convertedRect.width,
+                    height: convertedRect.height + 50
+                )
+                
+                tableView.scrollRectToVisible(paddedRect, animated: true)
+            }
+            
+            break
         }
-        
-        let range = NSRange(location: textView.text.count - 1, length: 0)
-        textView.scrollRangeToVisible(range)
     }
     
     // MARK: - KeyboardAccessoryViewDelegate
@@ -696,16 +701,36 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     
     
     // MARK: - EditableTableViewCellDelegate
-    func textViewDidChangeSize(in cell: EditableTableViewCell) {
-        // Update the cell height
-        UIView.setAnimationsEnabled(false)
-        tableView.beginUpdates()
-        tableView.endUpdates()
-        UIView.setAnimationsEnabled(true)
-        if let indexPath = tableView.indexPath(for: cell){
-            print("Scrolling to cell: \(cell.itemNameTextField.text)")
-            tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+    
+    func textContentDidChange(in cell: EditableTableViewCell, textView: UITextView) {
+        UIView.performWithoutAnimation {
+            tableView.beginUpdates()
+            tableView.endUpdates()
         }
+        
+        if let indexPath = tableView.indexPath(for: cell) {
+            let textViewRect = textView.convert(textView.bounds, to: tableView)
+            let isTextViewVisible = tableView.bounds.contains(textViewRect)
+                   
+            if !isTextViewVisible {
+                tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+            }
+            
+            if let currentItem = getItemAt(indexPath) {
+                var updatedItem = currentItem
+                if textView == cell.itemNameTextField {
+                    updatedItem.name = textView.text
+                } else {
+                    updatedItem.description = textView.text
+                }
+                
+                if textView.text != placeholderItem && textView.text != placeholderDesc {
+                    updateItem(updatedItem, at: indexPath)
+                }
+            }
+        }
+        let range = NSRange(location: textView.text.count - 1, length: 0)
+        textView.scrollRangeToVisible(range)
     }
     
     func sectionHeaderWillRemoveSection(_ header: SectionHeaderView, atIndex index: Int) {

@@ -19,18 +19,7 @@ struct ReccoApp: App {
                     AppView()
                         .environmentObject(userDataViewModel)
                         .environmentObject(authViewModel)
-//            if(userDataViewModel.isUserAuthenticated){
-//                ContentView()
-//                .environmentObject(authViewModel)
-//                .environmentObject(userDataViewModel)
-//                .preferredColorScheme(.light)
-//
-//            } else {
-//                SplashScreenView()
-//                    .environmentObject(authViewModel)
-//                    .environmentObject(userDataViewModel)
-//                    .preferredColorScheme(.light)
-//            }
+                        .preferredColorScheme(.light)
         }
     }
 }
