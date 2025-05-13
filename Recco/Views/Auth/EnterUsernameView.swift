@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct EnterUsernameView: View {
+    @EnvironmentObject var onboardingNavigation: OnboardingNavigation
     @EnvironmentObject var userDataViewModel: UserDataViewModel
-    @EnvironmentObject var authNavigation: AuthNavigation
     @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
 
     var body: some View {
@@ -18,7 +18,7 @@ struct EnterUsernameView: View {
             
             TitleText("Choose a username")
                 .padding(.bottom, 20)
-            
+        
             TextField("@username", text: $supabaseSignUp.username)
                 .padding()
                 .background(Color(.systemGray6))
@@ -30,8 +30,7 @@ struct EnterUsernameView: View {
             Button(action: {
                 Task{
                     if let user = await supabaseSignUp.verifyUsernameIsUniqueAndCreateUser() {
-                        userDataViewModel.currentUser=user
-                        authNavigation.navigateToProfilePicturePage()
+                        onboardingNavigation.navigateToProfilePicturePage()
                     }
                 }
             }, label: {

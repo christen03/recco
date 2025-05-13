@@ -35,13 +35,7 @@ struct VerificationCodeView: View {
                 Task{
                     let success = await supabaseSignUp.verifyCodeButtonTapped()
                     if(success){
-                        if(supabaseSignUp.isSigningUp){
-                            authNavigation.navigateToNamePage()
-                        } else {
-                            let user = try await supabaseSignUp.fetchUserFromSupabase()
-                            userDataViewModel.currentUser = user
-                            userDataViewModel.login()
-                        }
+                         await userDataViewModel.fetchUserDataFromSupabase() 
                     }
                 }
             }, label: {

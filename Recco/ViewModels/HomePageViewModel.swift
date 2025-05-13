@@ -35,7 +35,7 @@ class HomePageViewModel: ObservableObject {
     @MainActor
     func createList() async {
         do{
-            guard let userId = try await AuthManager.shared.fetchCurrentUserId() else { return }
+            let userId = try await supabase.auth.session.user.id
             self.list = List(id: UUID(),
                              name: "",
                              creatorId: userId,

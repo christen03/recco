@@ -7,7 +7,11 @@
 
 import Foundation
 
-class User: Codable{
+class User: Codable, Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: UUID
     var firstName: String
     var lastName: String
@@ -69,7 +73,7 @@ struct SupabaseUserResponse: Decodable {
         let profilePictureUrl: URL
         let email: String?
         let phoneNumber: String?
-        let userTags: [UserTagResponse]
+//        let userTags: [UserTagResponse]
         
         enum CodingKeys: String, CodingKey {
             case id = "user_id"
@@ -79,7 +83,7 @@ struct SupabaseUserResponse: Decodable {
             case profilePictureUrl = "profile_picture_url"
             case email
             case phoneNumber = "phone_number"
-            case userTags = "user_tags"
+//            case userTags = "user_tags"
         }
         
         // Convert to your User model
@@ -92,7 +96,8 @@ struct SupabaseUserResponse: Decodable {
                 profilePictureUrl: profilePictureUrl,
                 email: email ?? "",
                 phoneNumber: phoneNumber ?? "",
-                tags: userTags.map { $0.tags }
+                tags: []
+//                tags: userTags.map { $0.tags }
             )
         }
     }

@@ -11,7 +11,7 @@ import PhotosUI
 import Supabase
 
 // TODO: Reset fields when user gets signed in, validate strings when user hits back
-class SupabaseAuthViewModel: BaseSupabase {
+class SupabaseAuthViewModel: ObservableObject {
     
     let supabaseUserManager = SupabaseUserManager()
     var formattedPhoneNumber: String {
@@ -92,21 +92,13 @@ class SupabaseAuthViewModel: BaseSupabase {
         defer { isLoading = false }
         do {
             try await Task.detached(priority: .userInitiated) {
-                if(self.isSigningUp){
-                    if(try await self.supabaseUserManager.checkUserExists(email: self.email, phone: self.phone))
-                    {
-                        throw AuthError.userAlreadyExists(message: "User already exists!")
-                    }
-                }
                 if(self.authMethod == .email){
-                    try await self.supabase.auth.signInWithOTP(
+                    try await supabase.auth.signInWithOTP(
                         email: self.email,
-                        shouldCreateUser: self.isSigningUp
                     )
                 } else {
-                    try await self.supabase.auth.signInWithOTP(
+                    try await supabase.auth.signInWithOTP(
                         phone: self.formattedPhoneNumber,
-                        shouldCreateUser: self.isSigningUp
                     )
                 }
             }.value
@@ -149,29 +141,45 @@ class SupabaseAuthViewModel: BaseSupabase {
         }
     }
     
-    // TODO: heavy refactor, maybe one signup flow?
     @MainActor
-    func fetchUserFromSupabase() async throws -> User {
+    func fetchUserFromSupabase() async throws -> User? {
         isLoading = true
         defer {isLoading = false}
-        let user: User = try await supabase
-                    .from("users")
-                    .select()
-                    .eq("user_id", value: self.userId)
-                    .single()
-                    .execute()
-                    .value
-        return user
+        do{
+            let user: User = try await supabase
+                .from("users")
+                .select()
+                .eq("user_id", value: UUID())
+                .single()
+                .execute()
+                .value
+            return user
+        }
+        catch{
+            if let error = error as? PostgrestError {
+                if(error.code == "PGRST116"){
+                    return nil
+                }
+            }
+            throw error
+        }
     }
     
     @MainActor
     func verifyUsernameIsUniqueAndCreateUser() async -> User? {
         isLoading = true
         defer { isLoading = false }
+        do{
+            if self.userId == nil {
+                self.userId = try await supabase.auth.session.user.id
+            }
+            
+            guard let userId = self.userId else {
+                return nil
+            }
         
-        do {
             let newUser = User(
-                id: self.userId!,
+                id: userId,
                 firstName: self.firstName,
                 lastName: self.lastName,
                 username: self.username,
@@ -181,7 +189,7 @@ class SupabaseAuthViewModel: BaseSupabase {
                 tags: []
             )
             let createUserParams = CreateUserParams(
-                id: self.userId!,
+                id: userId,
                 firstName: self.firstName,
                 lastName: self.lastName,
                 username: self.username,
@@ -190,7 +198,7 @@ class SupabaseAuthViewModel: BaseSupabase {
                 phoneNumber: self.phone
             )
             try await self.supabaseUserManager.createUserInSupabase(userData: createUserParams)
-            UserDefaults.standard.saveUser(newUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
+//            UserDefaults.standard.saveUser(newUser, forKey: UserDefaults.UserDefaultKeys.currentUser.rawValue)
             return newUser
         } catch {
             toast = Toast(style: .error, message: error.localizedDescription)

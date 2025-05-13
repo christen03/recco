@@ -16,18 +16,10 @@ struct ReccoApp: App {
     
     var body: some Scene {
                 WindowGroup {
-            if(userDataViewModel.isUserAuthenticated){
-                ContentView()
-                .environmentObject(authViewModel)
-                .environmentObject(userDataViewModel)
-                .preferredColorScheme(.light)
-
-            } else {
-                SplashScreenView()
-                    .environmentObject(authViewModel)
-                    .environmentObject(userDataViewModel)
-                    .preferredColorScheme(.light)
-            }
+                    AppView()
+                        .environmentObject(userDataViewModel)
+                        .environmentObject(authViewModel)
+                        .preferredColorScheme(.light)
         }
-                }
+    }
 }

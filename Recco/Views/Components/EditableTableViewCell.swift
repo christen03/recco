@@ -21,27 +21,29 @@ class AutoGrowingTextView: UITextView {
         }
     }
     
+    override var isHidden: Bool {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+    
     override var intrinsicContentSize: CGSize {
+        if isHidden {
+            return .zero
+        }
         let textWidth = frame.width - textContainerInset.left - textContainerInset.right
         let newSize = sizeThatFits(CGSize(width: textWidth, height: .greatestFiniteMagnitude))
         return CGSize(width: frame.width, height: newSize.height)
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        invalidateIntrinsicContentSize()
-    }
 }
 
-class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
+class EditableTableViewCell: UITableViewCell {
     
     var item: Item? {
         didSet {
             rerender()
         }
     }
-    
-    weak var delegate: EditableTableViewCellDelegate?
     
     let itemNameTextField: UITextView = {
         let title = UITextView()
@@ -56,7 +58,7 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
     let descriptionTextView: AutoGrowingTextView = {
         let desc = AutoGrowingTextView()
         desc.translatesAutoresizingMaskIntoConstraints = false
-        desc.font = UIFont(name: Fonts.sfProDisplayLight, size: 14)
+        desc.font = UIFont(name: Fonts.sfProDisplay, size: 14)
         desc.isScrollEnabled = false
         desc.textColor = UIColor(Colors.MediumGray)
         desc.textContainerInset = .zero
@@ -158,7 +160,6 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
            
            contentView.addSubview(titleStackView)
            contentView.addSubview(descriptionTextView)
-           
            NSLayoutConstraint.activate([
                titleStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
                titleStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
@@ -172,26 +173,13 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
                titleStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -15)
            ])
            
-        // This makes the text field expand to fill available space
-        
-//        titleStackView.backgroundColor = .yellow
-//        descriptionTextView.backgroundColor = .green
-//        contentView.backgroundColor = .red
         setupKeyboardButtons()
-        itemNameTextField.delegate = self
-        descriptionTextView.delegate = self
         self.selectionStyle = .none
     }
 
     
     func rerender() {
             guard let item = item else { return }
-            
-            descriptionTextView.setNeedsLayout()
-            descriptionTextView.layoutIfNeeded()
-            DispatchQueue.main.async {
-                   self.delegate?.textViewDidChangeSize(in: self)
-               }
             
             if item.isStarred {
                 starContainerView.alpha=1
@@ -204,7 +192,6 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
             if let price = item.price {
                 priceLabel.alpha=1
                 priceContainerView.alpha=1
-                
                 switch price {
                 case .free: priceLabel.text = "Free"
                 case .one: priceLabel.text = "$"
@@ -212,9 +199,10 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
                 case .three: priceLabel.text = "$$$"
                 }
             } else {
-                priceContainerView.alpha = 1
-                priceLabel.alpha = 1
+                priceContainerView.alpha = 0
+                priceLabel.alpha = 0
             }
+        
         }
     
     private func toggleItemVisibility(container: UIView, label: UILabel){
@@ -233,18 +221,10 @@ class EditableTableViewCell: UITableViewCell, UITextViewDelegate {
         keyboardAccessoryView.frame.size.height=44
     }
     
-    func textViewDidChange(_ textView: UITextView){
-        delegate?.textViewDidChangeSize(in: self)
-    }
-
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
-}
-// MARK: - Delegate Protocol
-protocol EditableTableViewCellDelegate: AnyObject {
-    func textViewDidChangeSize(in cell: EditableTableViewCell)
 }

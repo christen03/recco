@@ -20,8 +20,20 @@ struct TitleText: View {
     }
 }
 
+struct HeaderText: View {
+    let text: String
+    
+    init(_ text: String){
+        self.text=text;
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(Font.custom(Fonts.sfProDisplaySemibold, size: 25))
+    }
+}
+
 struct FontedText: View {
-    // TODO: make this font size a static
     
     let text: String
     let size: CGFloat?
@@ -33,7 +45,7 @@ struct FontedText: View {
     
     var body: some View{
         Text(text)
-            .font(Font.custom(Fonts.sfProRounded, size: size ?? 18 ))
+            .font(Font.custom(Fonts.sfProDisplayMedium, size: size ?? 18 ))
     }
 }
 

@@ -32,14 +32,15 @@ struct AuthView: View {
         @EnvironmentObject var authNavigation: AuthNavigation
         @EnvironmentObject var supabaseSignUp: SupabaseAuthViewModel
         
+        private let emailPlaceholder = "name@mail.com"
         var body: some View {
             VStack {
                 Spacer()
                 
-                TitleText(supabaseSignUp.isSigningUp ? "What's your email?" : "Welcome Back!")
+                TitleText("What's your email?")
                     .padding(.bottom, 20)
                 
-                TextField("name@mail.com", text: $supabaseSignUp.email)
+                TextField(emailPlaceholder, text: $supabaseSignUp.email)
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
@@ -81,15 +82,17 @@ struct PhoneAuthView: View {
         VStack {
             Spacer()
             
-            TitleText(supabaseSignUp.isSigningUp ? "What's your phone number?" : "Welcome Back!")
+            TitleText("What's your phone number?")
                 .padding(.bottom, 20)
             
-            TextField("Enter phone number", text: $supabaseSignUp.phone)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal, 20)
-                .keyboardType(.phonePad)
+            HStack {
+                FontedText("+1")
+                    .foregroundColor(.gray)
+                    .padding(.leading, 15)
+                
+                TextField("Enter phone number", text: $supabaseSignUp.phone)
+                    .keyboardType(.phonePad)
+            }
             
             Button(action: {
                 Task {
