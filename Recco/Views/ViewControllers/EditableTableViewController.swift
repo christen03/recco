@@ -21,6 +21,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     private var isUpdating = false
     private var pendingEmojiSectionIndex: Int?
     
+    
     init(viewModel: ListViewModel){
         self.listViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -48,6 +49,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     weak var dataDelegate: EditableTableViewControllerDelegate?
     
     override func viewDidLoad() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         super.viewDidLoad()
         
         listViewModel.addObserver(id: observerId) { [weak self] newList in
@@ -73,6 +75,7 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     
     deinit {
         listViewModel.removeObserver(id: observerId)
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func notifyDataChanged() {
@@ -397,13 +400,11 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
                         }
                     }
                     tableView.endUpdates()
-                    tableView.scrollToRow(at: newIndexPath, at: .middle, animated: true)
                 } else {
                     // Move to the next existing item
                     let nextIndexPath = IndexPath(row: nextRow, section: section)
                     
                     // Scroll to make sure it's visible
-                    tableView.scrollToRow(at: nextIndexPath, at: .middle, animated: true)
                     
                     // Focus on the next cell's name field after a short delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -428,9 +429,16 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.isHidden=false
+//        DispatchQueue.main.async{
+//            guard textView.isFirstResponder else { return }
+//            if let cell = self.getActiveCell(), let indexPath = self.tableView.indexPath(for: cell) {
+//                self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+//            }
+//        }
         if textView.text == placeholderItem || textView.text == placeholderDesc {
             textView.text = ""
         }
+        
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -485,51 +493,85 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         }
     }
     // In EditableTableViewController.swift
+
     func textViewDidChange(_ textView: UITextView) {
         UIView.performWithoutAnimation {
-            tableView.beginUpdates()
-            tableView.endUpdates()
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
         }
-        
-        for cell in tableView.visibleCells {
-            guard let editableCell = cell as? EditableTableViewCell,
-                  (editableCell.itemNameTextField === textView ||
-                   editableCell.descriptionTextView === textView),
-                  let indexPath = tableView.indexPath(for: cell) else {
-                continue
+
+        DispatchQueue.main.async {
+            guard textView.isFirstResponder,
+                  let activeCell = self.getActiveCell(),
+                  let indexPath = self.tableView.indexPath(for: activeCell),
+                  (activeCell.itemNameTextField === textView || activeCell.descriptionTextView === textView) else {
+                return
             }
-            
-            if let currentItem = getItemAt(indexPath) {
+
+            if let currentItem = self.getItemAt(indexPath) {
                 var updatedItem = currentItem
-                if textView === editableCell.itemNameTextField {
+                if textView === activeCell.itemNameTextField {
                     updatedItem.name = textView.text
-                } else {
+                } else if textView === activeCell.descriptionTextView {
                     updatedItem.description = textView.text
                 }
-                
-                if textView.text != placeholderItem && textView.text != placeholderDesc {
-                    updateItem(updatedItem, at: indexPath)
+                if textView.text != self.placeholderItem && textView.text != self.placeholderDesc {
+                    self.updateItem(updatedItem, at: indexPath)
                 }
             }
-            
+
+            // shoutout gemini for this lololololol but leaving comments so i can come back and learn from this/make edits
             if let selectedRange = textView.selectedTextRange {
-                let cursorRect = textView.caretRect(for: selectedRange.end)
-                let convertedRect = textView.convert(cursorRect, to: tableView)
-                
-                let paddedRect = CGRect(
-                    x: convertedRect.origin.x,
-                    y: convertedRect.origin.y,
-                    width: convertedRect.width,
-                    height: convertedRect.height + 50
+                // Get the caret (cursor) rectangle within the textView.
+                let cursorRectInTextView = textView.caretRect(for: selectedRange.start)
+
+                // Convert the cursor rectangle to the tableView's coordinate system.
+                guard let window = textView.window else { return }
+                let cursorRectInWindow = textView.convert(cursorRectInTextView, to: window)
+                let cursorRectInTableView = self.tableView.convert(cursorRectInWindow, from: window)
+
+                // Determine the actual visible area of the tableView, accounting for content insets (like the keyboard).
+                let tableViewVisibleBounds = self.tableView.bounds
+                let tableViewVisibleContentRect = CGRect(
+                    x: tableViewVisibleBounds.origin.x + self.tableView.adjustedContentInset.left,
+                    y: tableViewVisibleBounds.origin.y + self.tableView.adjustedContentInset.top,
+                    width: tableViewVisibleBounds.width - self.tableView.adjustedContentInset.left - self.tableView.adjustedContentInset.right,
+                    height: tableViewVisibleBounds.height - self.tableView.adjustedContentInset.top - self.tableView.adjustedContentInset.bottom
                 )
-                
-                tableView.scrollRectToVisible(paddedRect, animated: true)
+
+                // Define a "comfortable viewing zone" within the visible content rect.
+                // The cursor should ideally stay within this zone.
+                // Example: Inset by 20% from the top and 30% from the bottom (giving more space near keyboard).
+                // These values are crucial and should be tuned for the best feel.
+                let comfortableZoneTopPadding: CGFloat = tableViewVisibleContentRect.height * 0.20
+                let comfortableZoneBottomPadding: CGFloat = tableViewVisibleContentRect.height * 0.30
+
+                let comfortableViewingZone = tableViewVisibleContentRect.inset(
+                    by: UIEdgeInsets(top: comfortableZoneTopPadding, left: 0, bottom: comfortableZoneBottomPadding, right: 0)
+                )
+
+                // Check if the cursor's Y position is already within the comfortable zone.
+                // We primarily care about the vertical position.
+                let isCursorComfortablyVisible = cursorRectInTableView.minY >= comfortableViewingZone.minY &&
+                                                 cursorRectInTableView.maxY <= comfortableViewingZone.maxY &&
+                                                 tableViewVisibleContentRect.intersects(cursorRectInTableView) // Ensure it's generally visible
+
+                if !isCursorComfortablyVisible {
+                    // The cursor is outside the comfortable zone or not fully visible.
+                    // We'll use scrollRectToVisible to bring it into view.
+                    // Add some padding to the cursor rect so it's not right at the edge after scrolling.
+                    let scrollPadding: CGFloat = 20.0 // Add 20 points of space above/below the cursor when scrolling.
+                    let targetRectForCursor = cursorRectInTableView.insetBy(dx: 0, dy: -scrollPadding)
+
+                    // Only scroll if no other scroll animation is believed to be in progress.
+                    // This check helps prevent fighting between scroll commands.
+                    if self.tableView.layer.animation(forKey: "bounds.origin") == nil {
+                        self.tableView.scrollRectToVisible(targetRectForCursor, animated: true)
+                    }
+                }
             }
-            
-            break
         }
     }
-    
     // MARK: - KeyboardAccessoryViewDelegate
     
     func getActiveCell() -> EditableTableViewCell? {
@@ -723,13 +765,6 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         }
         
         if let indexPath = tableView.indexPath(for: cell) {
-            let textViewRect = textView.convert(textView.bounds, to: tableView)
-            let isTextViewVisible = tableView.bounds.contains(textViewRect)
-            
-            if !isTextViewVisible {
-                tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
-            }
-            
             if let currentItem = getItemAt(indexPath) {
                 var updatedItem = currentItem
                 if textView == cell.itemNameTextField {
@@ -833,5 +868,43 @@ class EditableTableViewController: UITableViewController, UITextViewDelegate, Ke
         view.addSubview(tempTextField)
         tempTextField.becomeFirstResponder()
         return tempTextField
+    }
+    
+    @objc func keyboardDidShow(_ notification: NSNotification) {
+        guard let activeCell = getActiveCell() else {return}
+                let activeTextView = activeCell.itemNameTextField.isFirstResponder ? activeCell.itemNameTextField : activeCell.descriptionTextView
+        guard activeTextView.isFirstResponder, // Ensure we have an active text view
+              let userInfo = notification.userInfo,
+              let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+
+        // The system has already adjusted contentInset by now.
+        // We want to ensure the cursor in activeTextView is well-positioned.
+
+        let cursorRectInTextView = activeTextView.caretRect(for: activeTextView.selectedTextRange?.start ?? activeTextView.endOfDocument)
+        guard !cursorRectInTextView.isNull, !cursorRectInTextView.isInfinite else { return }
+        
+        // Convert cursor rect to table view coordinates
+        let cursorRectInTableView = activeTextView.convert(cursorRectInTextView, to: self.tableView)
+
+        // Define the target rect with padding
+        let targetCursorRectWithPadding = cursorRectInTableView.insetBy(dx: 0, dy: -20) // 20pt padding
+
+        // The truly visible frame for content, after keyboard insets are applied.
+        // UITableView updates its adjustedContentInset when keyboard appears.
+        let visibleRect = self.tableView.bounds.inset(by: self.tableView.adjustedContentInset)
+
+        if !visibleRect.contains(targetCursorRectWithPadding) {
+            self.tableView.scrollRectToVisible(targetCursorRectWithPadding, animated: true)
+        } else {
+            // Even if visible, maybe it's too close to the keyboard.
+            // Check if the bottom of the padded cursor rect is close to the bottom of the visible rect.
+            // (The bottom of visibleRect is effectively the top of the keyboard).
+            let keyboardThreshold: CGFloat = 30 // How close to keyboard before we nudge it up
+            if targetCursorRectWithPadding.maxY > visibleRect.maxY - keyboardThreshold {
+                self.tableView.scrollRectToVisible(targetCursorRectWithPadding, animated: true)
+            }
+        }
     }
 }
